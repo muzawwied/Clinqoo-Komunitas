@@ -369,7 +369,6 @@
     $('composer-avatar').textContent = initials(myName());
     var pendingImage = '';
     cText.addEventListener('input', function () {
-      $('char-now').textContent = cText.value.length;
       cBtn.disabled = !(cText.value.trim() || pendingImage);
     });
     function processImage(file) {
