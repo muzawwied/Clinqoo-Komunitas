@@ -43,9 +43,15 @@
       $('icon-sun').classList.toggle('hidden', !dark);
       try { localStorage.setItem('clincoo_community_theme', dark ? 'dark' : 'light'); } catch (e) {}
     }
-    $('btn-theme').addEventListener('click', function () { applyTheme(!document.body.classList.contains('dark-mode')); });
+    function toggleTheme() {
+      var dark = !document.body.classList.contains('dark-mode');
+      applyTheme(dark);
+      var lbl = $('sheet-theme-label'); if (lbl) lbl.textContent = dark ? 'Mode terang' : 'Mode gelap';
+    }
+    $('btn-theme').addEventListener('click', toggleTheme);
+    // Default gelap ala linimasa IG — hormati pilihan 'terang' eksplisit dari user.
     var savedTheme = null; try { savedTheme = localStorage.getItem('clincoo_community_theme'); } catch (e) {}
-    applyTheme(savedTheme ? savedTheme === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches);
+    applyTheme(savedTheme ? savedTheme === 'dark' : true);
 
     /* ===== Auth screen ===== */
     var mode = 'login';
@@ -94,6 +100,10 @@
       $('me-name').textContent = myName;
       $('me-avatar').textContent = initials(myName);
       $('composer-avatar').textContent = initials(myName);
+      $('bn-avatar').textContent = initials(myName);
+      $('sheet-avatar').textContent = initials(myName);
+      $('sheet-name').textContent = myName;
+      $('story-you-avatar').textContent = initials(myName);
       loadFeed();
     }
 
@@ -111,6 +121,7 @@
         }
         renderFeed();
         renderTrends();
+        renderStories();
       }).catch(function () {
         $('feed').innerHTML = '<div class="empty"><div class="big">📡</div><h3>Tidak ada koneksi</h3><p>Gagal menghubungi server. Coba segarkan lagi.</p></div>';
       });
@@ -149,6 +160,45 @@
       return '<div class="cmt"><div class="avatar sm">' + esc(initials(c.author_name || c.author)) + '</div>' +
         '<div class="cmt-body"><b>' + esc(c.author_name || c.author) + '</b><time>' + esc(relTime(c.created_at)) + '</time><p>' + esc(c.text) + '</p></div></div>';
     }
+
+    /* Rail kontributor teratas — mirip cincin story IG, tapi statis: klik = lompat ke postingan terbarunya */
+    function renderStories() {
+      var rail = $('stories-rail');
+      var seen = {}, top = [];
+      feedState.forEach(function (p) {
+        if (p.mine || seen[p.user_id]) return;
+        seen[p.user_id] = true;
+        top.push({ user_id: p.user_id, author: p.author, post_id: p.id });
+      });
+      top = top.slice(0, 10);
+      var extra = top.map(function (c) {
+        return '<div class="story-item js-story" data-post="' + esc(c.post_id) + '">' +
+          '<div class="story-ring"><div class="avatar">' + esc(initials(c.author)) + '</div></div>' +
+          '<span class="story-label">' + esc(c.author) + '</span></div>';
+      }).join('');
+      // Item pertama ("Ceritamu") tetap, sisanya disegarkan
+      var you = rail.querySelector('#story-you');
+      rail.innerHTML = '';
+      if (you) rail.appendChild(you);
+      rail.insertAdjacentHTML('beforeend', extra);
+    }
+    var storyYou = $('story-you');
+    if (storyYou) storyYou.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(function () { cText.focus(); }, 300);
+    });
+    document.getElementById('stories-rail').addEventListener('click', function (ev) {
+      var it = ev.target.closest('.js-story');
+      if (!it) return;
+      var pid = it.getAttribute('data-post');
+      var el = document.querySelector('.post[data-id="' + pid + '"]');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.style.transition = 'background .3s';
+        el.style.background = 'var(--bg-soft)';
+        setTimeout(function () { el.style.background = ''; }, 900);
+      }
+    });
 
     /* Interaksi feed: delegasi event */
     var busy = false;
@@ -265,6 +315,36 @@
       cText.focus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    /* ===== Bottom nav + sheet profil (mobile) ===== */
+    function setActiveNav(id) {
+      document.querySelectorAll('.bn-item').forEach(function (b) { b.classList.remove('is-active'); });
+      var el = $(id); if (el) el.classList.add('is-active');
+    }
+    $('bn-home').addEventListener('click', function () {
+      setActiveNav('bn-home');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    $('bn-trend').addEventListener('click', function () {
+      setActiveNav('bn-trend');
+      var side = document.querySelector('.side');
+      if (side) side.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    $('bn-post').addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(function () { cText.focus(); }, 300);
+    });
+    $('bn-refresh2').addEventListener('click', function () {
+      setActiveNav('bn-home');
+      loadFeed(); toast('Linimasa disegarkan');
+    });
+    function openSheet() { $('sheet-backdrop').classList.remove('hidden'); }
+    function closeSheet() { $('sheet-backdrop').classList.add('hidden'); }
+    $('bn-profile').addEventListener('click', function () { setActiveNav('bn-profile'); openSheet(); });
+    $('sheet-backdrop').addEventListener('click', function (ev) { if (ev.target === $('sheet-backdrop')) { closeSheet(); setActiveNav('bn-home'); } });
+    $('sheet-theme').addEventListener('click', toggleTheme);
+    $('sheet-logout').addEventListener('click', function () { closeSheet(); $('btn-logout').click(); });
+    $('sheet-theme-label').textContent = document.body.classList.contains('dark-mode') ? 'Mode terang' : 'Mode gelap';
 
     /* ===== Boot ===== */
     if (token()) enterApp(); else showAuth();
