@@ -139,6 +139,7 @@
           '<div class="post-body">' +
             '<div class="post-head"><b>' + esc(p.author) + '</b><time>' + esc(relTime(p.created_at)) + '</time></div>' +
             '<div class="post-text">' + linkify(p.text) + '</div>' +
+            (p.image ? '<div class="post-img-wrap"><img class="post-img js-img" src="' + esc(p.image) + '" alt="gambar postingan" loading="lazy"></div>' : '') +
             '<div class="post-actions">' +
               '<button class="act js-like' + (p.liked_by_me ? ' liked' : '') + '" aria-label="Suka">' +
                 '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>' +
@@ -230,6 +231,8 @@
         return;
       }
       if (sendBtn) submitComment(sendBtn.closest('.post'));
+      var img = ev.target.closest('.js-img');
+      if (img) { window.open(img.src, '_blank'); return; }
       var tag = ev.target.closest('.tag');
       if (tag) {
         var q = tag.textContent;
@@ -266,22 +269,70 @@
         }).catch(function () { busy = false; toast('Koneksi bermasalah'); });
     }
 
-    /* ===== Composer ===== */
+    /* ===== Composer + lampiran foto ===== */
     var cText = $('composer-text'), cBtn = $('btn-post');
+    var pendingImage = '';
+    function updatePostEnabled() { cBtn.disabled = !(cText.value.trim() || pendingImage); }
     cText.addEventListener('input', function () {
       $('char-now').textContent = cText.value.length;
-      cBtn.disabled = !cText.value.trim();
+      updatePostEnabled();
+    });
+
+    // Resize di klien: maks sisi 900px, JPEG kualitas turun bertahap sampai < 90KB (hemat D1)
+    function processImage(file) {
+      if (!file || String(file.type).indexOf('image/') !== 0) { toast('File harus berupa gambar'); return; }
+      var fr = new FileReader();
+      fr.onload = function () {
+        var img = new Image();
+        img.onload = function () {
+          var maxDim = 900, q = 0.75, out = '';
+          var scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+          var c = document.createElement('canvas');
+          c.width = Math.max(1, Math.round(img.width * scale));
+          c.height = Math.max(1, Math.round(img.height * scale));
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          out = c.toDataURL('image/jpeg', q);
+          while (out.length > 90000 && q > 0.3) { q -= 0.12; out = c.toDataURL('image/jpeg', q); }
+          if (out.length > 95000) {
+            c.width = Math.round(c.width * 0.6); c.height = Math.round(c.height * 0.6);
+            c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+            out = c.toDataURL('image/jpeg', 0.45);
+          }
+          if (out.length > 100000) { toast('Gambar tetap kegedean setelah dikompres — coba yang lain'); return; }
+          pendingImage = out;
+          $('cmp-preview-img').src = out;
+          $('cmp-preview').classList.remove('hidden');
+          updatePostEnabled();
+          toast('Foto siap dilampirkan');
+        };
+        img.onerror = function () { toast('Gambar tidak bisa dibaca'); };
+        img.src = fr.result;
+      };
+      fr.readAsDataURL(file);
+    }
+    $('btn-img').addEventListener('click', function () { $('in-img').click(); });
+    $('in-img').addEventListener('change', function () {
+      if (this.files && this.files[0]) processImage(this.files[0]);
+      this.value = '';
+    });
+    $('cmp-img-del').addEventListener('click', function () {
+      pendingImage = '';
+      $('cmp-preview').classList.add('hidden');
+      updatePostEnabled();
     });
     cBtn.addEventListener('click', function () {
       var text = cText.value.trim();
-      if (!text || busy) return;
+      if ((!text && !pendingImage) || busy) return;
       busy = true; cBtn.disabled = true; cBtn.textContent = 'Mengirim…';
-      api('/community', { method: 'POST', body: JSON.stringify({ text: text }) }).then(function (d) {
+      var payload = { text: text };
+      if (pendingImage) payload.image = pendingImage;
+      api('/community', { method: 'POST', body: JSON.stringify(payload) }).then(function (d) {
         busy = false; cBtn.textContent = 'Posting';
         if (d && d.success && d.post) {
           feedState.unshift(d.post);
           renderFeed(); renderTrends();
           cText.value = ''; $('char-now').textContent = '0'; cBtn.disabled = true;
+          pendingImage = ''; $('cmp-preview').classList.add('hidden');
           toast('Postingan terkirim ✨');
         } else if (d && d._status === 429) {
           cBtn.disabled = false; toast(d.error || 'Sabar sedikit…');
