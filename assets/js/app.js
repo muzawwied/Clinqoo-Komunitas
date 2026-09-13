@@ -254,11 +254,54 @@
     });
     $('btn-refresh').addEventListener('click', function () { loadFeed().then(applyHomeRender); toast('Linimasa disegarkan'); });
 
-    function applyHomeRender() { applyFilter(); renderTrendsSide(); renderStories(); }
+    function applyHomeRender() { applyFilter(); renderTrendsSide(); renderStories(); renderActivityDot(); }
 
     loadFeed().then(function (f) {
       if (f === null) { $('feed').innerHTML = '<div class="empty"><div class="big">📡</div><h3>Gagal memuat</h3><p>Coba segarkan lagi.</p></div>'; return; }
       showFilterBar(); applyHomeRender();
+    });
+
+    // Ketuk logo ala Instagram -> scroll ke atas + segarkan linimasa (kalau sudah di paling atas)
+    $('brand-link').addEventListener('click', function (ev) {
+      ev.preventDefault();
+      if (window.scrollY < 40) { loadFeed().then(applyHomeRender); toast('Linimasa disegarkan'); }
+      else { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    });
+
+    // Aktivitas (ikon hati) — komentar terbaru di postingan milikku, dari data feed yang sudah dimuat
+    function buildActivityItems() {
+      var items = [];
+      feedState.filter(function (p) { return p.mine; }).forEach(function (p) {
+        (p.comments || []).forEach(function (c) {
+          items.push({ author: c.author_name || c.author, text: c.text, created_at: c.created_at, post_id: p.id });
+        });
+      });
+      items.sort(function (a, b) { return new Date(b.created_at) - new Date(a.created_at); });
+      return items.slice(0, 20);
+    }
+    function renderActivityDot() {
+      var dot = $('activity-dot'); if (!dot) return;
+      dot.classList.toggle('hidden', buildActivityItems().length === 0);
+    }
+    function openActivity() {
+      var items = buildActivityItems();
+      $('activity-list').innerHTML = items.length ? items.map(function (it) {
+        return '<div class="activity-item js-activity-jump" data-post="' + esc(it.post_id) + '">' +
+          '<div class="avatar">' + esc(initials(it.author)) + '</div>' +
+          '<div><p><b>' + esc(it.author) + '</b> mengomentari postinganmu: "' + esc(it.text) + '"</p><time>' + esc(relTime(it.created_at)) + '</time></div></div>';
+      }).join('') : '<div class="activity-empty">Belum ada aktivitas baru di postinganmu.</div>';
+      $('activity-backdrop').classList.remove('hidden');
+    }
+    $('btn-activity').addEventListener('click', openActivity);
+    $('activity-backdrop').addEventListener('click', function (ev) {
+      var jump = ev.target.closest('.js-activity-jump');
+      if (jump) {
+        var el = document.querySelector('.post[data-id="' + jump.getAttribute('data-post') + '"]');
+        $('activity-backdrop').classList.add('hidden');
+        if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.transition = 'background .3s'; el.style.background = 'var(--bg-soft)'; setTimeout(function () { el.style.background = ''; }, 900); }
+        return;
+      }
+      if (ev.target === $('activity-backdrop')) $('activity-backdrop').classList.add('hidden');
     });
 
     /* Interaksi like/komentar/gambar/tag */

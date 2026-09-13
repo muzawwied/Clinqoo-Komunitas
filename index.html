@@ -16,10 +16,19 @@
 
   <header>
     <div class="hd-inner">
-      <a class="brand" href="./" aria-label="Komunitas Clincoo — Beranda">
+      <a class="icon-btn icon-btn--bare" href="posting.html" aria-label="Buat postingan baru">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" d="M12 5v14M5 12h14"/></svg>
+      </a>
+      <a class="brand" id="brand-link" href="./" aria-label="Komunitas Clincoo — Beranda, ketuk untuk ke atas">
         <img src="assets/favicon.svg" alt="Logo Clincoo">
         <b>Clincoo</b>
+        <svg class="brand-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></svg>
       </a>
+      <div class="hd-spacer"></div>
+      <button class="icon-btn icon-btn--bare" id="btn-activity" aria-label="Aktivitas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>
+        <span class="hd-dot hidden" id="activity-dot"></span>
+      </button>
     </div>
 
     <div class="stories-rail" id="stories-rail">
@@ -66,8 +75,17 @@
 
   <footer class="site">Komunitas resmi <b>Clincoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
   <div id="bottom-nav"></div>
+
+  <div class="sheet-backdrop hidden" id="activity-backdrop">
+    <div class="sheet">
+      <div class="sheet-handle"></div>
+      <h3 class="sheet-title">Aktivitas</h3>
+      <div id="activity-list"></div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
-  <script src="assets/js/app.js?v=5"></script>
+  <script src="assets/js/app.js?v=6"></script>
 </body>
 </html>
