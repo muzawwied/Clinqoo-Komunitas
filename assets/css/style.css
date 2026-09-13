@@ -22,27 +22,14 @@ header {
   border-bottom: 1px solid var(--line);
 }
 .hd-inner { max-width: 1024px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
-.brand { display: flex; align-items: center; gap: 9px; text-decoration: none; }
-.brand img { width: 30px; height: 30px; }
-.brand b { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
-.brand-badge {
-  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
-  background: var(--accent); color: var(--bg); padding: 3px 8px; border-radius: 999px;
-}
-.hd-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.brand { display: flex; align-items: center; text-decoration: none; }
+.brand img { width: 34px; height: 34px; }
 .icon-btn {
   width: 36px; height: 36px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
   border: 1px solid var(--line); background: var(--bg); transition: background .2s;
 }
 .icon-btn:hover { background: var(--bg-soft); }
 .icon-btn svg { width: 17px; height: 17px; }
-.me-chip {
-  display: flex; align-items: center; gap: 8px; padding: 4px 12px 4px 4px;
-  border: 1px solid var(--line); border-radius: 999px; background: var(--bg);
-  font-size: 13px; font-weight: 600; max-width: 180px;
-}
-.me-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-
 /* ===== Avatar ===== */
 .avatar {
   width: 40px; height: 40px; border-radius: 999px; flex-shrink: 0;
@@ -77,7 +64,7 @@ header {
 
 /* ===== Layout ===== */
 .wrap { max-width: 1024px; margin: 0 auto; padding: 6px 16px 90px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
-@media (min-width: 880px) { .wrap { grid-template-columns: minmax(0, 1fr) 300px; padding-bottom: 40px; } }
+@media (min-width: 880px) { .wrap { grid-template-columns: minmax(0, 1fr) 300px; } }
 .side { display: flex; flex-direction: column; gap: 14px; }
 
 .card { background: var(--bg); border: 1px solid var(--line); border-radius: 20px; }
@@ -172,7 +159,7 @@ body.dark-mode .post-text .tag { color: #60a5fa; }
 .empty p { font-size: 13.5px; max-width: 320px; margin: 0 auto; }
 
 .toast {
-  position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%) translateY(20px);
+  position: fixed; left: 50%; bottom: 96px; transform: translateX(-50%) translateY(20px);
   background: var(--accent); color: var(--bg); font-size: 13px; font-weight: 600;
   padding: 10px 18px; border-radius: 999px; opacity: 0; transition: all .25s; z-index: 100;
   max-width: 90vw; text-align: center; pointer-events: none;
@@ -213,7 +200,7 @@ body.dark-mode .auth-err { background: #2a1214; border-color: #5b2024; color: #f
 .auth-foot { margin-top: 18px; text-align: center; font-size: 11.5px; color: var(--txt-soft); }
 .auth-foot a { color: var(--txt-soft); text-decoration: underline; }
 
-footer.site { text-align: center; padding: 24px 16px 30px; color: var(--txt-soft); font-size: 12px; border-top: 1px solid var(--line); }
+footer.site { text-align: center; padding: 24px 16px calc(78px + env(safe-area-inset-bottom)); color: var(--txt-soft); font-size: 12px; border-top: 1px solid var(--line); }
 footer.site b { font-weight: 800; letter-spacing: -0.01em; }
 
 /* ===== Bottom nav (mobile, ala aplikasi IG) ===== */
@@ -253,12 +240,4 @@ footer.site b { font-weight: 800; letter-spacing: -0.01em; }
 .sheet-btn--danger { color: #e0245e; }
 .sheet-btn--danger svg { color: #e0245e; }
 
-/* Header icons (theme/logout/chip) hanya tampil di desktop; mobile pakai bottom-nav + sheet */
-@media (max-width: 879px) {
-  .hd-only { display: none !important; }
-  .bottom-nav { display: flex !important; }
-}
-@media (min-width: 880px) {
-  .bottom-nav { display: none !important; }
-  .sheet-backdrop { display: none !important; }
-}
+/* Bottom nav & sheet profil tampil di semua ukuran layar (mobile & desktop) */

@@ -39,8 +39,6 @@
     /* ===== Tema ===== */
     function applyTheme(dark) {
       document.body.classList.toggle('dark-mode', dark);
-      $('icon-moon').classList.toggle('hidden', dark);
-      $('icon-sun').classList.toggle('hidden', !dark);
       try { localStorage.setItem('clincoo_community_theme', dark ? 'dark' : 'light'); } catch (e) {}
     }
     function toggleTheme() {
@@ -48,7 +46,6 @@
       applyTheme(dark);
       var lbl = $('sheet-theme-label'); if (lbl) lbl.textContent = dark ? 'Mode terang' : 'Mode gelap';
     }
-    $('btn-theme').addEventListener('click', toggleTheme);
     // Default gelap ala linimasa IG — hormati pilihan 'terang' eksplisit dari user.
     var savedTheme = null; try { savedTheme = localStorage.getItem('clincoo_community_theme'); } catch (e) {}
     applyTheme(savedTheme ? savedTheme === 'dark' : true);
@@ -85,10 +82,10 @@
         .catch(function () { authErr('Tidak bisa menghubungi server. Cek koneksi kamu.'); })
         .finally(function () { btn.disabled = false; btn.textContent = (mode === 'register') ? 'Daftar' : 'Masuk'; });
     });
-    $('btn-logout').addEventListener('click', function () {
+    function doLogout() {
       try { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(ME_KEY); } catch (e) {}
       showAuth(); toast('Kamu sudah keluar');
-    });
+    }
 
     /* ===== App ===== */
     var feedState = [];
@@ -97,8 +94,6 @@
       $('app').classList.remove('hidden');
       var me = null; try { me = JSON.parse(localStorage.getItem(ME_KEY) || 'null'); } catch (e) {}
       var myName = (me && me.name) || 'Saya';
-      $('me-name').textContent = myName;
-      $('me-avatar').textContent = initials(myName);
       $('composer-avatar').textContent = initials(myName);
       $('bn-avatar').textContent = initials(myName);
       $('sheet-avatar').textContent = initials(myName);
@@ -114,8 +109,6 @@
         if (d.error) { $('feed').innerHTML = '<div class="empty"><div class="big">⚠️</div><h3>Gagal memuat</h3><p>' + esc(d.error) + '</p></div>'; return; }
         feedState = d.feed || [];
         if (d.me && d.me.name) {
-          $('me-name').textContent = d.me.name;
-          $('me-avatar').textContent = initials(d.me.name);
           $('composer-avatar').textContent = initials(d.me.name);
           try { localStorage.setItem(ME_KEY, JSON.stringify({ name: d.me.name, ts: Date.now() })); } catch (e) {}
         }
@@ -394,7 +387,7 @@
     $('bn-profile').addEventListener('click', function () { setActiveNav('bn-profile'); openSheet(); });
     $('sheet-backdrop').addEventListener('click', function (ev) { if (ev.target === $('sheet-backdrop')) { closeSheet(); setActiveNav('bn-home'); } });
     $('sheet-theme').addEventListener('click', toggleTheme);
-    $('sheet-logout').addEventListener('click', function () { closeSheet(); $('btn-logout').click(); });
+    $('sheet-logout').addEventListener('click', function () { closeSheet(); doLogout(); });
     $('sheet-theme-label').textContent = document.body.classList.contains('dark-mode') ? 'Mode terang' : 'Mode gelap';
 
     /* ===== Boot ===== */
