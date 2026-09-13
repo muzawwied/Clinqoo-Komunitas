@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tulis Postingan — Komunitas Clincoo</title>
+  <meta name="description" content="Tulis postingan baru di Komunitas Clincoo — bisa dengan foto.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="post">
+
+  <header>
+    <div class="hd-inner">
+      <a class="brand" href="./" aria-label="Komunitas Clincoo — Beranda">
+        <img src="assets/favicon.svg" alt="Logo Clincoo">
+        <b>Clincoo</b>
+      </a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <main>
+      <div class="feed-head"><h2>Tulis Postingan</h2></div>
+
+      <div class="composer composer--page">
+        <div class="avatar" id="composer-avatar">A</div>
+        <div style="flex:1; display:flex; flex-direction:column;">
+          <textarea id="composer-text" rows="4" maxlength="500" autofocus placeholder="Ceritain progres proyek kamu, atau tanya sesuatu… pakai #tag biar mudah ditemukan"></textarea>
+          <div id="cmp-preview" class="cmp-preview hidden">
+            <img id="cmp-preview-img" alt="Pratinjau foto">
+            <button id="cmp-img-del" class="cmp-img-del" aria-label="Hapus foto">&times;</button>
+          </div>
+          <div class="composer-foot">
+            <button class="icon-btn" id="btn-img" title="Lampirkan foto" aria-label="Lampirkan foto">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15-4.5-4.5L6 21"/></svg>
+            </button>
+            <input type="file" id="in-img" accept="image/*" class="hidden">
+            <button class="btn-primary" id="btn-post" disabled>Bagikan</button>
+            <span class="char-count"><span id="char-now">0</span>/500</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card tips-card">
+        <h3>Tips biar postinganmu makin kebaca</h3>
+        <p>1. Mulai dengan kalimat kuat<br>2. Pakai #tag topik — muncul di halaman Jelajah<br>3. Lampirkan foto progres biar makin hidup</p>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site">Komunitas resmi <b>Clincoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
+  <div id="bottom-nav"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="assets/js/app.js?v=5"></script>
+</body>
+</html>

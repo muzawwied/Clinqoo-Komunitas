@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Komunitas Clincoo — Ruang ngumpul para pembangun situs</title>
-  <meta name="description" content="Media sosial komunitas Clincoo: bagikan progres proyek, tanya jawab, dan saling dukung.">
+  <title>Beranda — Komunitas Clincoo</title>
+  <meta name="description" content="Linimasa Komunitas Clincoo: bagikan progres proyek, tanya jawab, dan saling dukung.">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,148 +12,62 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Komunitas Clincoo","inLanguage":"id"}</script>
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body data-page="home">
 
-  <!-- ========== AUTH ========== -->
-  <div id="auth-screen" class="auth-bg hidden">
-    <div class="auth-card">
-      <div class="auth-brand">
+  <header>
+    <div class="hd-inner">
+      <a class="brand" href="./" aria-label="Komunitas Clincoo — Beranda">
         <img src="assets/favicon.svg" alt="Logo Clincoo">
-        <h1>Komunitas Clincoo</h1>
-        <p id="auth-sub">Masuk dengan akun Clincoo kamu untuk ikut ngobrol.</p>
-      </div>
-      <div id="auth-err" class="auth-err hidden"></div>
-      <form id="auth-form">
-        <div class="field hidden" id="f-name">
-          <label for="in-name">Nama tampilan</label>
-          <input id="in-name" type="text" placeholder="Nama kamu di komunitas" autocomplete="name">
-        </div>
-        <div class="field">
-          <label for="in-email">Email</label>
-          <input id="in-email" type="email" placeholder="email@kamu.com" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="in-pass">Kata sandi</label>
-          <input id="in-pass" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password" required minlength="6">
-        </div>
-        <button type="submit" class="btn-primary auth-btn" id="auth-btn">Masuk</button>
-      </form>
-      <p class="auth-alt" id="auth-alt">Belum punya akun Clincoo? <button id="auth-toggle" type="button">Daftar</button></p>
-      <p class="auth-foot">Akun sama dengan aplikasi <a href="https://muzawwied.github.io/Clincoo./" target="_blank" rel="noopener">Clincoo</a> — langsung pakai.</p>
-    </div>
-  </div>
-
-  <!-- ========== APP ========== -->
-  <div id="app" class="hidden">
-    <header>
-      <div class="hd-inner">
-        <a class="brand" href="./" aria-label="Komunitas Clincoo — Beranda">
-          <img src="assets/favicon.svg" alt="Logo Clincoo">
-        </a>
-      </div>
-
-      <!-- Rail kontributor aktif (avatar ring warna — bukan story ephemeral, klik = lompat ke postingan terakhirnya) -->
-      <div class="stories-rail" id="stories-rail">
-        <div class="story-item story-you" id="story-you">
-          <div class="story-ring story-ring--you"><div class="avatar" id="story-you-avatar">A</div><span class="story-plus">+</span></div>
-          <span class="story-label">Ceritamu</span>
-        </div>
-      </div>
-    </header>
-
-    <div class="wrap">
-      <main>
-        <!-- Composer -->
-        <div class="composer" id="composer-box">
-          <div class="avatar" id="composer-avatar">A</div>
-          <div style="flex:1; display:flex; flex-direction:column;">
-            <textarea id="composer-text" rows="2" maxlength="500" placeholder="Ceritain progres proyek kamu, atau tanya sesuatu… pakai #tag biar mudah ditemukan"></textarea>
-            <div id="cmp-preview" class="cmp-preview hidden">
-              <img id="cmp-preview-img" alt="Pratinjau foto">
-              <button id="cmp-img-del" class="cmp-img-del" aria-label="Hapus foto">&times;</button>
-            </div>
-            <div class="composer-foot">
-              <button class="icon-btn" id="btn-img" title="Lampirkan foto" aria-label="Lampirkan foto">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15-4.5-4.5L6 21"/></svg>
-              </button>
-              <input type="file" id="in-img" accept="image/*" class="hidden">
-              <button class="btn-primary" id="btn-post" disabled>Posting</button>
-              <span class="char-count"><span id="char-now">0</span>/500</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Feed -->
-        <div class="feed-head" style="margin-top:18px;">
-          <h2>Linimasa</h2>
-          <button class="link-btn" id="btn-refresh">
-            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
-            Segarkan
-          </button>
-        </div>
-        <div id="feed">
-          <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div><div class="sk-line w60"></div></div>
-          <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div><div class="sk-line w60"></div></div>
-        </div>
-      </main>
-
-      <!-- Sidebar (desktop) -->
-      <aside class="side">
-        <div class="card">
-          <h3>Tentang komunitas</h3>
-          <p>Ruang ngumpul para pengguna Clincoo — bagikan progres situs yang kamu bangun, tanya jawab, dan kenalan dengan pengguna lain.</p>
-        </div>
-        <div class="card">
-          <h3>Sedang tren</h3>
-          <div id="trends"><p class="trend-empty">Belum ada tag yang trending. Mulai dengan menulis #tag di postinganmu.</p></div>
-        </div>
-        <div class="card">
-          <h3>Panduan singkat</h3>
-          <p>1. Sopan &amp; saling bantu<br>2. Bagikan hal bermanfaat soal membangun situs<br>3. Hindari spam &amp; promosi berlebihan</p>
-        </div>
-      </aside>
+        <b>Clincoo</b>
+      </a>
     </div>
 
-    <footer class="site">Komunitas resmi <b>Clincoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
-  </div>
+    <div class="stories-rail" id="stories-rail">
+      <div class="story-item story-you" id="story-you">
+        <div class="story-ring story-ring--you"><div class="avatar" id="story-you-avatar">A</div><span class="story-plus">+</span></div>
+        <span class="story-label">Ceritamu</span>
+      </div>
+    </div>
+  </header>
 
-  <!-- Bottom nav (mobile) -->
-  <nav class="bottom-nav" id="bottom-nav">
-    <button class="bn-item is-active" id="bn-home" aria-label="Beranda">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11.5 12 4l9 7.5M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>
-    </button>
-    <button class="bn-item" id="bn-trend" aria-label="Jelajah">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5"/></svg>
-    </button>
-    <button class="bn-item bn-plus" id="bn-post" aria-label="Tulis postingan">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>
-    </button>
-    <button class="bn-item" id="bn-refresh2" aria-label="Segarkan linimasa">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
-    </button>
-    <button class="bn-item bn-avatar" id="bn-profile" aria-label="Profil">
-      <div class="avatar sm" id="bn-avatar">A</div>
-    </button>
-  </nav>
-
-  <!-- Menu profil (mobile) -->
-  <div class="sheet-backdrop hidden" id="sheet-backdrop">
-    <div class="sheet" id="profile-sheet">
-      <div class="sheet-handle"></div>
-      <div class="sheet-me"><div class="avatar" id="sheet-avatar">A</div><div><b id="sheet-name">…</b><span>Akun Clincoo</span></div></div>
-      <button class="sheet-btn" id="sheet-theme">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-        <span id="sheet-theme-label">Mode gelap</span>
+  <div class="wrap">
+    <main>
+      <div class="feed-head">
+      <h2 id="feed-title">Linimasa</h2>
+      <button class="link-btn" id="btn-refresh">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg>
+        Segarkan
       </button>
-      <button class="sheet-btn sheet-btn--danger" id="sheet-logout">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-        Keluar
-      </button>
-    </div>
+      </div>
+      <div id="filter-bar" class="filter-bar hidden">
+        <span class="filter-chip"><span id="filter-tag">#…</span><button id="filter-clear" aria-label="Hapus filter">&times;</button></span>
+      </div>
+      <div id="feed">
+        <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div><div class="sk-line w60"></div></div>
+        <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div><div class="sk-line w60"></div></div>
+      </div>
+    </main>
+
+    <aside class="side">
+      <div class="card">
+        <h3>Tentang komunitas</h3>
+        <p>Ruang ngumpul para pengguna Clincoo — bagikan progres situs yang kamu bangun, tanya jawab, dan kenalan dengan pengguna lain.</p>
+      </div>
+      <div class="card">
+        <h3>Sedang tren</h3>
+        <div id="trends"><p class="trend-empty">Belum ada tag yang trending. Mulai dengan menulis #tag di postinganmu.</p></div>
+      </div>
+      <div class="card">
+        <h3>Panduan singkat</h3>
+        <p>1. Sopan &amp; saling bantu<br>2. Bagikan hal bermanfaat soal membangun situs<br>3. Hindari spam &amp; promosi berlebihan</p>
+      </div>
+    </aside>
   </div>
 
+  <footer class="site">Komunitas resmi <b>Clincoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
+  <div id="bottom-nav"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="assets/js/app.js?v=4"></script>
+  <script src="assets/js/app.js?v=5"></script>
 </body>
 </html>

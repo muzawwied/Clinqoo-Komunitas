@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Masuk — Komunitas Clincoo</title>
+  <meta name="description" content="Masuk ke Komunitas Clincoo dengan akun Clincoo kamu.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="login">
+
+  <div class="auth-bg">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <img src="assets/favicon.svg" alt="Logo Clincoo">
+        <h1>Komunitas Clincoo</h1>
+        <p id="auth-sub">Masuk dengan akun Clincoo kamu untuk ikut ngobrol.</p>
+      </div>
+      <div id="auth-err" class="auth-err hidden"></div>
+      <form id="auth-form">
+        <div class="field hidden" id="f-name">
+          <label for="in-name">Nama tampilan</label>
+          <input id="in-name" type="text" placeholder="Nama kamu di komunitas" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="in-email">Email</label>
+          <input id="in-email" type="email" placeholder="email@kamu.com" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label for="in-pass">Kata sandi</label>
+          <input id="in-pass" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password" required minlength="6">
+        </div>
+        <button type="submit" class="btn-primary auth-btn" id="auth-btn">Masuk</button>
+      </form>
+      <p class="auth-alt" id="auth-alt">Belum punya akun Clincoo? <button id="auth-toggle" type="button">Daftar</button></p>
+      <p class="auth-foot">Akun sama dengan aplikasi <a href="https://muzawwied.github.io/Clincoo./" target="_blank" rel="noopener">Clincoo</a> — langsung pakai.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="assets/js/app.js?v=5"></script>
+</body>
+</html>

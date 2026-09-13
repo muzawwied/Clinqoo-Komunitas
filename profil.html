@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil — Komunitas Clincoo</title>
+  <meta name="description" content="Profil dan postinganmu di Komunitas Clincoo.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="profil">
+
+  <header>
+    <div class="hd-inner">
+      <a class="brand" href="./" aria-label="Komunitas Clincoo — Beranda">
+        <img src="assets/favicon.svg" alt="Logo Clincoo">
+        <b>Clincoo</b>
+      </a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <main>
+      <div class="prof-head card">
+        <div class="avatar avatar-xl" id="prof-avatar">A</div>
+        <div class="prof-info">
+          <b id="prof-name">…</b>
+          <span>Akun Clincoo</span>
+          <div class="prof-stats">
+            <div><b id="stat-posts">0</b><span>postingan</span></div>
+            <div><b id="stat-likes">0</b><span>like diterima</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prof-menu card">
+        <button class="sheet-btn" id="btn-theme">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <span id="theme-label">Mode terang</span>
+        </button>
+        <button class="sheet-btn sheet-btn--danger" id="btn-logout">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          Keluar
+        </button>
+      </div>
+
+      <div class="feed-head" style="margin-top:20px;"><h2>Postinganku</h2></div>
+      <div id="my-feed">
+        <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div></div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site">Komunitas resmi <b>Clincoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
+  <div id="bottom-nav"></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="assets/js/app.js?v=5"></script>
+</body>
+</html>
