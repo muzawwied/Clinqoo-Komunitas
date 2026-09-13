@@ -65,7 +65,8 @@
     home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11.5 12 4l9 7.5M5 10v9a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9"/></svg>',
     jelajah: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="m20 20-3.5-3.5"/></svg>',
     plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path stroke-linecap="round" stroke-linejoin="round" d="M12 5v14M5 12h14"/></svg>',
-    profil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 21c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg>'
+    profil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path stroke-linecap="round" d="M4 21c1.5-3.5 4.5-5 8-5s6.5 1.5 8 5"/></svg>',
+    notif: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path stroke-linecap="round" stroke-linejoin="round" d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>'
   };
   function buildNav() {
     var holder = $('bottom-nav'); if (!holder) return;
@@ -73,12 +74,14 @@
       { id: 'home', href: 'index.html', icon: ICONS.home, label: 'Beranda' },
       { id: 'jelajah', href: 'jelajah.html', icon: ICONS.jelajah, label: 'Jelajah' },
       { id: 'post', href: 'posting.html', icon: ICONS.plus, label: 'Tulis', plus: true },
+      { id: 'notif', href: '#', icon: ICONS.notif, label: 'Notifikasi', bell: true },
       { id: 'profil', href: 'profil.html', icon: ICONS.profil, label: 'Profil', avatar: true }
     ];
     holder.className = 'bottom-nav';
     holder.innerHTML = items.map(function (it) {
-      var cls = 'bn-item' + (page === it.id ? ' is-active' : '') + (it.plus ? ' bn-plus' : '');
+      var cls = 'bn-item' + (page === it.id ? ' is-active' : '') + (it.plus ? ' bn-plus' : '') + (it.bell ? ' bn-item--notif js-nav-notif' : '');
       var inner = it.avatar ? '<div class="avatar sm" id="nav-avatar">' + esc(initials(myName())) + '</div>' : it.icon;
+      if (it.bell) inner += '<span class="bn-dot hidden" id="nav-bell-dot"></span>';
       return '<a class="' + cls + '" href="' + it.href + '" aria-label="' + it.label + '">' + inner + '</a>';
     }).join('');
   }
@@ -161,9 +164,68 @@
       if (d.error) { toast(d.error); return null; }
       feedState = d.feed || [];
       if (d.me && d.me.name) { setMyName(d.me.name); refreshNavAvatar(d.me.name); }
+      updateNotifDot();
       return feedState;
     }).catch(function () { toast('Koneksi bermasalah'); return null; });
   }
+
+  /* ===== Notifikasi (semua halaman) — panel di-inject otomatis ===== */
+  if (!$('activity-backdrop')) {
+    var bd = document.createElement('div');
+    bd.className = 'sheet-backdrop hidden';
+    bd.id = 'activity-backdrop';
+    bd.innerHTML = '<div class="sheet"><div class="sheet-handle"></div><h3 class="sheet-title">Aktivitas</h3><div id="activity-list"></div></div>';
+    document.body.appendChild(bd);
+  }
+  (function () {
+    var bk = $('activity-backdrop');
+    bk.addEventListener('click', function (ev) {
+      var jump = ev.target.closest('.js-activity-jump');
+      if (jump) {
+        var el = document.querySelector('.post[data-id="' + jump.getAttribute('data-post') + '"]');
+        bk.classList.add('hidden');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          el.style.transition = 'background .3s';
+          el.style.background = 'var(--bg-soft)';
+          setTimeout(function () { el.style.background = ''; }, 900);
+        }
+        return;
+      }
+      if (ev.target === bk) bk.classList.add('hidden');
+    });
+  })();
+  function buildActivityItems() {
+    var items = [];
+    feedState.filter(function (p) { return p.mine; }).forEach(function (p) {
+      (p.comments || []).forEach(function (c) {
+        items.push({ author: c.author_name || c.author, text: c.text, created_at: c.created_at, post_id: p.id });
+      });
+    });
+    items.sort(function (a, b) { return new Date(b.created_at) - new Date(a.created_at); });
+    return items.slice(0, 20);
+  }
+  function updateNotifDot() {
+    var has = buildActivityItems().length > 0;
+    var d1 = $('activity-dot'); if (d1) d1.classList.toggle('hidden', !has);
+    var d2 = $('nav-bell-dot'); if (d2) d2.classList.toggle('hidden', !has);
+  }
+  function openActivity() {
+    var items = buildActivityItems();
+    var list = $('activity-list'); if (!list) return;
+    list.innerHTML = items.length ? items.map(function (it) {
+      return '<div class="activity-item js-activity-jump" data-post="' + esc(it.post_id) + '">' +
+        '<div class="avatar">' + esc(initials(it.author)) + '</div>' +
+        '<div><p><b>' + esc(it.author) + '</b> mengomentari postinganmu: "' + esc(it.text) + '"</p><time>' + esc(relTime(it.created_at)) + '</time></div></div>';
+    }).join('') : '<div class="activity-empty">Belum ada aktivitas baru di postinganmu.</div>';
+    $('activity-backdrop').classList.remove('hidden');
+  }
+  function ensureActivity() {
+    if (feedState.length) { openActivity(); return; }
+    loadFeed(50).then(function (f) { if (f !== null) openActivity(); });
+  }
+  var bellLink = document.querySelector('.js-nav-notif');
+  if (bellLink) bellLink.addEventListener('click', function (ev) { ev.preventDefault(); ensureActivity(); });
 
   /* ===== HALAMAN BERANDA ===== */
   if (page === 'home') {
@@ -254,7 +316,7 @@
     });
     $('btn-refresh').addEventListener('click', function () { loadFeed().then(applyHomeRender); toast('Linimasa disegarkan'); });
 
-    function applyHomeRender() { applyFilter(); renderTrendsSide(); renderStories(); renderActivityDot(); }
+    function applyHomeRender() { applyFilter(); renderTrendsSide(); renderStories(); updateNotifDot(); }
 
     loadFeed().then(function (f) {
       if (f === null) { $('feed').innerHTML = '<div class="empty"><div class="big">📡</div><h3>Gagal memuat</h3><p>Coba segarkan lagi.</p></div>'; return; }
@@ -268,41 +330,8 @@
       else { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     });
 
-    // Aktivitas (ikon hati) — komentar terbaru di postingan milikku, dari data feed yang sudah dimuat
-    function buildActivityItems() {
-      var items = [];
-      feedState.filter(function (p) { return p.mine; }).forEach(function (p) {
-        (p.comments || []).forEach(function (c) {
-          items.push({ author: c.author_name || c.author, text: c.text, created_at: c.created_at, post_id: p.id });
-        });
-      });
-      items.sort(function (a, b) { return new Date(b.created_at) - new Date(a.created_at); });
-      return items.slice(0, 20);
-    }
-    function renderActivityDot() {
-      var dot = $('activity-dot'); if (!dot) return;
-      dot.classList.toggle('hidden', buildActivityItems().length === 0);
-    }
-    function openActivity() {
-      var items = buildActivityItems();
-      $('activity-list').innerHTML = items.length ? items.map(function (it) {
-        return '<div class="activity-item js-activity-jump" data-post="' + esc(it.post_id) + '">' +
-          '<div class="avatar">' + esc(initials(it.author)) + '</div>' +
-          '<div><p><b>' + esc(it.author) + '</b> mengomentari postinganmu: "' + esc(it.text) + '"</p><time>' + esc(relTime(it.created_at)) + '</time></div></div>';
-      }).join('') : '<div class="activity-empty">Belum ada aktivitas baru di postinganmu.</div>';
-      $('activity-backdrop').classList.remove('hidden');
-    }
-    $('btn-activity').addEventListener('click', openActivity);
-    $('activity-backdrop').addEventListener('click', function (ev) {
-      var jump = ev.target.closest('.js-activity-jump');
-      if (jump) {
-        var el = document.querySelector('.post[data-id="' + jump.getAttribute('data-post') + '"]');
-        $('activity-backdrop').classList.add('hidden');
-        if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.style.transition = 'background .3s'; el.style.background = 'var(--bg-soft)'; setTimeout(function () { el.style.background = ''; }, 900); }
-        return;
-      }
-      if (ev.target === $('activity-backdrop')) $('activity-backdrop').classList.add('hidden');
-    });
+    var hdrHeart = $('btn-activity');
+    if (hdrHeart) hdrHeart.addEventListener('click', ensureActivity);
 
     /* Interaksi like/komentar/gambar/tag */
     var busy = false;
