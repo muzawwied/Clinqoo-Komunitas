@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pengaturan & Privasi — Komunitas Clincoo</title>
+    <meta name="description" content="Pengaturan notifikasi, data, dan privasi Komunitas Clincoo.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+</head>
+<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
+        <div class="flex justify-between items-center max-w-2xl mx-auto">
+            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
+                <i class="ph ph-arrow-left text-xl"></i><span>Beranda</span>
+            </a>
+            <span class="text-[13px] font-semibold text-gray-400">Pengaturan</span>
+        </div>
+    </header>
+    <main class="max-w-2xl mx-auto pt-16 pb-32">
+        <div class="px-4 py-4">
+            <h1 class="text-xl font-bold text-gray-900">Pengaturan & Privasi</h1>
+            <p class="text-[13px] text-gray-500">Atur notifikasi dan data kamu.</p>
+        </div>
+        <!-- Notifikasi -->
+        <div class="bg-white mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-1 flex items-center space-x-1.5"><i class="ph ph-bell text-base text-gray-500"></i><span>Notifikasi</span></h3>
+            <p class="text-[12px] text-gray-400 mb-3">Pilih interaksi yang muncul di lonceng notifikasi beranda.</p>
+            <div id="prefs" class="divide-y divide-gray-50"></div>
+        </div>
+        <!-- Data -->
+        <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-database text-base text-gray-500"></i><span>Data kamu</span></h3>
+            <button onclick="clrDraft()" class="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 rounded-xl transition text-left">
+                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><i class="ph ph-note-pencil text-lg text-gray-500"></i><span>Hapus draf postingan</span></span>
+                <i class="ph ph-caret-right text-gray-300"></i>
+            </button>
+            <button onclick="clrSaved()" class="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 rounded-xl transition text-left">
+                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><i class="ph ph-bookmark-simple text-lg text-gray-500"></i><span>Hapus semua Tersimpan</span></span>
+                <i class="ph ph-caret-right text-gray-300"></i>
+            </button>
+            <button onclick="clrSearch()" class="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 rounded-xl transition text-left">
+                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><i class="ph ph-magnifying-glass text-lg text-gray-500"></i><span>Hapus riwayat pencarian</span></span>
+                <i class="ph ph-caret-right text-gray-300"></i>
+            </button>
+        </div>
+        <!-- Sesi -->
+        <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-shield-check text-base text-gray-500"></i><span>Sesi & keamanan</span></h3>
+            <button onclick="logoutNow()" class="w-full bg-red-50 text-red-600 font-bold text-[14px] rounded-xl py-3 hover:bg-red-100 transition-colors">Keluar dari akun ini</button>
+            <p class="text-[11px] text-gray-400 mt-2 leading-relaxed">Keluar akan menghapus sesi login di perangkat ini. Foto, postingan, dan profilmu tetap tersimpan di akunmu.</p>
+        </div>
+        <p class="text-center text-[11px] text-gray-400 mt-6">Komunitas Clincoo v1.0 · <a href="bantuan.html" class="text-blue-500 font-semibold">Pusat Bantuan</a></p>
+    </main>
+    <script>
+        var PREF_LABELS = {
+            like: { icon: 'ph-heart', label: 'Suka di postinganmu', desc: 'Saat orang lain menyukai postinganmu' },
+            comment: { icon: 'ph-chat-circle', label: 'Komentar baru', desc: 'Saat orang lain membalas postinganmu' },
+            mention: { icon: 'ph-at', label: 'Penyebutan & tag', desc: 'Saat kamu atau tagmu disebut di postingan' }
+        };
+        function loadPrefs() { try { return JSON.parse(localStorage.getItem('clincoo_prefs') || '{}'); } catch (e) { return {}; } }
+        function savePrefs(p) { try { localStorage.setItem('clincoo_prefs', JSON.stringify(p)); } catch (e) {} }
+        function init() {
+            var p = loadPrefs();
+            ['like', 'comment', 'mention'].forEach(function (k) {
+                if (p[k] === undefined) p[k] = true;
+            });
+            var box = document.getElementById('prefs');
+            box.innerHTML = Object.keys(PREF_LABELS).map(function (k) {
+                var m = PREF_LABELS[k];
+                var on = !!p[k];
+                return '<div class="flex items-center justify-between py-3">'
+                    + '<span class="flex items-center space-x-3"><span class="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center"><i class="ph ' + m.icon + ' text-lg text-gray-600"></i></span>'
+                    + '<span><span class="block text-[14px] font-medium text-gray-800">' + m.label + '</span><span class="block text-[12px] text-gray-400">' + m.desc + '</span></span></span>'
+                    + '<button onclick="togglePref(\'' + k + '\')" data-key="' + k + '" class="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ' + (on ? 'bg-blue-500' : 'bg-gray-200') + '">'
+                    + '<span class="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ' + (on ? 'right-0.5' : 'left-0.5') + '"></span></button>'
+                    + '</div>';
+            }).join('');
+            savePrefs(p);
+        }
+        function togglePref(k) {
+            var p = loadPrefs();
+            p[k] = !p[k];
+            savePrefs(p);
+            init();
+            toast(PREF_LABELS[k].label + (p[k] ? ' diaktifkan' : ' dimatikan'));
+        }
+        function clrDraft() { try { localStorage.removeItem('clincoo_draft'); } catch (e) {} toast('Draf postingan dihapus'); }
+        function clrSaved() {
+            if (!confirm('Hapus semua postingan tersimpan? Tindakan ini tidak bisa dibatalkan.')) return;
+            try { localStorage.setItem('clincoo_saved', '[]'); } catch (e) {}
+            toast('Semua Tersimpan dihapus');
+        }
+        function clrSearch() { try { localStorage.removeItem('clincoo_last_search'); } catch (e) {} toast('Riwayat pencarian dihapus'); }
+    </script>
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function api(path, opts) {
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
+            var t = document.getElementById('toast');
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+        function guard() { if (!token()) { location.replace('login.html'); return false; } return true; }
+        function logoutNow() {
+            api('/auth/logout', { method: 'POST' }).catch(function () {});
+            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            location.replace('login.html');
+        }
+        window.onload = function () { if (guard()) init(); };
+    </script>
+</body>
+</html>

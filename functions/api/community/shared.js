@@ -29,8 +29,28 @@ export async function initCommunityTables(db) {
   await db.prepare(`CREATE TABLE IF NOT EXISTS community_profiles (
     user_id INTEGER PRIMARY KEY,
     bio TEXT NOT NULL DEFAULT '',
+    link TEXT NOT NULL DEFAULT '',
     updated_at TEXT DEFAULT (datetime('now'))
   )`).run();
+  await migrateLegacy(db);
+}
+
+// Migrasi data lama: tabel komunitas bisa dibuat versi sebelumnya tanpa kolom
+// 'author' (nama disimpan lewat auth_users) dan user_id bertipe teks "61.0".
+async function migrateLegacy(db) {
+  const alter = async (sql) => { try { await db.prepare(sql).run(); } catch (e) { /* kolom sudah ada */ } };
+  await alter('ALTER TABLE community_posts ADD COLUMN author TEXT');
+  await alter('ALTER TABLE community_comments ADD COLUMN author TEXT');
+  await alter('ALTER TABLE community_profiles ADD COLUMN link TEXT NOT NULL DEFAULT \'\'');
+  // isi nama penulis untuk baris lama yang kosong
+  try {
+    await db.prepare(`UPDATE community_posts SET author = COALESCE(
+      (SELECT name FROM auth_users WHERE auth_users.id = CAST(community_posts.user_id AS INTEGER)), 'Pengguna')
+      WHERE author IS NULL OR author = ''`).run();
+    await db.prepare(`UPDATE community_comments SET author = COALESCE(
+      (SELECT name FROM auth_users WHERE auth_users.id = CAST(community_comments.user_id AS INTEGER)), 'Pengguna')
+      WHERE author IS NULL OR author = ''`).run();
+  } catch (e) { /* tabel auth_users mungkin belum siap */ }
 }
 
 export function newPostId() { return randomHex(12); }
@@ -79,8 +99,27 @@ export async function hydratePosts(db, rows, meId) {
   cmtRows.forEach(function (c) {
     (cmtsBy[c.post_id] = cmtsBy[c.post_id] || []).push(shapeComment(c));
   });
+  const uids = [];
+  rows.forEach(function (r) { const u = parseInt(r.user_id, 10); if (u && uids.indexOf(u) === -1) uids.push(u); });
+  let avaBy = {}, linkBy = {}, bioBy = {};
+  if (uids.length) {
+    const ph = uids.map(function () { return '?'; }).join(',');
+    try {
+      const au = (await db.prepare(`SELECT id, avatar_url FROM auth_users WHERE id IN (${ph})`).bind(...uids).all()).results || [];
+      au.forEach(function (u) { if (u.avatar_url) avaBy[u.id] = u.avatar_url; });
+    } catch (e) {}
+    try {
+      const pr = (await db.prepare(`SELECT user_id, bio, link FROM community_profiles WHERE user_id IN (${ph})`).bind(...uids).all()).results || [];
+      pr.forEach(function (p) { if (p.link) linkBy[parseInt(p.user_id, 10)] = p.link; if (p.bio) bioBy[parseInt(p.user_id, 10)] = p.bio; });
+    } catch (e) {}
+  }
   return rows.map(function (r) {
-    return shapePost(r, meId, likesBy[r.id] || 0, !!likedBy[r.id], cmtsBy[r.id] || []);
+    const post = shapePost(r, meId, likesBy[r.id] || 0, !!likedBy[r.id], cmtsBy[r.id] || []);
+    const uid = parseInt(r.user_id, 10);
+    post.author_avatar = avaBy[uid] || '';
+    post.author_link = linkBy[uid] || '';
+    post.author_bio = bioBy[uid] || '';
+    return post;
   });
 }
 

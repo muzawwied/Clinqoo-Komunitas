@@ -1,69 +1,168 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <script>try{var t=localStorage.getItem('clincoo_community_theme');document.documentElement.classList.toggle('dark-mode', t?t==='dark':true);}catch(e){document.documentElement.classList.add('dark-mode');}</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil — Komunitas Clincoo</title>
-  <meta name="description" content="Profil dan postinganmu di Komunitas Clincoo.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profil — Komunitas Clincoo</title>
+    <meta name="description" content="Profil anggota Komunitas Clincoo.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
 </head>
-<body data-page="profil">
-
-  <header>
-    <div class="hd-inner">
-      <a class="brand" href="./" aria-label="Komunitas Clincoo — Beranda">
-        <img src="assets/favicon.svg" alt="Logo Clincoo">
-        <b>Clincoo</b>
-      </a>
-    </div>
-  </header>
-
-  <div class="wrap">
-    <main>
-      <div class="prof-head card">
-        <div class="avatar avatar-xl" id="prof-avatar">A</div>
-        <div class="prof-info">
-          <b id="prof-name">…</b>
-          <span>Akun Clincoo</span>
-          <p id="prof-bio" class="prof-bio hidden"></p>
-          <div class="prof-stats">
-            <div><b id="stat-posts">0</b><span>postingan</span></div>
-            <div><b id="stat-likes">0</b><span>like diterima</span></div>
-          </div>
+<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
+        <div class="flex justify-between items-center max-w-2xl mx-auto">
+            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
+                <i class="ph ph-arrow-left text-xl"></i><span>Beranda</span>
+            </a>
+            <span id="pf-name-sm" class="text-[13px] font-semibold text-gray-400 truncate max-w-[45%]">Profil</span>
         </div>
-      </div>
+    </header>
 
-      <div class="prof-menu card">
-        <button class="sheet-btn" id="btn-edit">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
-          Edit profil
-        </button>
-        <button class="sheet-btn" id="btn-theme">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <span id="theme-label">Mode terang</span>
-        </button>
-        <button class="sheet-btn sheet-btn--danger" id="btn-logout">
-          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
-          Keluar
-        </button>
-      </div>
-
-      <div class="feed-head" style="margin-top:20px;"><h2>Postinganku</h2></div>
-      <div id="my-feed">
-        <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div></div>
-      </div>
+    <main class="max-w-2xl mx-auto pt-14 pb-32">
+        <div id="pf-loading" class="flex flex-col items-center justify-center py-20 text-gray-400">
+            <i class="ph ph-circle-notch text-3xl animate-spin"></i>
+            <p class="text-[13px] mt-2">Memuat profil…</p>
+        </div>
+        <div id="pf-body" class="hidden">
+            <!-- Kartu kepala -->
+            <div class="bg-white border-b border-gray-100 px-4 pb-5 pt-5">
+                <div class="flex items-center space-x-4">
+                    <div id="pf-ava-ring" class="w-[76px] h-[76px] rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[3px] flex-shrink-0">
+                        <div class="w-full h-full bg-white rounded-full border-2 border-white overflow-hidden">
+                            <div id="pf-ava-wrap" class="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                                <span id="pf-initial" class="text-2xl font-bold text-white">?</span>
+                                <img id="pf-img" src="" alt="Foto" class="w-full h-full object-cover hidden">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <h1 id="pf-name" class="text-lg font-bold text-gray-900 truncate">…</h1>
+                        <p id="pf-handle" class="text-[13px] text-gray-500">@…</p>
+                    </div>
+                </div>
+                <p id="pf-bio" class="text-[14px] text-gray-700 mt-3 leading-relaxed whitespace-pre-wrap"></p>
+                <a id="pf-link" href="#" class="hidden text-[14px] font-semibold text-blue-600 hover:underline mt-1 inline-flex items-center space-x-1 truncate max-w-full"><i class="ph ph-link"></i><span id="pf-link-txt"></span></a>
+            </div>
+            <!-- Statistik -->
+            <div class="grid grid-cols-3 gap-2 px-4 py-4">
+                <div class="bg-white rounded-2xl border border-gray-100 p-3 text-center shadow-sm">
+                    <p id="pf-posts" class="text-lg font-bold text-gray-900">0</p>
+                    <p class="text-[11px] text-gray-500">Postingan</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 p-3 text-center shadow-sm">
+                    <p id="pf-likes" class="text-lg font-bold text-gray-900">0</p>
+                    <p class="text-[11px] text-gray-500">Suka diterima</p>
+                </div>
+                <div class="bg-white rounded-2xl border border-gray-100 p-3 text-center shadow-sm">
+                    <p id="pf-cmts" class="text-lg font-bold text-gray-900">0</p>
+                    <p class="text-[11px] text-gray-500">Komentar diterima</p>
+                </div>
+            </div>
+            <!-- Postingan -->
+            <h3 class="px-4 pb-2 text-[13px] font-semibold text-gray-600">Postingan</h3>
+            <div id="pf-list" class="px-4 space-y-3"></div>
+        </div>
+        <div id="pf-empty" class="hidden flex-col items-center justify-center py-16 px-4 text-center">
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"><i class="ph ph-user-slash text-3xl text-gray-400"></i></div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">Profil tidak ditemukan</h3>
+            <p class="text-[14px] text-gray-500 max-w-[260px]">Anggota ini belum pernah posting di komunitas.</p>
+        </div>
     </main>
-  </div>
 
-  <footer class="site">Komunitas resmi <b>Clincoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
-  <div id="bottom-nav"></div>
-  <div class="toast" id="toast"></div>
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function api(path, opts) {
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) { return; /* toast dimatikan sesuai permintaan */ }
+        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+        function relTime(iso) {
+            var d = new Date(iso), now = new Date();
+            var s = Math.floor((now - d) / 1000);
+            if (isNaN(s)) return '';
+            if (s < 60) return 'baru saja';
+            if (s < 3600) return Math.floor(s / 60) + 'm';
+            if (s < 86400) return Math.floor(s / 3600) + 'j';
+            if (s < 604800) return Math.floor(s / 86400) + 'h';
+            return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+        }
 
-  <script src="assets/js/app.js?v=9"></script>
+        function init() {
+            if (!token()) { location.replace('login.html'); return; }
+            var uidRaw = new URLSearchParams(location.search).get('uid');
+            if (uidRaw === 'me' || !uidRaw) { renderMe(); return; }
+            var uid = parseInt(uidRaw, 10);
+            if (!uid) { location.replace('index.html'); return; }
+            api('/community?limit=100').then(function (d) {
+                if (d && d._status === 401) { location.replace('login.html'); return; }
+                if (!d || !d.feed) { showEmpty(); return; }
+                var theirs = d.feed.filter(function (p) { return parseInt(p.user_id, 10) === uid; });
+                if (!theirs.length) { showEmpty(); return; }
+                var first = theirs[0];
+                document.getElementById('pf-loading').classList.add('hidden');
+                document.getElementById('pf-body').classList.remove('hidden');
+                document.getElementById('pf-name').textContent = first.author || 'Pengguna';
+                document.getElementById('pf-name-sm').textContent = first.author || 'Profil';
+                document.getElementById('pf-handle').textContent = slugOf(first.author);
+                var ini = document.getElementById('pf-initial');
+                ini.textContent = (first.author || 'U').charAt(0).toUpperCase();
+                if (first.author_avatar) {
+                    document.getElementById('pf-img').src = first.author_avatar;
+                    document.getElementById('pf-img').classList.remove('hidden');
+                    ini.classList.add('hidden');
+                }
+                if (first.author_bio) document.getElementById('pf-bio').textContent = first.author_bio;
+                if (first.author_link) {
+                    var lk = document.getElementById('pf-link');
+                    document.getElementById('pf-link-txt').textContent = first.author_link.replace(/^https?:\/\//, '').replace(/^www\./, '');
+                    lk.href = first.author_link.indexOf('http') === 0 ? first.author_link : 'https://' + first.author_link;
+                    lk.classList.remove('hidden');
+                }
+                var likes = theirs.reduce(function (a, p) { return a + (p.likes || 0); }, 0);
+                var cmts = theirs.reduce(function (a, p) { return a + (p.comment_count || 0); }, 0);
+                document.getElementById('pf-posts').textContent = theirs.length;
+                document.getElementById('pf-likes').textContent = likes;
+                document.getElementById('pf-cmts').textContent = cmts;
+                document.getElementById('pf-list').innerHTML = theirs.map(function (p) {
+                    var txt = esc(p.text);
+                    txt = txt.replace(/#[\w]+/g, function (t) { return '<span class="text-blue-600">' + t + '</span>'; });
+                    return '<div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">'
+                        + '<p class="text-[12px] text-gray-400 mb-1.5">' + esc(relTime(p.created_at)) + '</p>'
+                        + (p.image ? '<img src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 max-h-72 w-full object-cover" alt="">' : '')
+                        + '<p class="text-[14px] text-gray-800 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
+                        + '<div class="flex items-center space-x-4 mt-2.5 text-[12px] text-gray-500">'
+                        + '<span class="flex items-center space-x-1"><i class="ph ph-heart text-sm"></i>' + (p.likes || 0) + '</span>'
+                        + '<span class="flex items-center space-x-1"><i class="ph ph-chat-circle text-sm"></i>' + (p.comment_count || 0) + '</span>'
+                        + '</div></div>';
+                }).join('');
+            }).catch(function () { showEmpty(); });
+        }
+        function showEmpty() {
+            document.getElementById('pf-loading').classList.add('hidden');
+            var e = document.getElementById('pf-empty');
+            e.classList.remove('hidden'); e.classList.add('flex');
+        }
+        function renderMe() {
+            // uid=me → halaman profil sendiri di aplikasi utama
+            api('/auth/me').then(function (d) {
+                if (d && d.user) {
+                    document.getElementById('pf-loading').classList.add('hidden');
+                    document.getElementById('pf-empty').classList.add('hidden');
+                    var e = document.getElementById('pf-empty'); e.classList.add('hidden');
+                    location.replace('index.html');
+                } else { location.replace('login.html'); }
+            }).catch(function () { location.replace('index.html'); });
+        }
+        window.onload = init;
+    </script>
 </body>
 </html>

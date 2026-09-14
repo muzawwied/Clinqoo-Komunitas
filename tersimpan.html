@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tersimpan — Komunitas Clincoo</title>
+    <meta name="description" content="Postingan yang kamu simpan di Komunitas Clincoo.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+</head>
+<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
+        <div class="flex justify-between items-center max-w-2xl mx-auto">
+            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
+                <i class="ph ph-arrow-left text-xl"></i><span>Beranda</span>
+            </a>
+            <span class="text-[13px] font-semibold text-gray-400">Tersimpan</span>
+        </div>
+    </header>
+    <main class="max-w-2xl mx-auto pt-16 pb-32">
+        <div class="flex items-center justify-between px-4 py-4">
+            <div>
+                <h1 class="text-xl font-bold text-gray-900">Tersimpan</h1>
+                <p id="sv-count" class="text-[13px] text-gray-500">Memuat…</p>
+            </div>
+            <i class="ph ph-bookmark-simple text-2xl text-gray-300"></i>
+        </div>
+        <div id="sv-list" class="px-4 space-y-3"></div>
+    </main>
+    <script>
+        function loadSaved() { try { return JSON.parse(localStorage.getItem('clincoo_saved') || '[]'); } catch (e) { return []; } }
+        function init() {
+            var saved = loadSaved();
+            var list = document.getElementById('sv-list');
+            document.getElementById('sv-count').textContent = saved.length + ' postingan tersimpan';
+            if (!saved.length) {
+                list.innerHTML = '<div class="flex flex-col items-center justify-center py-16 px-4 text-center bg-white rounded-2xl border border-gray-100 mt-2"><div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><i class="ph ph-bookmark-simple text-3xl text-gray-400"></i></div><h3 class="text-lg font-bold text-gray-900 mb-1">Belum ada yang disimpan</h3><p class="text-[14px] text-gray-500 max-w-[260px]">Tap ikon bookmark 🔖 di postingan untuk menyimpannya di sini.</p></div>';
+                return;
+            }
+            api('/community?limit=100').then(function (d) {
+                var fresh = {};
+                (d.feed || []).forEach(function (p) { fresh[p.id] = p; });
+                list.innerHTML = saved.map(function (sv) {
+                    var p = fresh[sv.id] || sv;
+                    var photo = p.photo || p.author_avatar || '';
+                    var ava = photo
+                        ? '<img src="' + esc(photo) + '" class="w-full h-full object-cover" alt="">'
+                        : esc((p.author || 'U').charAt(0));
+                    var txt = esc(p.content || p.text || '');
+                    txt = txt.replace(/#[\w]+/g, function (t) { return '<span class="text-blue-600">' + t + '</span>'; });
+                    return '<div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">'
+                        + '<div class="flex items-start space-x-3">'
+                        + '<div class="w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center font-bold text-white text-xs overflow-hidden">' + ava + '</div>'
+                        + '<div class="flex-1 min-w-0">'
+                        + '<p class="font-bold text-[14px] text-gray-900">' + esc(p.author || sv.author) + ' <span class="text-gray-400 font-normal text-[12px]">· ' + esc(p.time || sv.time || '') + '</span></p>'
+                        + (p.image ? '<img src="' + esc(p.image) + '" class="mt-2 rounded-xl border border-gray-100 max-h-64 w-full object-cover" alt="">' : '')
+                        + '<p class="text-[14px] text-gray-700 mt-1 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
+                        + '<div class="flex items-center space-x-4 mt-2 text-[12px] text-gray-500">'
+                        + '<span class="flex items-center space-x-1"><i class="ph ph-heart text-sm"></i>' + (p.likes || 0) + '</span>'
+                        + '<span class="flex items-center space-x-1"><i class="ph ph-chat-circle text-sm"></i>' + (p.comment_count || 0) + '</span>'
+                        + '</div></div>'
+                        + '<button onclick="unsave(\'' + esc(sv.id) + '\')" class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"><i class="ph ph-trash text-lg"></i></button>'
+                        + '</div></div>';
+                }).join('');
+            }).catch(function () { toast('Koneksi bermasalah — menampilkan salinan tersimpan'); });
+        }
+        function unsave(id) {
+            var saved = loadSaved().filter(function (x) { return x.id !== id; });
+            try { localStorage.setItem('clincoo_saved', JSON.stringify(saved)); } catch (e) {}
+            toast('Dihapus dari Tersimpan');
+            init();
+        }
+    </script>
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function api(path, opts) {
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
+            var t = document.getElementById('toast');
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+        function guard() { if (!token()) { location.replace('login.html'); return false; } return true; }
+        function logoutNow() {
+            api('/auth/logout', { method: 'POST' }).catch(function () {});
+            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            location.replace('login.html');
+        }
+        window.onload = function () { if (guard()) init(); };
+    </script>
+</body>
+</html>

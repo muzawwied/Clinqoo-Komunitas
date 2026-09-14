@@ -222,13 +222,13 @@
             <div class="flex justify-between items-end mb-3">
                 <div class="w-[90px] h-[90px] bg-white p-1 rounded-full shadow-sm relative cursor-pointer group">
                     <div class="w-full h-full rounded-full flex items-center justify-center overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600">
+                         <img id="me-avatar-img" src="" alt="Foto" class="w-full h-full object-cover hidden">
                          <span id="me-avatar-big" class="text-3xl font-bold text-white group-hover:scale-110 transition-transform">D</span>
                     </div>
                     <div class="absolute bottom-1 right-1 bg-green-500 w-4 h-4 rounded-full border-2 border-white shadow-sm" title="Online"></div>
                 </div>
                 <div class="flex space-x-2 mb-1">
-                    <button class="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-900 hover:bg-gray-50 transition-colors shadow-sm"><i class="ph ph-envelope-simple text-lg"></i></button>
-                    <button onclick="openEditProfile()" class="border border-gray-300 text-gray-900 px-4 py-1.5 rounded-full text-[13px] font-bold shadow-sm hover:bg-gray-50 transition-colors">Edit profil</button>
+                    <a href="edit-profil.html" class="border border-gray-300 text-gray-900 px-4 py-1.5 rounded-full text-[13px] font-bold shadow-sm hover:bg-gray-50 transition-colors">Edit profil</a>
                 </div>
             </div>
             
@@ -259,7 +259,7 @@
                 <p id="me-bio" class="text-[15px] text-gray-800 mt-3 leading-relaxed"></p>
                 <div class="flex items-center space-x-1.5 mt-2 text-blue-600 text-[14px] font-semibold hover:underline w-fit">
                     <i class="ph ph-link"></i>
-                    <a href="#">github.com/dev</a>
+                    <a id="me-link" href="#">—</a>
                 </div>
             </div>
         </div>
@@ -379,23 +379,23 @@
         </div>
         <div class="flex-1 overflow-y-auto">
             <div class="">
-                <a href="#" onclick="closeSidebar(); switchTab(event, 'profile-view', document.querySelector('[data-icon=\'user\']'))" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
+                <a href="akun.html" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
                     <i class="ph ph-user text-xl"></i>
                     <span>Akun Anda</span>
                 </a>
-                <a href="#" onclick="closeSidebar(); openSavedSheet()" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
+                <a href="tersimpan.html" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
                     <i class="ph ph-bookmark-simple text-xl"></i>
                     <span>Tersimpan</span>
                 </a>
-                <a href="#" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
+                <a href="analitik.html" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
                     <i class="ph ph-chart-bar text-xl"></i>
                     <span>Analitik Kreator</span>
                 </a>
-                <a href="#" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
+                <a href="pengaturan.html" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
                     <i class="ph ph-gear text-xl"></i>
                     <span>Pengaturan & Privasi</span>
                 </a>
-                <a href="#" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
+                <a href="bantuan.html" class="flex items-center space-x-3 text-gray-700 hover:bg-gray-50 p-3 rounded-xl transition-colors font-medium">
                     <i class="ph ph-question text-xl"></i>
                     <span>Pusat Bantuan</span>
                 </a>
@@ -423,20 +423,6 @@
             <input id="comment-input" type="text" maxlength="300" placeholder="Tulis komentar…" class="flex-1 bg-gray-100 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20">
             <button onclick="sendComment()" class="bg-gray-900 text-white rounded-full px-4 py-2 text-sm font-bold hover:bg-gray-800 transition-colors">Kirim</button>
         </div>
-    </div>
-
-    <!-- Modal edit profil (gaya VibeSpace) -->
-    <div id="edit-backdrop" class="fixed inset-0 bg-black/50 z-[60] hidden" onclick="closeEditProfile()"></div>
-    <div id="edit-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl z-[70] hidden w-[92%] max-w-md p-5 shadow-2xl">
-        <div class="flex justify-between items-center mb-4">
-            <h3 class="font-bold text-lg text-gray-900">Edit profil</h3>
-            <button onclick="closeEditProfile()" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 text-gray-800 transition-colors"><i class="ph ph-x text-lg"></i></button>
-        </div>
-        <label class="block text-[13px] font-semibold text-gray-600 mb-1">Nama</label>
-        <input id="edit-name" type="text" maxlength="40" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
-        <label class="block text-[13px] font-semibold text-gray-600 mb-1">Bio</label>
-        <textarea id="edit-bio" maxlength="200" rows="3" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3 py-2.5 text-sm mb-4 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20" placeholder="Kenalkan dirimu singkat…"></textarea>
-        <button onclick="saveProfile()" id="edit-save" class="w-full bg-gray-900 text-white rounded-full py-2.5 font-bold text-sm hover:bg-gray-800 transition-colors">Simpan</button>
     </div>
 
     <!-- Sheet Tersimpan (gaya VibeSpace) -->
@@ -506,11 +492,15 @@
         }
 
         var AVA = ['from-pink-400 to-rose-400', 'from-indigo-400 to-blue-500', 'from-green-400 to-emerald-500', 'from-yellow-400 to-orange-500', 'from-cyan-400 to-blue-500', 'from-purple-400 to-fuchsia-500', 'from-red-400 to-pink-500'];
-        var posts = [], me = { name: meData().name || 'Saya', bio: meData().bio || '' }, notifs = [], seenNotifs = {};
+        var posts = [], me = { name: meData().name || 'Saya', bio: meData().bio || '', link: meData().link || '', avatar: meData().avatar || '' }, notifs = [], seenNotifs = {};
         var isAttachmentAdded = false, attachDataUrl = '', activeCommentPost = null, searchTimer = null, filterAuthor = null, savedPosts = loadSaved();
         function loadSaved() { try { return JSON.parse(localStorage.getItem('clincoo_saved') || '[]'); } catch (e) { return []; } }
         function persistSaved() { try { localStorage.setItem('clincoo_saved', JSON.stringify(savedPosts)); } catch (e) {} }
 
+        function avaInner(name, photo, size) {
+            if (photo) return '<img src="' + photo + '" class="w-full h-full object-cover" alt="' + esc((name||'U').charAt(0)) + '">';
+            return esc((name || 'U').charAt(0));
+        }
         function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
         function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
         function relTime(iso) {
@@ -524,7 +514,7 @@
             if (dd < 30) return dd + ' hari';
             return new Date(iso).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
         }
-        function toast(msg) {
+        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
             var t = document.getElementById('toast');
             t.textContent = msg; t.classList.remove('opacity-0');
             clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
@@ -540,10 +530,14 @@
                 if (requireLogin(d)) return;
                 if (!d.feed) { toast('Koneksi bermasalah'); return; }
                 if (d.me && d.me.name) me.name = d.me.name;
+                if (d.me) { me.id = d.me.id; me.avatar = d.me.avatar_url || ''; me.bio = d.me.bio || ''; me.link = d.me.link || ''; }
                 posts = d.feed.map(function (p) {
                     return {
-                        id: p.id, author: p.author, handle: slugOf(p.author), uid: p.user_id,
+                        id: p.id, author: p.author || 'Pengguna', handle: slugOf(p.author), uid: p.user_id,
                         avatar: AVA[p.user_id % AVA.length],
+                        photo: p.author_avatar || '',
+                        authorBio: p.author_bio || '',
+                        authorLink: p.author_link || '',
                         time: relTime(p.created_at), content: p.text,
                         image: p.image || false, likes: p.likes || 0,
                         comments: p.comment_count || 0, cmts: p.comments || [],
@@ -564,8 +558,8 @@
                 var safeName = esc(p.author).replace(/'/g, '');
                 html += '<div onclick="filterByAuthor(' + p.uid + ', \'' + safeName + '\')" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer hover:opacity-80 transition">'
                     + '<div class="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[2px]">'
-                    + '<div class="w-full h-full bg-white rounded-full border-2 border-white flex items-center justify-center overflow-hidden bg-gradient-to-br ' + p.avatar + '">'
-                    + '<span class="text-white font-bold text-lg">' + esc(p.author.charAt(0)) + '</span></div></div>'
+                    + '<div class="w-full h-full bg-white rounded-full border-2 border-white flex items-center justify-center overflow-hidden bg-gradient-to-br ' + p.avatar + ' text-white font-bold text-lg">'
+                    + avaInner(p.author, p.photo) + '</div></div>'
                     + '<span class="text-[11px] text-gray-700 font-medium">' + esc(p.author.split(' ')[0]) + '</span></div>';
             });
             container.innerHTML = html;
@@ -601,13 +595,13 @@
                     <div class="bg-white p-4 pt-5 border-b border-gray-100" id="post-${post.id}">
                         <div class="flex space-x-3">
                             <div class="w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br ${post.avatar} p-0.5 cursor-pointer hover:opacity-80 transition">
-                                <div class="w-full h-full bg-white rounded-full border border-white flex items-center justify-center font-bold text-white text-xs">
-                                    ${esc(post.author.charAt(0))}
+                                <div class="w-full h-full bg-white rounded-full border border-white flex items-center justify-center font-bold text-white text-xs overflow-hidden">
+                                    ${avaInner(post.author, post.photo)}
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex justify-between items-start">
-                                    <div class="cursor-pointer hover:underline">
+                                    <div class="cursor-pointer hover:underline" onclick="location.href='profil.html?uid=${post.uid}'">
                                         <h3 class="font-bold text-sm text-gray-900 truncate">${esc(post.author)}</h3>
                                         <p class="text-[13px] text-gray-500">${esc(post.handle)} · ${esc(post.time)}</p>
                                     </div>
@@ -745,7 +739,7 @@
             var kl = document.getElementById('kreator-tab-list');
             if (kl) {
                 kl.innerHTML = people.slice(0, 6).map(function (u) {
-                    return '<div class="flex justify-between items-center cursor-pointer"><div class="flex items-center space-x-3"><div class="w-11 h-11 bg-gradient-to-br ' + AVA[u.uid % AVA.length] + ' rounded-full flex items-center justify-center text-white font-bold shadow-sm">' + esc(u.name.charAt(0)) + '</div><div><h3 class="font-bold text-gray-900 text-[14px]">' + esc(u.name) + '</h3><p class="text-[13px] text-gray-500">' + esc(slugOf(u.name)) + ' · ' + u.n + ' postingan</p></div></div><div class="flex space-x-2"><button onclick="filterByAuthor(' + u.uid + ')" class="px-4 py-1.5 bg-gray-900 text-white text-[13px] font-bold rounded-full hover:bg-gray-800 transition shadow-sm">Lihat</button></div></div>';
+                    return '<div class="flex justify-between items-center cursor-pointer"><div class="flex items-center space-x-3"><div class="w-11 h-11 bg-gradient-to-br ' + AVA[u.uid % AVA.length] + ' rounded-full flex items-center justify-center text-white font-bold shadow-sm">' + esc(u.name.charAt(0)) + '</div><div><h3 class="font-bold text-gray-900 text-[14px]">' + esc(u.name) + '</h3><p class="text-[13px] text-gray-500">' + esc(slugOf(u.name)) + ' · ' + u.n + ' postingan</p></div></div><div class="flex space-x-2"><button onclick="location.href=\'profil.html?uid=' + u.uid + '\'" class="px-4 py-1.5 bg-gray-900 text-white text-[13px] font-bold rounded-full hover:bg-gray-800 transition shadow-sm">Lihat</button></div></div>';
                 }).join('') || '<p class="text-[13px] text-gray-500">Belum ada kreator lain di komunitas ini.</p>';
             }
             var bl = document.getElementById('berita-tab-list');
@@ -825,11 +819,11 @@
             list.innerHTML = post.cmts.map(c => `
                 <div class="flex space-x-3">
                     <div class="w-8 h-8 rounded-full flex-shrink-0 bg-gradient-to-br ${AVA[c.user_id % AVA.length]} p-0.5">
-                        <div class="w-full h-full bg-white rounded-full border border-white flex items-center justify-center font-bold text-white text-[10px]">${esc((c.author_name || c.author || 'U').charAt(0))}</div>
+                        <div class="w-full h-full bg-white rounded-full border border-white flex items-center justify-center font-bold text-white text-[10px] overflow-hidden">${esc((c.author_name || c.author || 'U').charAt(0))}</div>
                     </div>
                     <div class="flex-1">
                         <div class="bg-gray-100 rounded-2xl px-3.5 py-2.5">
-                            <p class="font-bold text-[13px] text-gray-900">${esc(c.author_name || c.author)} <span class="text-gray-400 font-normal">· ${esc(relTime(c.created_at))}</span></p>
+                            <p class="font-bold text-[13px] text-gray-900"><span class="cursor-pointer hover:underline" onclick="location.href='profil.html?uid=${c.user_id}'">${esc(c.author_name || c.author)}</span> <span class="text-gray-400 font-normal">· ${esc(relTime(c.created_at))}</span></p>
                             <p class="text-sm text-gray-800 mt-0.5 leading-relaxed">${esc(c.text)}</p>
                         </div>
                     </div>
@@ -1023,6 +1017,16 @@
         function refreshMyUi() {
             var ini = (me.name || 'S').charAt(0).toUpperCase();
             ['me-avatar-big', 'me-avatar-nav', 'me-avatar-create'].forEach(function (id) { var el = document.getElementById(id); if (el) el.textContent = ini; });
+            ['me-avatar-nav', 'me-avatar-create'].forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && el.parentElement && me.avatar) {
+                    el.parentElement.innerHTML = '<img src="' + me.avatar + '" class="w-full h-full object-cover" alt="Foto">';
+                }
+            });
+            var big = document.getElementById('me-avatar-img');
+            if (big && me.avatar) { big.src = me.avatar; big.classList.remove('hidden'); var bi = document.getElementById('me-avatar-big'); if (bi) bi.classList.add('hidden'); }
+            var lk = document.getElementById('me-link');
+            if (lk) { if (me.link) { lk.textContent = me.link.replace(/^https?:\/\//, '').replace(/^www\./, ''); lk.href = me.link.indexOf('http') === 0 ? me.link : 'https://' + me.link; lk.parentElement.classList.remove('hidden'); } else { lk.textContent = '—'; lk.href = '#'; lk.parentElement.classList.add('hidden'); } }
             var nm = document.getElementById('me-name'); if (nm) nm.textContent = me.name;
             var hd = document.getElementById('me-handle'); if (hd) hd.textContent = slugOf(me.name);
             var ht = document.getElementById('me-handle-top'); if (ht) ht.textContent = slugOf(me.name);
@@ -1049,31 +1053,7 @@
                 : `<div class="aspect-square bg-gray-50 border border-gray-100 p-3 flex flex-col justify-between cursor-pointer hover:bg-gray-100 transition-colors" onclick="switchTab(event, 'home-view', document.querySelector('[data-icon=\'house\']'))"><p class="text-[12px] text-gray-700 leading-snug line-clamp-4">${esc(p.content)}</p><div class="flex space-x-3 text-[11px] text-gray-400"><span>❤ ${p.likes}</span><span>💬 ${p.comments}</span></div></div>`
             ).join('');
         }
-        function openEditProfile() {
-            document.getElementById('edit-name').value = me.name || '';
-            document.getElementById('edit-bio').value = me.bio || '';
-            document.getElementById('edit-backdrop').classList.remove('hidden');
-            document.getElementById('edit-modal').classList.remove('hidden');
-        }
-        function closeEditProfile() {
-            document.getElementById('edit-backdrop').classList.add('hidden');
-            document.getElementById('edit-modal').classList.add('hidden');
-        }
-        function saveProfile() {
-            var name = document.getElementById('edit-name').value.trim();
-            var bio = document.getElementById('edit-bio').value.trim().slice(0, 200);
-            if (!name) { toast('Nama tidak boleh kosong'); return; }
-            var btn = document.getElementById('edit-save');
-            btn.disabled = true; btn.textContent = 'Menyimpan…';
-            api('/community/profile', { method: 'POST', body: JSON.stringify({ name: name, bio: bio }) }).then(function (d) {
-                btn.disabled = false; btn.textContent = 'Simpan';
-                if (requireLogin(d)) return;
-                if (!d.success) { toast(d.error || 'Gagal menyimpan'); return; }
-                me.name = name; me.bio = bio;
-                try { localStorage.setItem('clincoo_community_me', JSON.stringify({ name: name, bio: bio, ts: Date.now() })); } catch (e) {}
-                refreshMyUi(); closeEditProfile(); toast('Profil diperbarui ✨');
-            }).catch(function () { btn.disabled = false; btn.textContent = 'Simpan'; toast('Koneksi bermasalah'); });
-        }
+        function openEditProfile() { location.href = 'edit-profil.html'; }
 
         function logout() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
@@ -1133,7 +1113,7 @@
                 if (iconEl) iconEl.classList.add('ph-fill');
             }
             if (targetViewId === 'notif-view') buildNotifs();
-            if (targetViewId === 'profile-view') { updateProfileStats(); renderProfileGrid(); renderProfileExtra(); }
+            if (targetViewId === 'profile-view') { updateProfileStats(); renderProfileGrid(); renderProfileExtra(); refreshMyUi(); }
         }
 
         function openSidebar() {

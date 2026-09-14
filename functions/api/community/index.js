@@ -17,7 +17,12 @@ export async function onRequestGet({ request, env }) {
     if (limit > 100) limit = 100;
     const rows = (await db.prepare('SELECT * FROM community_posts ORDER BY created_at DESC LIMIT ?').bind(limit).all()).results || [];
     const feed = await hydratePosts(db, rows, user.id);
-    return json({ feed: feed, me: { id: user.id, name: user.name || '' } });
+    let meLink = '', meBio = '';
+    try {
+      const pr = await db.prepare('SELECT bio, link FROM community_profiles WHERE user_id = ?').bind(user.id).first();
+      if (pr) { meLink = pr.link || ''; meBio = pr.bio || ''; }
+    } catch (e) {}
+    return json({ feed: feed, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink } });
   } catch (e) {
     return json({ error: e.message }, 500);
   }

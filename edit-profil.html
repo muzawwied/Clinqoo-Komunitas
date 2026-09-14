@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Edit Profil — Komunitas Clincoo</title>
+    <meta name="description" content="Edit profil Komunitas Clincoo: foto, nama, bio, dan tautan.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
+
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
+        <div class="flex justify-between items-center max-w-2xl mx-auto">
+            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
+                <i class="ph ph-arrow-left text-xl"></i>
+                <span>Profil</span>
+            </a>
+            <button id="save-btn" onclick="saveProfile()" class="bg-gray-900 text-white px-5 py-1.5 rounded-full text-[15px] font-bold hover:bg-gray-800 transition shadow-sm">Simpan</button>
+        </div>
+    </header>
+
+    <main class="max-w-2xl mx-auto pt-16 pb-32">
+        <!-- Foto profil -->
+        <div class="bg-white border-b border-gray-100 px-4 py-8 flex flex-col items-center">
+            <div class="relative cursor-pointer group" onclick="document.getElementById('ava-file').click()">
+                <div id="ava-ring" class="w-24 h-24 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[3px] transition-transform group-hover:scale-105">
+                    <div class="w-full h-full bg-white rounded-full border-2 border-white overflow-hidden">
+                        <div id="ava-wrap" class="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
+                            <span id="ava-initial" class="text-3xl font-bold text-white">?</span>
+                            <img id="ava-img" src="" alt="Foto profil" class="w-full h-full object-cover hidden">
+                        </div>
+                    </div>
+                </div>
+                <div class="absolute bottom-0 right-0 w-9 h-9 bg-gray-900 rounded-full border-2 border-white flex items-center justify-center shadow-lg transition-transform group-hover:scale-110">
+                    <i class="ph ph-camera text-white text-lg"></i>
+                </div>
+            </div>
+            <button onclick="document.getElementById('ava-file').click()" class="mt-4 text-blue-600 text-[14px] font-bold hover:underline transition">Ubah foto profil</button>
+            <p class="text-[12px] text-gray-400 mt-1">JPG/PNG, otomatis dikompres (maks ~100KB)</p>
+            <input type="file" id="ava-file" accept="image/*" class="hidden" onchange="handleAvaFile(this)">
+        </div>
+
+        <!-- Form -->
+        <div class="bg-white px-4 py-5 space-y-5 mt-3 border-b border-gray-100">
+            <div>
+                <label class="block text-[13px] font-semibold text-gray-600 mb-1.5">Nama</label>
+                <input id="f-name" type="text" maxlength="40" placeholder="Nama tampilan kamu" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition">
+            </div>
+            <div>
+                <label class="block text-[13px] font-semibold text-gray-600 mb-1.5">Bio</label>
+                <textarea id="f-bio" maxlength="200" rows="3" placeholder="Ceritakan singkat tentang kamu…" class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-3 text-[15px] resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition"></textarea>
+                <p class="text-right text-[11px] text-gray-400 mt-1"><span id="bio-count">0</span>/200</p>
+            </div>
+            <div>
+                <label class="block text-[13px] font-semibold text-gray-600 mb-1.5">Tautan</label>
+                <div class="relative">
+                    <i class="ph ph-link absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input id="f-link" type="url" maxlength="120" placeholder="https://situsmu.com" class="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-3.5 py-3 text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white transition">
+                </div>
+                <p class="text-[11px] text-gray-400 mt-1">Tautan profil kamu, mis. situs, GitHub, atau medsos.</p>
+            </div>
+        </div>
+
+        <!-- Info akun -->
+        <div class="bg-white px-4 py-5 mt-3 border-b border-gray-100">
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-2">Info akun</h3>
+            <div class="flex items-center space-x-3 text-[14px] text-gray-500">
+                <i class="ph ph-envelope-simple text-lg"></i>
+                <span id="f-email">…</span>
+            </div>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function api(path, opts) {
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
+            var t = document.getElementById('toast');
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+
+        var me = { name: '', bio: '', link: '', avatar: '' };
+
+        function setAvatar(src) {
+            var img = document.getElementById('ava-img');
+            var ini = document.getElementById('ava-initial');
+            if (src) {
+                img.src = src; img.classList.remove('hidden');
+                var wrap = document.getElementById('ava-wrap');
+                wrap.classList.remove('from-blue-400', 'to-purple-500');
+                ini.classList.add('hidden');
+            }
+        }
+        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+        function init() {
+            if (!token()) { location.replace('login.html'); return; }
+            api('/auth/me').then(function (d) {
+                if (d && d._status === 401) { location.replace('login.html'); return; }
+                if (d && d.user) {
+                    me.name = d.user.name || '';
+                    me.avatar = d.user.avatar_url || '';
+                    if (d.user.email) document.getElementById('f-email').textContent = d.user.email;
+                    setAvatar(me.avatar);
+                    document.getElementById('ava-initial').textContent = (me.name || 'S').charAt(0).toUpperCase();
+                }
+                document.getElementById('f-name').value = me.name;
+                if (me.avatar) setAvatar(me.avatar);
+            }).catch(function () { toast('Koneksi bermasalah'); });
+            // bio & tautan dari feed-me (tersimpan di profil)
+            api('/community?limit=1').then(function (d) {
+                if (d && d.me) {
+                    me.bio = d.me.bio || ''; me.link = d.me.link || '';
+                    if (d.me.name && !me.name) { me.name = d.me.name; document.getElementById('f-name').value = me.name; }
+                    if (d.me.avatar_url) { me.avatar = d.me.avatar_url; setAvatar(me.avatar); }
+                    document.getElementById('f-bio').value = me.bio;
+                    document.getElementById('bio-count').textContent = me.bio.length;
+                    document.getElementById('f-link').value = me.link;
+                }
+            }).catch(function () {});
+            document.getElementById('f-bio').addEventListener('input', function () {
+                document.getElementById('bio-count').textContent = this.value.length;
+            });
+        }
+
+        function handleAvaFile(input) {
+            var file = input.files && input.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    var q = 0.9, out = e.target.result;
+                    var c = document.createElement('canvas');
+                    var size = 256, w = img.width, h = img.height, s = Math.min(w, h);
+                    c.width = size; c.height = size;
+                    // crop persegi di tengah
+                    c.getContext('2d').drawImage(img, (w - s) / 2, (h - s) / 2, s, s, 0, 0, size, size);
+                    while (q >= 0.4) { out = c.toDataURL('image/jpeg', q); if (out.length <= 100000) break; q -= 0.15; }
+                    me.newAvatar = out;
+                    setAvatar(out);
+                    toast('Foto siap disimpan');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function saveProfile() {
+            var name = document.getElementById('f-name').value.trim();
+            var bio = document.getElementById('f-bio').value.trim().slice(0, 200);
+            var link = document.getElementById('f-link').value.trim().slice(0, 120);
+            if (!name) { toast('Nama tidak boleh kosong'); return; }
+            var btn = document.getElementById('save-btn');
+            btn.disabled = true; btn.textContent = 'Menyimpan…';
+            var body = { name: name, bio: bio, link: link };
+            if (me.newAvatar) body.avatar = me.newAvatar;
+            api('/community/profile', { method: 'POST', body: JSON.stringify(body) }).then(function (d) {
+                btn.disabled = false; btn.textContent = 'Simpan';
+                if (d._status === 401) { location.replace('login.html'); return; }
+                if (!d.success) { toast(d.error || 'Gagal menyimpan'); return; }
+                try {
+                    localStorage.setItem('clincoo_community_me', JSON.stringify({
+                        name: name, bio: bio, link: link,
+                        avatar: d.me ? d.me.avatar_url : (me.avatar || ''),
+                        ts: Date.now()
+                    }));
+                } catch (e) {}
+                toast('Profil tersimpan ✨');
+                setTimeout(function () { location.replace('index.html'); }, 700);
+            }).catch(function () { btn.disabled = false; btn.textContent = 'Simpan'; toast('Koneksi bermasalah'); });
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>

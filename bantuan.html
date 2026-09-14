@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pusat Bantuan — Komunitas Clincoo</title>
+    <meta name="description" content="FAQ dan panduan Komunitas Clincoo.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+</head>
+<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
+    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
+        <div class="flex justify-between items-center max-w-2xl mx-auto">
+            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
+                <i class="ph ph-arrow-left text-xl"></i><span>Beranda</span>
+            </a>
+            <span class="text-[13px] font-semibold text-gray-400">Bantuan</span>
+        </div>
+    </header>
+    <main class="max-w-2xl mx-auto pt-16 pb-32">
+        <div class="px-4 py-4">
+            <h1 class="text-xl font-bold text-gray-900">Pusat Bantuan</h1>
+            <p class="text-[13px] text-gray-500">Cari jawaban atau telusuri topik di bawah.</p>
+        </div>
+        <div class="px-4">
+            <div class="relative">
+                <i class="ph ph-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input id="faq-q" type="text" placeholder="Cari bantuan, mis. posting, tersimpan, draf…" class="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-3.5 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition shadow-sm">
+            </div>
+        </div>
+        <div id="faq-list" class="px-4 mt-4 space-y-2"></div>
+        <div class="bg-white mt-4 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-2 flex items-center space-x-1.5"><i class="ph ph-lifebuoy text-base text-gray-500"></i><span>Masih butuh bantuan?</span></h3>
+            <p class="text-[13px] text-gray-500 leading-relaxed">Tulis masalahmu di komunitas dengan tag #bantuan — sesama anggota dan tim Clincoo akan membantu.</p>
+        </div>
+    </main>
+    <script>
+        var FAQ = [
+            ['Mulai', 'ph-rocket-launch', [
+                ['Bagaimana cara bergabung di Komunitas Clincoo?', 'Buka halaman Masuk lalu pilih "Daftar". Isi nama, email, dan kata sandi — langsung masuk ke beranda komunitas.'],
+                ['Apakah gratis?', 'Ya. Komunitas Clincoo gratis untuk semua pemilik akun Clincoo.'],
+                ['Kenapa saya diminta masuk lagi?', 'Sesi login hanya berlaku di perangkat itu. Kalau kamu menekan "Keluar" atau bersih riwayat browser, kamu perlu masuk lagi.']
+            ]],
+            ['Postingan', 'ph-note', [
+                ['Bagaimana cara membuat postingan?', 'Di beranda, tap ikon + di navigasi bawah. Tulis isi postinganmu, tambahkan foto bila perlu, lalu tekan "Posting".'],
+                ['Kenapa postingan saya tidak terkirim?', 'Postingan tidak boleh kosong, maksimal 500 karakter, dan foto maks ~100KB (otomatis dikompres). Ada jeda 15 detik antar postingan untuk mencegah spam.'],
+                ['Bagaimana menghapus postingan?', 'Buka beranda, cari postinganmu, lalu tap ikon titik tiga di pojok kartu dan pilih "Hapus". Hanya postinganmu sendiri yang bisa dihapus.'],
+                ['Apa fungsi #tag?', 'Tag membuat postinganmu mudah ditemukan lewat pencarian dan muncul di daftar Tren di tab Jelajah.']
+            ]],
+            ['Interaksi', 'ph-heart', [
+                ['Bagaimana menyimpan postingan?', 'Tap ikon bookmark di bawah postingan. Semua yang kamu simpan ada di halaman Tersimpan (menu samping).'],
+                ['Bagaimana membagikan postingan?', 'Tap ikon bagikan — isi postingan otomatis tersalin ke clipboard untuk kamu tempel di mana saja.'],
+                ['Bisa memfilter linimasa?', 'Bisa — tap foto cerita di bagian atas beranda untuk melihat hanya postingan dari orang itu. Tap chip biru untuk kembali.']
+            ]],
+            ['Profil & Data', 'ph-user-circle', [
+                ['Bagaimana mengganti foto, nama, bio, dan tautan?', 'Buka Profil → Edit profil. Di halaman itu kamu bisa unggah foto, ubah nama, bio, dan tautan profil sekaligus.'],
+                ['Apa itu draf otomatis?', 'Saat mengetik postingan tapi belum mengirim, teksmu tersimpan otomatis dan muncul lagi saat kamu kembali. Draf dihapus setelah postingan terkirim.'],
+                ['Di mana statistik postinganku?', 'Buka menu samping → Analitik Kreator. Semua angka diambil real-time dari linimasa.'],
+                ['Bagaimana mengatur notifikasi?', 'Buka Pengaturan & Privasi untuk memilih jenis notifikasi yang muncul di lonceng beranda.']
+            ]]
+        ];
+        function init() {
+            render('');
+            document.getElementById('faq-q').addEventListener('input', function () { render(this.value.toLowerCase()); });
+        }
+        function render(q) {
+            var list = document.getElementById('faq-list');
+            var html = '', shown = 0;
+            FAQ.forEach(function (sec) {
+                var items = sec[2].filter(function (it) {
+                    return !q || it[0].toLowerCase().indexOf(q) !== -1 || it[1].toLowerCase().indexOf(q) !== -1;
+                });
+                if (!items.length) return;
+                shown += items.length;
+                html += '<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">'
+                    + '<div class="flex items-center space-x-2 px-4 py-3 border-b border-gray-50"><i class="ph ' + sec[1] + ' text-lg text-gray-500"></i><h2 class="text-[14px] font-bold text-gray-900">' + sec[0] + '</h2></div>';
+                html += items.map(function (it, i) {
+                    return '<div class="border-b border-gray-50 last:border-b-0">'
+                        + '<button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition">'
+                        + '<span class="text-[14px] font-medium text-gray-800 pr-2">' + it[0] + '</span><i class="ph ph-caret-down text-gray-400 flex-shrink-0 transition-transform"></i></button>'
+                        + '<div class="hidden px-4 pb-3 text-[13px] text-gray-600 leading-relaxed">' + it[1] + '</div></div>';
+                }).join('');
+                html += '</div>';
+            });
+            if (!shown && q) html = '<div class="bg-white rounded-2xl border border-gray-100 p-6 text-center text-[14px] text-gray-500 shadow-sm">Tidak ada hasil untuk "' + esc(q) + '". Coba kata kunci lain.</div>';
+            list.innerHTML = html;
+        }
+        function toggleFaq(btn) {
+            var body = btn.nextElementSibling;
+            var icon = btn.querySelector('i');
+            var open = !body.classList.contains('hidden');
+            body.classList.toggle('hidden');
+            icon.style.transform = open ? '' : 'rotate(180deg)';
+        }
+    </script>
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function api(path, opts) {
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
+            var t = document.getElementById('toast');
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+        function guard() { if (!token()) { location.replace('login.html'); return false; } return true; }
+        function logoutNow() {
+            api('/auth/logout', { method: 'POST' }).catch(function () {});
+            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            location.replace('login.html');
+        }
+        window.onload = function () { if (guard()) init(); };
+    </script>
+</body>
+</html>
