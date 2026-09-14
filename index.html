@@ -443,7 +443,7 @@
         <ul class="flex justify-around items-center h-10 max-w-2xl mx-auto relative">
             <li class="flex-1">
                 <a href="#" onclick="switchTab(event, 'home-view', this)" class="nav-item flex flex-col items-center justify-center w-full h-full text-gray-900 transition-colors" data-icon="house">
-                    <i class="ph-fill ph-house text-[26px] mb-0.5 icon-element transition-transform hover:scale-110"></i>
+                    <i class="ph ph-fill ph-house text-[26px] mb-0.5 icon-element transition-transform hover:scale-110"></i>
                 </a>
             </li>
             <li class="flex-1">
@@ -1102,15 +1102,15 @@
                 item.classList.add('text-gray-400');
                 const iconEl = item.querySelector('.icon-element, .profile-icon-border');
                 if (iconEl) {
-                    const fillIcon = iconEl.classList.contains('ph-fill');
-                    if (fillIcon) iconEl.classList.remove('ph-fill');
+                    iconEl.classList.remove('ph-fill');
+                    iconEl.classList.add('ph'); // jaga-jaga: class dasar wajib ada agar glyph tak hilang
                 }
             });
             if (clickedElement && clickedElement.classList) {
                 clickedElement.classList.remove('text-gray-400');
                 clickedElement.classList.add('text-gray-900');
                 const iconEl = clickedElement.querySelector('.icon-element');
-                if (iconEl) iconEl.classList.add('ph-fill');
+                if (iconEl) { iconEl.classList.add('ph'); iconEl.classList.add('ph-fill'); }
             }
             if (targetViewId === 'notif-view') buildNotifs();
             if (targetViewId === 'profile-view') { updateProfileStats(); renderProfileGrid(); renderProfileExtra(); refreshMyUi(); }
