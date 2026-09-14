@@ -6,14 +6,14 @@
     <title>Profil — Komunitas Clincoo</title>
     <meta name="description" content="Profil anggota Komunitas Clincoo.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
 </head>
 <body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
     <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <i class="ph ph-arrow-left text-xl"></i><span>Beranda</span>
+                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Beranda</span>
             </a>
             <span id="pf-name-sm" class="text-[13px] font-semibold text-gray-400 truncate max-w-[45%]">Profil</span>
         </div>
@@ -21,7 +21,7 @@
 
     <main class="max-w-2xl mx-auto pt-14 pb-32">
         <div id="pf-loading" class="flex flex-col items-center justify-center py-20 text-gray-400">
-            <i class="ph ph-circle-notch text-3xl animate-spin"></i>
+            <svg class="ic text-3xl animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.36"/></svg>
             <p class="text-[13px] mt-2">Memuat profil…</p>
         </div>
         <div id="pf-body" class="hidden">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <p id="pf-bio" class="text-[14px] text-gray-700 mt-3 leading-relaxed whitespace-pre-wrap"></p>
-                <a id="pf-link" href="#" class="hidden text-[14px] font-semibold text-blue-600 hover:underline mt-1 inline-flex items-center space-x-1 truncate max-w-full"><i class="ph ph-link"></i><span id="pf-link-txt"></span></a>
+                <a id="pf-link" href="#" class="hidden text-[14px] font-semibold text-blue-600 hover:underline mt-1 inline-flex items-center space-x-1 truncate max-w-full"><svg class="ic " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="pf-link-txt"></span></a>
             </div>
             <!-- Statistik -->
             <div class="grid grid-cols-3 gap-2 px-4 py-4">
@@ -64,7 +64,7 @@
             <div id="pf-list" class="px-4 space-y-3"></div>
         </div>
         <div id="pf-empty" class="hidden flex-col items-center justify-center py-16 px-4 text-center">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"><i class="ph ph-user-slash text-3xl text-gray-400"></i></div>
+            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="m17 8 5 5"/><path d="m22 8-5 5"/></svg></div>
             <h3 class="text-lg font-bold text-gray-900 mb-1">Profil tidak ditemukan</h3>
             <p class="text-[14px] text-gray-500 max-w-[260px]">Anggota ini belum pernah posting di komunitas.</p>
         </div>
@@ -140,8 +140,8 @@
                         + (p.image ? '<img src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 max-h-72 w-full object-cover" alt="">' : '')
                         + '<p class="text-[14px] text-gray-800 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
                         + '<div class="flex items-center space-x-4 mt-2.5 text-[12px] text-gray-500">'
-                        + '<span class="flex items-center space-x-1"><i class="ph ph-heart text-sm"></i>' + (p.likes || 0) + '</span>'
-                        + '<span class="flex items-center space-x-1"><i class="ph ph-chat-circle text-sm"></i>' + (p.comment_count || 0) + '</span>'
+                        + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (p.likes || 0) + '</span>'
+                        + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' + (p.comment_count || 0) + '</span>'
                         + '</div></div>';
                 }).join('');
             }).catch(function () { showEmpty(); });

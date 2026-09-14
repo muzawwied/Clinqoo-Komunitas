@@ -6,14 +6,14 @@
     <title>Pengaturan & Privasi — Komunitas Clincoo</title>
     <meta name="description" content="Pengaturan notifikasi, data, dan privasi Komunitas Clincoo.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
 </head>
 <body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
     <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <i class="ph ph-arrow-left text-xl"></i><span>Pengaturan & Privasi</span>
+                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Pengaturan & Privasi</span>
             </a>
             <span class="text-[13px] font-semibold text-gray-400">Pengaturan</span>
         </div>
@@ -25,35 +25,40 @@
         </div>
         <!-- Notifikasi -->
         <div class="bg-white mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-1 flex items-center space-x-1.5"><i class="ph ph-bell text-base text-gray-500"></i><span>Notifikasi</span></h3>
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-1 flex items-center space-x-1.5"><svg class="ic text-base text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Notifikasi</span></h3>
             <p class="text-[12px] text-gray-400 mb-3">Pilih interaksi yang muncul di lonceng notifikasi beranda.</p>
             <div id="prefs" class="divide-y divide-gray-50"></div>
         </div>
         <!-- Data -->
         <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-database text-base text-gray-500"></i><span>Data kamu</span></h3>
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><svg class="ic text-base text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg><span>Data kamu</span></h3>
             <button onclick="clrDraft()" class="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 rounded-xl transition text-left">
-                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><i class="ph ph-note-pencil text-lg text-gray-500"></i><span>Hapus draf postingan</span></span>
-                <i class="ph ph-caret-right text-gray-300"></i>
+                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg><span>Hapus draf postingan</span></span>
+                <svg class="ic text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </button>
             <button onclick="clrSaved()" class="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 rounded-xl transition text-left">
-                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><i class="ph ph-bookmark-simple text-lg text-gray-500"></i><span>Hapus semua Tersimpan</span></span>
-                <i class="ph ph-caret-right text-gray-300"></i>
+                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg><span>Hapus semua Tersimpan</span></span>
+                <svg class="ic text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </button>
             <button onclick="clrSearch()" class="w-full flex items-center justify-between px-3 py-3 hover:bg-gray-50 rounded-xl transition text-left">
-                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><i class="ph ph-magnifying-glass text-lg text-gray-500"></i><span>Hapus riwayat pencarian</span></span>
-                <i class="ph ph-caret-right text-gray-300"></i>
+                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><span>Hapus riwayat pencarian</span></span>
+                <svg class="ic text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </button>
         </div>
         <!-- Sesi -->
         <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-shield-check text-base text-gray-500"></i><span>Sesi & keamanan</span></h3>
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><svg class="ic text-base text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg><span>Sesi & keamanan</span></h3>
             <button onclick="logoutNow()" class="w-full bg-red-50 text-red-600 font-bold text-[14px] rounded-xl py-3 hover:bg-red-100 transition-colors">Keluar dari akun ini</button>
             <p class="text-[11px] text-gray-400 mt-2 leading-relaxed">Keluar akan menghapus sesi login di perangkat ini. Foto, postingan, dan profilmu tetap tersimpan di akunmu.</p>
         </div>
         <p class="text-center text-[11px] text-gray-400 mt-6">Komunitas Clincoo v1.0 · <a href="bantuan.html" class="text-blue-500 font-semibold">Pusat Bantuan</a></p>
     </main>
     <script>
+        var PH2SVG = {
+            'ph-heart': '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>',
+            'ph-chat-circle': '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>',
+            'ph-at': '<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>'
+        };
         var PREF_LABELS = {
             like: { icon: 'ph-heart', label: 'Suka di postinganmu', desc: 'Saat orang lain menyukai postinganmu' },
             comment: { icon: 'ph-chat-circle', label: 'Komentar baru', desc: 'Saat orang lain membalas postinganmu' },
@@ -71,7 +76,7 @@
                 var m = PREF_LABELS[k];
                 var on = !!p[k];
                 return '<div class="flex items-center justify-between py-3">'
-                    + '<span class="flex items-center space-x-3"><span class="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center"><i class="ph ' + m.icon + ' text-lg text-gray-600"></i></span>'
+                    + '<span class="flex items-center space-x-3"><span class="w-9 h-9 rounded-full bg-gray-50 flex items-center justify-center"><svg class="ic text-lg text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (PH2SVG[m.icon] || '') + '</svg></span>'
                     + '<span><span class="block text-[14px] font-medium text-gray-800">' + m.label + '</span><span class="block text-[12px] text-gray-400">' + m.desc + '</span></span></span>'
                     + '<button onclick="togglePref(\'' + k + '\')" data-key="' + k + '" class="w-11 h-6 rounded-full transition-colors relative flex-shrink-0 ' + (on ? 'bg-blue-500' : 'bg-gray-200') + '">'
                     + '<span class="absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-all ' + (on ? 'right-0.5' : 'left-0.5') + '"></span></button>'

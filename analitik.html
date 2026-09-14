@@ -6,14 +6,14 @@
     <title>Analitik Kreator — Komunitas Clincoo</title>
     <meta name="description" content="Statistik kontenmu di Komunitas Clincoo.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
 </head>
 <body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
     <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <i class="ph ph-arrow-left text-xl"></i><span>Analitik Kreator</span>
+                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Analitik Kreator</span>
             </a>
             <span class="text-[13px] font-semibold text-gray-400">Analitik</span>
         </div>
@@ -44,18 +44,18 @@
         </div>
         <!-- Top postingan -->
         <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-crown-simple text-base text-yellow-500"></i><span>Postingan terpopuler</span></h3>
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><svg class="ic text-base text-yellow-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg><span>Postingan terpopuler</span></h3>
             <div id="an-top" class="text-[14px] text-gray-500">…</div>
         </div>
         <!-- Grafik suka per postingan -->
         <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-chart-bar text-base text-blue-500"></i><span>Suka per postingan (terbaru)</span></h3>
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><svg class="ic text-base text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg><span>Suka per postingan (terbaru)</span></h3>
             <div id="an-chart" class="flex items-end space-x-1.5 h-32"></div>
             <div id="an-chart-labels" class="flex items-center space-x-1.5 mt-1.5"></div>
         </div>
         <!-- Tag terpakai -->
         <div class="bg-white mt-3 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm mb-4">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><i class="ph ph-hash text-base text-purple-500"></i><span>Tag yang kamu pakai</span></h3>
+            <h3 class="text-[13px] font-semibold text-gray-600 mb-3 flex items-center space-x-1.5"><svg class="ic text-base text-purple-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg><span>Tag yang kamu pakai</span></h3>
             <div id="an-tags" class="space-y-2"></div>
         </div>
     </main>
@@ -76,7 +76,7 @@
                     var top = mine.slice().sort(function (a, b) { return ((b.likes||0)+(b.comment_count||0)) - ((a.likes||0)+(a.comment_count||0)); })[0];
                     var txt = esc(top.content || top.text || '').slice(0, 120);
                     topEl.innerHTML = '<p class="text-[14px] text-gray-800 leading-relaxed">' + txt + '…</p>'
-                        + '<div class="flex items-center space-x-4 mt-2 text-[12px] text-gray-500"><span class="flex items-center space-x-1"><i class="ph ph-heart text-sm"></i>' + (top.likes||0) + '</span><span class="flex items-center space-x-1"><i class="ph ph-chat-circle text-sm"></i>' + (top.comment_count||0) + '</span></div>';
+                        + '<div class="flex items-center space-x-4 mt-2 text-[12px] text-gray-500"><span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (top.likes||0) + '</span><span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' + (top.comment_count||0) + '</span></div>';
                 }
                 // grafik batang (7 terbaru)
                 var recent = mine.slice(0, 7).reverse();
