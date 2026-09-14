@@ -95,6 +95,7 @@ async function migrateLegacy(db) {
   await alter('ALTER TABLE community_posts ADD COLUMN author TEXT');
   await alter('ALTER TABLE community_comments ADD COLUMN author TEXT');
   await alter("ALTER TABLE community_profiles ADD COLUMN link TEXT NOT NULL DEFAULT ''");
+  await alter("ALTER TABLE community_profiles ADD COLUMN cover TEXT NOT NULL DEFAULT ''");
   try {
     await db.prepare(`UPDATE community_posts SET author = COALESCE(
       (SELECT name FROM auth_users WHERE auth_users.id = CAST(community_posts.user_id AS INTEGER)), 'Pengguna')

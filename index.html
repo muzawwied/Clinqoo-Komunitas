@@ -185,10 +185,20 @@
             </div>
         </div>
         
-        <div class="h-36 bg-gray-200 w-full relative group cursor-pointer overflow-hidden">
-            <img src="https://picsum.photos/seed/devcover/800/300" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Cover">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/5 to-black/20"></div>
+        <div onclick="pickCover()" class="h-36 bg-gray-100 w-full relative group cursor-pointer overflow-hidden">
+            <img id="me-cover-img" src="" alt="Cover" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 hidden">
+            <div id="me-cover-empty" class="absolute inset-0 flex items-center justify-center">
+                <div class="flex flex-col items-center space-y-1 text-gray-400 group-hover:text-gray-600 transition-colors">
+                    <svg class="ic text-2xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                    <span class="text-[13px] font-semibold">Upload cover</span>
+                </div>
+            </div>
+            <div class="absolute bottom-2 right-2 bg-gray-900/70 text-white rounded-full px-3 py-1.5 text-xs font-semibold opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-md flex items-center space-x-1.5">
+                <svg class="ic text-[16px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg><span>Ganti cover</span>
+            </div>
         </div>
+        <p id="cover-error" class="hidden px-4 mt-1 text-[13px] text-red-500 font-medium"></p>
+        <input type="file" id="cover-file" accept="image/*" class="hidden" onchange="handleCoverFile(this)">
         
         <div class="px-4 pb-3 -mt-12 relative z-10">
             <div class="flex justify-between items-end mb-3">
@@ -578,7 +588,7 @@
                 if (requireLogin(d)) return;
                 if (!d.feed) { toast('Koneksi bermasalah'); return; }
                 if (d.me && d.me.name) me.name = d.me.name;
-                if (d.me) { me.id = d.me.id; me.avatar = d.me.avatar_url || ''; me.bio = d.me.bio || ''; me.link = d.me.link || ''; }
+                if (d.me) { me.id = d.me.id; me.avatar = d.me.avatar_url || ''; me.bio = d.me.bio || ''; me.link = d.me.link || ''; me.cover = d.me.cover || ''; }
                 posts = shufflePosts(mapFeed(d));
                 following = d.following || [];
                 renderAll();
@@ -1102,6 +1112,45 @@
             var hd = document.getElementById('me-handle'); if (hd) hd.textContent = slugOf(me.name);
             var ht = document.getElementById('me-handle-top'); if (ht) ht.textContent = slugOf(me.name);
             var bio = document.getElementById('me-bio'); if (bio) bio.textContent = me.bio || '';
+            var cv = document.getElementById('me-cover-img'), ce = document.getElementById('me-cover-empty');
+            if (cv) {
+                if (me.cover) { cv.src = me.cover; cv.classList.remove('hidden'); if (ce) ce.classList.add('hidden'); }
+                else { cv.classList.add('hidden'); cv.removeAttribute('src'); if (ce) ce.classList.remove('hidden'); }
+            }
+        }
+        function pickCover() { var f = document.getElementById('cover-file'); if (f) f.click(); }
+        function showCoverError(msg) {
+            var el = document.getElementById('cover-error');
+            if (!el) return;
+            el.textContent = msg; el.classList.remove('hidden');
+            setTimeout(function () { el.classList.add('hidden'); }, 4000);
+        }
+        function handleCoverFile(input) {
+            var file = input.files && input.files[0];
+            if (!file) return;
+            input.value = '';
+            if (!file.type || file.type.indexOf('image/') !== 0) { showCoverError('Cover harus berupa gambar.'); return; }
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    var q = 0.9, out = e.target.result;
+                    var c = document.createElement('canvas');
+                    var maxW = 1280, w = img.width, h = img.height;
+                    if (w > maxW) { h = Math.round(h * maxW / w); w = maxW; }
+                    c.width = w; c.height = h;
+                    c.getContext('2d').drawImage(img, 0, 0, w, h);
+                    while (q >= 0.4) { out = c.toDataURL('image/jpeg', q); if (out.length <= 100000) break; q -= 0.15; }
+                    api('/community/profile', { method: 'POST', body: JSON.stringify({ name: me.name, bio: me.bio || '', link: me.link || '', cover: out }) })
+                        .then(function (d) {
+                            if (d && d.success) { me.cover = (d.me && d.me.cover) || out; refreshMyUi(); }
+                            else showCoverError((d && d.error) || 'Gagal menyimpan cover.');
+                        })
+                        .catch(function () { showCoverError('Koneksi bermasalah, cover belum tersimpan.'); });
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
         }
         function updateProfileStats() {
             refreshMyUi();

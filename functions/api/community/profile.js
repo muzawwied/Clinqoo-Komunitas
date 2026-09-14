@@ -18,10 +18,14 @@ export async function onRequestPost({ request, env }) {
     const bio = String(body.bio || '').trim().slice(0, 200);
     const link = String(body.link || '').trim().slice(0, 120);
     const avatar = body.avatar === '' || body.avatar == null ? undefined : String(body.avatar);
+    const cover = body.cover === '' || body.cover == null ? undefined : String(body.cover);
 
     if (!name) return json({ error: 'Nama tidak boleh kosong' }, 400);
     if (avatar !== undefined && avatar !== '' && !validPostImage(avatar)) {
       return json({ error: 'Foto tidak valid atau terlalu besar (maks ~100KB)' }, 400);
+    }
+    if (cover !== undefined && cover !== '' && !validPostImage(cover)) {
+      return json({ error: 'Cover tidak valid atau terlalu besar (maks ~100KB)' }, 400);
     }
     if (link && !/^(https?:\/\/|www\.)/i.test(link)) {
       return json({ error: 'Tautan harus diawali http://, https://, atau www.' }, 400);
@@ -40,12 +44,22 @@ export async function onRequestPost({ request, env }) {
       INSERT INTO community_profiles (user_id, bio, link) VALUES (?, ?, ?)
       ON CONFLICT(user_id) DO UPDATE SET bio = excluded.bio, link = excluded.link, updated_at = datetime('now')
     `).bind(user.id, bio, link).run();
+    if (cover !== undefined) {
+      await db.prepare('UPDATE community_profiles SET cover = ? WHERE user_id = ?').bind(cover, user.id).run();
+    }
 
     return json({
       success: true,
-      me: { id: user.id, name: name, avatar_url: avatar !== undefined ? (avatar || '') : (user.avatar_url || ''), bio: bio, link: link }
+      me: { id: user.id, name: name, avatar_url: avatar !== undefined ? (avatar || '') : (user.avatar_url || ''), bio: bio, link: link, cover: cover !== undefined ? (cover || '') : await getCover(db, user.id) }
     });
   } catch (e) {
     return json({ error: e.message }, 500);
   }
+}
+
+async function getCover(db, userId) {
+  try {
+    const pr = await db.prepare('SELECT cover FROM community_profiles WHERE user_id = ?').bind(userId).first();
+    return (pr && pr.cover) || '';
+  } catch (e) { return ''; }
 }

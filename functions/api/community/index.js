@@ -17,10 +17,10 @@ export async function onRequestGet({ request, env }) {
     if (limit > 100) limit = 100;
     const rows = (await db.prepare('SELECT * FROM community_posts ORDER BY created_at DESC LIMIT ?').bind(limit).all()).results || [];
     const feed = await hydratePosts(db, rows, user.id);
-    let meLink = '', meBio = '';
+    let meLink = '', meBio = '', meCover = '';
     try {
-      const pr = await db.prepare('SELECT bio, link FROM community_profiles WHERE user_id = ?').bind(user.id).first();
-      if (pr) { meLink = pr.link || ''; meBio = pr.bio || ''; }
+      const pr = await db.prepare('SELECT bio, link, cover FROM community_profiles WHERE user_id = ?').bind(user.id).first();
+      if (pr) { meLink = pr.link || ''; meBio = pr.bio || ''; meCover = pr.cover || ''; }
     } catch (e) {}
     let following = [];
     try {
@@ -31,7 +31,7 @@ export async function onRequestGet({ request, env }) {
       ).bind(user.id).all()).results || [];
       following = fr.map(r => ({ id: r.id, name: r.name || 'Pengguna', avatar_url: r.avatar_url || '' }));
     } catch (e) {}
-    return json({ feed: feed, following: following, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink } });
+    return json({ feed: feed, following: following, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink, cover: meCover } });
   } catch (e) {
     return json({ error: e.message }, 500);
   }
