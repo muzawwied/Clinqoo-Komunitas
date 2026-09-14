@@ -22,7 +22,16 @@ export async function onRequestGet({ request, env }) {
       const pr = await db.prepare('SELECT bio, link FROM community_profiles WHERE user_id = ?').bind(user.id).first();
       if (pr) { meLink = pr.link || ''; meBio = pr.bio || ''; }
     } catch (e) {}
-    return json({ feed: feed, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink } });
+    let following = [];
+    try {
+      const fr = (await db.prepare(
+        `SELECT u.id, u.name, u.avatar_url FROM community_follows f
+         JOIN auth_users u ON u.id = f.followed_id
+         WHERE f.follower_id = ? ORDER BY f.created_at DESC`
+      ).bind(user.id).all()).results || [];
+      following = fr.map(r => ({ id: r.id, name: r.name || 'Pengguna', avatar_url: r.avatar_url || '' }));
+    } catch (e) {}
+    return json({ feed: feed, following: following, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink } });
   } catch (e) {
     return json({ error: e.message }, 500);
   }

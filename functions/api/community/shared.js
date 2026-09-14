@@ -32,6 +32,12 @@ export async function initCommunityTables(db) {
     link TEXT NOT NULL DEFAULT '',
     updated_at TEXT DEFAULT (datetime('now'))
   )`).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS community_follows (
+    follower_id INTEGER NOT NULL,
+    followed_id INTEGER NOT NULL,
+    created_at TEXT DEFAULT (datetime('now')),
+    UNIQUE(follower_id, followed_id)
+  )`).run();
   await migrateLegacy(db);
 }
 

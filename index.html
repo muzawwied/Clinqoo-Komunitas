@@ -29,6 +29,11 @@
 
     <main id="home-view" class="app-view h-full overflow-y-auto pt-16 pb-24 block no-scrollbar max-w-2xl mx-auto">
 
+        <div class="bg-white py-4 px-2 border-b border-gray-100">
+            <p class="text-[12px] font-bold text-gray-900 px-2 pb-2">Yang Anda Ikuti</p>
+            <div class="flex space-x-4 overflow-x-auto no-scrollbar px-2" id="friends-row"></div>
+        </div>
+
         <div id="author-chip" class="hidden mx-4 mt-3 bg-blue-50 text-blue-700 text-[13px] font-semibold rounded-full px-4 py-2 w-fit cursor-pointer hover:bg-blue-100 transition-colors" onclick="clearAuthorFilter()"></div>
         <div id="feed-container" class="divide-y divide-gray-100 bg-gray-50 pb-4">
         </div>
@@ -467,6 +472,7 @@
 
         var AVA = ['from-pink-400 to-rose-400', 'from-indigo-400 to-blue-500', 'from-green-400 to-emerald-500', 'from-yellow-400 to-orange-500', 'from-cyan-400 to-blue-500', 'from-purple-400 to-fuchsia-500', 'from-red-400 to-pink-500'];
         var posts = [], me = { name: meData().name || 'Saya', bio: meData().bio || '', link: meData().link || '', avatar: meData().avatar || '' }, notifs = [], seenNotifs = {};
+        var following = [];
         var isAttachmentAdded = false, attachDataUrl = '', activeCommentPost = null, searchTimer = null, filterAuthor = null, savedPosts = loadSaved();
         function loadSaved() { try { return JSON.parse(localStorage.getItem('clincoo_saved') || '[]'); } catch (e) { return []; } }
         function persistSaved() { try { localStorage.setItem('clincoo_saved', JSON.stringify(savedPosts)); } catch (e) {} }
@@ -524,11 +530,34 @@
             return a;
         }
         function renderAll() {
-            renderPosts(); buildNotifs(); updateProfileStats(); renderProfileGrid(); renderExplore(); renderTabs(); renderProfileExtra();
+            renderFriends(); renderPosts(); buildNotifs(); updateProfileStats(); renderProfileGrid(); renderExplore(); renderTabs(); renderProfileExtra();
+        }
+        // ===== Baris teman: anggota yang diikuti =====
+        function renderFriends() {
+            var row = document.getElementById('friends-row');
+            if (!row) return;
+            var html = '';
+            following.forEach(function (u) {
+                var uid = u.id || u;
+                var name = u.name || 'Teman';
+                var ava = u.avatar_url || u.avatar || '';
+                html += '<a href="profil.html?uid=' + uid + '" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer hover:opacity-80 transition">'
+                    + '<div class="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[2px]">'
+                    + '<div class="w-full h-full bg-white rounded-full border-2 border-white flex items-center justify-center overflow-hidden bg-gradient-to-br ' + (AVA[uid % AVA.length]) + ' text-white font-bold text-lg">'
+                    + avaInner(name, ava) + '</div></div>'
+                    + '<span class="text-[11px] text-gray-700 font-medium max-w-[64px] truncate">' + esc(name.split(' ')[0]) + '</span></a>';
+            });
+            if (!html) {
+                html = '<div class="flex flex-col items-center space-y-1 flex-shrink-0 text-gray-400">'
+                    + '<div class="w-16 h-16 rounded-full border-2 border-dashed border-gray-300 p-0.5 flex items-center justify-center"><svg class="ic text-xl text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>'
+                    + '<span class="text-[11px] text-gray-500 font-medium">Belum ada</span></div>'
+                    + '<div class="flex flex-col items-center justify-center flex-shrink-0 text-[12px] text-gray-400 self-center px-2">Buka profil anggota lalu tekan <span class="font-semibold text-gray-600">Ikuti</span> untuk menambahkan teman.</div>';
+            }
+            row.innerHTML = html;
         }
         function saveFeedCache() {
             try {
-                var j = JSON.stringify({ ts: Date.now(), posts: posts });
+                var j = JSON.stringify({ ts: Date.now(), posts: posts, following: following });
                 if (j.length < 2000000) localStorage.setItem('clincoo_feed_cache_v1', j);
             } catch (e) {}
         }
@@ -538,6 +567,7 @@
                 var j = JSON.parse(localStorage.getItem('clincoo_feed_cache_v1') || 'null');
                 if (!j || !j.posts || !j.posts.length) return false;
                 posts = j.posts;
+                if (j.following) following = j.following;
                 renderAll();
                 document.getElementById('feed-skeleton').classList.add('hidden');
                 return true;
@@ -550,6 +580,7 @@
                 if (d.me && d.me.name) me.name = d.me.name;
                 if (d.me) { me.id = d.me.id; me.avatar = d.me.avatar_url || ''; me.bio = d.me.bio || ''; me.link = d.me.link || ''; }
                 posts = shufflePosts(mapFeed(d));
+                following = d.following || [];
                 renderAll();
                 saveFeedCache();
                 document.getElementById('feed-skeleton').classList.add('hidden');
