@@ -689,14 +689,12 @@
             }
             var eg = document.getElementById('explore-grid');
             if (eg) {
-                var items = posts.filter(p => p.image || p.content).slice(0, 9);
+                var items = shufflePosts(posts.filter(function (p) { return p.image; })).slice(0, 9);
                 eg.innerHTML = items.map(function (p) {
-                    return p.image
-                        ? '<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer relative">' + (isVideo(p.image)
-                            ? '<video src="' + p.image + '" class="w-full h-full object-cover" muted playsinline preload="metadata"></video><svg class="ic text-3xl text-white drop-shadow pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
-                            : '<img src="' + p.image + '" class="w-full h-full object-cover hover:opacity-90 transition" loading="lazy" alt="Eksplorasi">') + '</div>'
-                        : '<div class="aspect-square bg-gray-50 border border-gray-100 p-2 flex items-center"><p class="text-[11px] text-gray-600 leading-snug line-clamp-6">' + esc(p.content) + '</p></div>';
-                }).join('') || '<p class="text-[13px] text-gray-500 py-2">Belum ada postingan untuk dijelajahi.</p>';
+                    return '<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer relative">' + (isVideo(p.image)
+                        ? '<video src="' + p.image + '" class="w-full h-full object-cover" muted playsinline preload="metadata"></video><svg class="ic text-3xl text-white drop-shadow pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
+                        : '<img src="' + p.image + '" class="w-full h-full object-cover hover:opacity-90 transition" loading="lazy" alt="Eksplorasi">') + '</div>';
+                }).join('') || '<p class="text-[13px] text-gray-500 py-2">Belum ada postingan bergambar untuk dijelajahi.</p>';
             }
         }
 
