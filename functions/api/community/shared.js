@@ -35,14 +35,60 @@ export async function initCommunityTables(db) {
   await migrateLegacy(db);
 }
 
-// Migrasi data lama: tabel komunitas bisa dibuat versi sebelumnya tanpa kolom
-// 'author' (nama disimpan lewat auth_users) dan user_id bertipe teks "61.0".
+// Migrasi data lama: versi sebelumnya punya kolom author_name (NOT NULL) tanpa author,
+// dan user_id tersimpan sebagai teks "61.0". Tabel dibangun ulang bersih, data dipertahankan.
 async function migrateLegacy(db) {
-  const alter = async (sql) => { try { await db.prepare(sql).run(); } catch (e) { /* kolom sudah ada */ } };
+  const colExists = async (table, col) => {
+    try { await db.prepare(`SELECT ${col} FROM ${table} LIMIT 1`).run(); return true; }
+    catch (e) { return false; }
+  };
+  const rebuildPosts = await colExists('community_posts', 'author_name');
+  if (rebuildPosts) {
+    try {
+      const hasAuthor = await colExists('community_posts', 'author');
+      const authorExpr = hasAuthor ? "COALESCE(author, author_name, 'Pengguna')" : "COALESCE(author_name, 'Pengguna')";
+      await db.prepare('DROP TABLE IF EXISTS community_posts_mig').run();
+      await db.prepare('ALTER TABLE community_posts RENAME TO community_posts_mig').run();
+      await db.prepare(`CREATE TABLE community_posts (
+        id TEXT PRIMARY KEY,
+        user_id INTEGER NOT NULL,
+        author TEXT NOT NULL,
+        text TEXT NOT NULL DEFAULT '',
+        image TEXT NOT NULL DEFAULT '',
+        created_at TEXT NOT NULL
+      )`).run();
+      await db.prepare(`INSERT INTO community_posts (id, user_id, author, text, image, created_at)
+        SELECT id, CAST(user_id AS INTEGER), ${authorExpr}, COALESCE(text, ''), COALESCE(image, ''), COALESCE(created_at, datetime('now'))
+        FROM community_posts_mig`).run();
+      await db.prepare('DROP TABLE community_posts_mig').run();
+    } catch (e) { /* bila gagal, tabel lama tetap dipakai */ }
+  }
+  const rebuildComments = await colExists('community_comments', 'author_name');
+  if (rebuildComments) {
+    try {
+      const hasAuthor = await colExists('community_comments', 'author');
+      const authorExpr = hasAuthor ? "COALESCE(author, author_name, 'Pengguna')" : "COALESCE(author_name, 'Pengguna')";
+      await db.prepare('DROP TABLE IF EXISTS community_comments_mig').run();
+      await db.prepare('ALTER TABLE community_comments RENAME TO community_comments_mig').run();
+      await db.prepare(`CREATE TABLE community_comments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        post_id TEXT NOT NULL,
+        user_id INTEGER NOT NULL,
+        author TEXT NOT NULL,
+        text TEXT NOT NULL,
+        created_at TEXT NOT NULL
+      )`).run();
+      await db.prepare(`INSERT INTO community_comments (id, post_id, user_id, author, text, created_at)
+        SELECT id, post_id, CAST(user_id AS INTEGER), ${authorExpr}, COALESCE(text, ''), COALESCE(created_at, datetime('now'))
+        FROM community_comments_mig`).run();
+      await db.prepare('DROP TABLE community_comments_mig').run();
+    } catch (e) { /* bila gagal, tabel lama tetap dipakai */ }
+  }
+  // jaring pengaman: pastikan kolom author/link ada di semua instalasi
+  const alter = async (sql) => { try { await db.prepare(sql).run(); } catch (e) {} };
   await alter('ALTER TABLE community_posts ADD COLUMN author TEXT');
   await alter('ALTER TABLE community_comments ADD COLUMN author TEXT');
-  await alter('ALTER TABLE community_profiles ADD COLUMN link TEXT NOT NULL DEFAULT \'\'');
-  // isi nama penulis untuk baris lama yang kosong
+  await alter("ALTER TABLE community_profiles ADD COLUMN link TEXT NOT NULL DEFAULT ''");
   try {
     await db.prepare(`UPDATE community_posts SET author = COALESCE(
       (SELECT name FROM auth_users WHERE auth_users.id = CAST(community_posts.user_id AS INTEGER)), 'Pengguna')
@@ -50,7 +96,7 @@ async function migrateLegacy(db) {
     await db.prepare(`UPDATE community_comments SET author = COALESCE(
       (SELECT name FROM auth_users WHERE auth_users.id = CAST(community_comments.user_id AS INTEGER)), 'Pengguna')
       WHERE author IS NULL OR author = ''`).run();
-  } catch (e) { /* tabel auth_users mungkin belum siap */ }
+  } catch (e) { /* auth_users mungkin belum siap */ }
 }
 
 export function newPostId() { return randomHex(12); }
