@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Komunitas Clincoo — Bagikan progres proyekmu</title>
     <meta name="description" content="Komunitas Clincoo: ruang para pembangun Clincoo — bagikan progres proyek, tanya jawab, dan saling dukung.">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>
         @supports (padding-bottom: env(safe-area-inset-bottom)) {
@@ -43,6 +43,11 @@
 
         <div id="author-chip" class="hidden mx-4 mt-3 bg-blue-50 text-blue-700 text-[13px] font-semibold rounded-full px-4 py-2 w-fit cursor-pointer hover:bg-blue-100 transition-colors" onclick="clearAuthorFilter()"></div>
         <div id="feed-container" class="divide-y divide-gray-100 bg-gray-50 pb-4">
+        </div>
+        <div id="feed-skeleton" class="hidden divide-y divide-gray-100 bg-gray-50 pb-4">
+            <div class="bg-white p-4 flex space-x-3 items-start animate-pulse"><div class="w-11 h-11 rounded-full bg-gray-200 flex-shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-3 bg-gray-200 rounded w-24"></div><div class="h-3 bg-gray-200 rounded w-3/4"></div><div class="h-3 bg-gray-100 rounded w-1/2"></div></div></div>
+            <div class="bg-white p-4 flex space-x-3 items-start animate-pulse"><div class="w-11 h-11 rounded-full bg-gray-200 flex-shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-3 bg-gray-200 rounded w-28"></div><div class="h-3 bg-gray-200 rounded w-full"></div><div class="h-24 bg-gray-100 rounded-xl w-full"></div></div></div>
+            <div class="bg-white p-4 flex space-x-3 items-start animate-pulse"><div class="w-11 h-11 rounded-full bg-gray-200 flex-shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-3 bg-gray-200 rounded w-20"></div><div class="h-3 bg-gray-200 rounded w-2/3"></div></div></div>
         </div>
     </main>
 
@@ -98,27 +103,9 @@
                 </div>
             </div>
 
-            <div id="tab-teknologi" class="search-tab-content hidden px-4 py-4">
-                <h2 class="text-lg font-bold text-gray-900 mb-4">Dunia Teknologi</h2>
-                <div class="space-y-4" id="tech-tab-list">
-                    <div class="flex space-x-3 items-center cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-xl transition">
-                        <div class="w-20 h-20 bg-gray-200 rounded-xl flex-shrink-0 border border-gray-100">
-                            <img src="https://picsum.photos/seed/tech1/150/150" class="w-full h-full object-cover rounded-xl" alt="Tech">
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="font-bold text-gray-900 text-[14px] leading-snug mb-1">AI Generatif Semakin Mendominasi Industri Kreatif di 2026</h3>
-                            <p class="text-[12px] text-gray-500">Tech Radar · 2 jam yang lalu</p>
-                        </div>
-                    </div>
-                    <div class="flex space-x-3 items-center cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-xl transition">
-                        <div class="w-20 h-20 bg-gray-200 rounded-xl flex-shrink-0 border border-gray-100">
-                            <img src="https://picsum.photos/seed/tech2/150/150" class="w-full h-full object-cover rounded-xl" alt="Tech">
-                        </div>
-                        <div class="flex-1">
-                            <h3 class="font-bold text-gray-900 text-[14px] leading-snug mb-1">Rilis Kacamata AR Terbaru Mengubah Cara Kita Bekerja</h3>
-                            <p class="text-[12px] text-gray-500">Gadget Info · 5 jam yang lalu</p>
-                        </div>
-                    </div>
+            <div id="tab-teknologi" class="search-tab-content hidden px-0 py-4">
+                <h2 class="text-lg font-bold text-gray-900 mb-3 px-4">Dunia Teknologi</h2>
+                <div class="grid grid-cols-3 gap-[2px]" id="tech-tab-list">
                 </div>
             </div>
 
@@ -148,19 +135,11 @@
                 </div>
             </div>
 
-            <div id="tab-berita" class="search-tab-content hidden px-4 py-4">
-                <h2 class="text-lg font-bold text-gray-900 mb-4">Berita Terkini</h2>
-                <div class="space-y-4" id="berita-tab-list">
-                    <div class="flex flex-col border-b border-gray-100 pb-3 cursor-pointer hover:opacity-80 transition">
-                        <span class="text-[12px] font-medium text-blue-600 mb-1">Berita Utama · 1 jam lalu</span>
-                        <span class="font-bold text-gray-900 text-[15px] leading-snug">Perkembangan Ekonomi Digital Indonesia Tembus Rekor Baru</span>
-                    </div>
-                    <div class="flex flex-col border-b border-gray-100 pb-3 cursor-pointer hover:opacity-80 transition">
-                        <span class="text-[12px] font-medium text-gray-500 mb-1">Nasional · 3 jam lalu</span>
-                        <span class="font-bold text-gray-900 text-[15px] leading-snug">Pembangunan Infrastruktur Ramah Lingkungan Mulai Diterapkan Secara Masif</span>
-                    </div>
+            <div id="tab-berita" class="search-tab-content hidden px-0 py-4">
+                <h2 class="text-lg font-bold text-gray-900 mb-3 px-4">Berita Terkini</h2>
+                <div class="grid grid-cols-3 gap-[2px]" id="berita-tab-list">
                 </div>
-            </div>
+            </div></div>
         </div>
     </main>
 
@@ -289,9 +268,14 @@
                 <div id="my-replies" class="px-4 py-4 space-y-4"></div>
             </div>
 
-            <!-- Media Tab Content -->
+            <!-- Media Tab Content: dipisah Foto & Video -->
             <div id="profile-content-media" class="profile-tab-section hidden">
-                <div id="my-media" class="grid grid-cols-3 gap-1"></div>
+                <div class="flex px-4 pt-3 space-x-6 border-b border-gray-100">
+                    <button onclick="switchMediaSub(this, 'media-foto')" class="pb-2.5 text-sm font-bold text-gray-900 border-b-[3px] border-gray-900">Foto</button>
+                    <button onclick="switchMediaSub(this, 'media-video')" class="pb-2.5 text-sm font-medium text-gray-500 border-b-[3px] border-transparent hover:text-gray-900">Video</button>
+                </div>
+                <div id="media-foto" class="grid grid-cols-3 gap-1"></div>
+                <div id="media-video" class="grid grid-cols-3 gap-1 hidden"></div>
             </div>
         </div>
     </main>
@@ -318,6 +302,7 @@
                 
                 <div id="attachment-preview" class="hidden mt-2 mb-2 relative rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 group">
                     <img id="attach-preview-img" src="" class="w-full max-h-[50vh] object-cover" alt="Preview">
+                    <video id="attach-preview-video" class="hidden w-full max-h-[50vh]" controls muted playsinline></video>
                     <button onclick="removeAttachment()" class="absolute top-3 right-3 bg-gray-900/70 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-gray-900 backdrop-blur-md transition-transform transform active:scale-95 shadow-lg">
                         <svg class="ic text-sm font-bold" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                     </button>
@@ -327,7 +312,8 @@
                     </div>
                 </div>
 
-                <input type="file" id="attach-file" accept="image/*" class="hidden" onchange="handleAttachFile(this)">
+                <input type="file" id="attach-file" accept="image/*,video/*" class="hidden" onchange="handleAttachFile(this)">
+                <p id="attach-error" class="hidden ml-1 mt-1 text-[13px] text-red-500 font-medium"></p>
                 <div onclick="addAttachment()" class="mt-3 flex items-center text-blue-600 text-sm font-bold hover:bg-blue-50 w-fit px-3 py-1.5 -ml-3 rounded-full cursor-pointer transition-colors">
                     <svg class="ic mr-1.5 text-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
                     Setiap orang dapat membalas
@@ -525,26 +511,60 @@
         }
 
         // ===== Muat linimasa nyata =====
+        function mapFeed(d) {
+            return d.feed.map(function (p) {
+                return {
+                    id: p.id, author: p.author || 'Pengguna', handle: slugOf(p.author), uid: p.user_id,
+                    avatar: AVA[p.user_id % AVA.length],
+                    photo: p.author_avatar || '',
+                    authorBio: p.author_bio || '',
+                    authorLink: p.author_link || '',
+                    time: relTime(p.created_at), content: p.text,
+                    image: p.image || false, likes: p.likes || 0,
+                    comments: p.comment_count || 0, cmts: p.comments || [],
+                    isLiked: !!p.liked_by_me, mine: !!p.mine
+                };
+            });
+        }
+        // Acak urutan postingan biar tidak selalu sama orang di atas
+        function shufflePosts(arr) {
+            var a = arr.slice();
+            for (var i = a.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var t = a[i]; a[i] = a[j]; a[j] = t;
+            }
+            return a;
+        }
+        function renderAll() {
+            renderStories(); renderPosts(); buildNotifs(); updateProfileStats(); renderProfileGrid(); renderExplore(); renderTabs(); renderProfileExtra();
+        }
+        function saveFeedCache() {
+            try {
+                var j = JSON.stringify({ ts: Date.now(), posts: posts });
+                if (j.length < 2000000) localStorage.setItem('clincoo_feed_cache_v1', j);
+            } catch (e) {}
+        }
+        // Tampilkan cache terakhir saat refresh supaya feed tidak kosong dulu
+        function renderFeedCache() {
+            try {
+                var j = JSON.parse(localStorage.getItem('clincoo_feed_cache_v1') || 'null');
+                if (!j || !j.posts || !j.posts.length) return false;
+                posts = j.posts;
+                renderAll();
+                document.getElementById('feed-skeleton').classList.add('hidden');
+                return true;
+            } catch (e) { return false; }
+        }
         function loadFeed() {
             return api('/community?limit=50').then(function (d) {
                 if (requireLogin(d)) return;
                 if (!d.feed) { toast('Koneksi bermasalah'); return; }
                 if (d.me && d.me.name) me.name = d.me.name;
                 if (d.me) { me.id = d.me.id; me.avatar = d.me.avatar_url || ''; me.bio = d.me.bio || ''; me.link = d.me.link || ''; }
-                posts = d.feed.map(function (p) {
-                    return {
-                        id: p.id, author: p.author || 'Pengguna', handle: slugOf(p.author), uid: p.user_id,
-                        avatar: AVA[p.user_id % AVA.length],
-                        photo: p.author_avatar || '',
-                        authorBio: p.author_bio || '',
-                        authorLink: p.author_link || '',
-                        time: relTime(p.created_at), content: p.text,
-                        image: p.image || false, likes: p.likes || 0,
-                        comments: p.comment_count || 0, cmts: p.comments || [],
-                        isLiked: !!p.liked_by_me, mine: !!p.mine
-                    };
-                });
-                renderStories(); renderPosts(); buildNotifs(); updateProfileStats(); renderProfileGrid(); renderExplore(); renderTabs(); renderProfileExtra();
+                posts = shufflePosts(mapFeed(d));
+                renderAll();
+                saveFeedCache();
+                document.getElementById('feed-skeleton').classList.add('hidden');
             }).catch(function () { toast('Koneksi bermasalah'); });
         }
 
@@ -587,7 +607,10 @@
                 let mediaHtml = '';
                 if (post.image) {
                     mediaHtml = '<div class="mt-3 w-full bg-gray-100 rounded-xl border border-gray-100 overflow-hidden cursor-pointer">'
-                        + '<img src="' + post.image + '" class="w-full h-auto object-cover max-h-[28rem] hover:opacity-95 transition-opacity" loading="lazy" alt="Post media"></div>';
+                        + (isVideo(post.image)
+                            ? '<video src="' + post.image + '" class="w-full h-auto max-h-[28rem]" controls playsinline preload="metadata"></video>'
+                            : '<img src="' + post.image + '" class="w-full h-auto object-cover max-h-[28rem] hover:opacity-95 transition-opacity" loading="lazy" alt="Post media">')
+                        + '</div>';
                 }
                 const dotsHtml = post.mine
                     ? '<svg class="ic text-gray-400 hover:text-red-500 text-xl cursor-pointer p-1 transition-colors" onclick="deletePost(\'' + post.id + '\')"  title="Hapus postingan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>'
@@ -657,10 +680,22 @@
                 var items = posts.filter(p => p.image || p.content).slice(0, 9);
                 eg.innerHTML = items.map(function (p) {
                     return p.image
-                        ? '<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer"><img src="' + p.image + '" class="w-full h-full object-cover hover:opacity-90 transition" loading="lazy" alt="Eksplorasi"></div>'
+                        ? '<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer relative">' + (isVideo(p.image)
+                            ? '<video src="' + p.image + '" class="w-full h-full object-cover" muted playsinline preload="metadata"></video><svg class="ic text-3xl text-white drop-shadow pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
+                            : '<img src="' + p.image + '" class="w-full h-full object-cover hover:opacity-90 transition" loading="lazy" alt="Eksplorasi">') + '</div>'
                         : '<div class="aspect-square bg-gray-50 border border-gray-100 p-2 flex items-center"><p class="text-[11px] text-gray-600 leading-snug line-clamp-6">' + esc(p.content) + '</p></div>';
                 }).join('') || '<p class="text-[13px] text-gray-500 py-2">Belum ada postingan untuk dijelajahi.</p>';
             }
+        }
+
+        // Kartu gambar untuk grid konten di halaman Search
+        function mediaTile(p) {
+            var click = 'onclick="switchTab(event, \'home-view\', document.querySelector(\'[data-icon=\'house\'\']\'))"';
+            return p.image
+                ? '<div ' + click + ' class="aspect-square bg-gray-100 overflow-hidden cursor-pointer relative">' + (isVideo(p.image)
+                        ? '<video src="' + p.image + '" class="w-full h-full object-cover" muted playsinline preload="metadata"></video><svg class="ic text-3xl text-white drop-shadow pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
+                        : '<img src="' + p.image + '" class="w-full h-full object-cover hover:opacity-90 transition" loading="lazy" alt="Konten">') + '</div>'
+                : '<div ' + click + ' class="aspect-square bg-gradient-to-br ' + AVA[p.uid % AVA.length] + ' flex items-center justify-center cursor-pointer"><span class="text-white font-extrabold text-2xl drop-shadow">' + esc(p.author.charAt(0)) + '</span></div>';
         }
 
         // ===== Fitur pelengkap =====
@@ -729,11 +764,9 @@
             var techPosts = posts.filter(function (p) { return techWords.some(function (w) { return String(p.content).toLowerCase().indexOf(w) !== -1; }); });
             var tc = document.getElementById('tech-tab-list');
             if (tc) {
-                tc.innerHTML = techPosts.slice(0, 4).map(function (p) {
-                    return '<div onclick="switchTab(event, \'home-view\', document.querySelector(\'[data-icon=\'house\'\']\'))" class="flex space-x-3 items-center cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-xl transition"><div class="w-20 h-20 bg-gray-200 rounded-xl flex-shrink-0 border border-gray-100 overflow-hidden flex items-center justify-center">'
-                        + (p.image ? '<img src="' + p.image + '" class="w-full h-full object-cover rounded-xl" alt="Tech">' : '<svg class="ic text-2xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg>')
-                        + '</div><div class="flex-1"><h3 class="font-bold text-gray-900 text-[14px] leading-snug mb-1 line-clamp-2">' + esc(p.content) + '</h3><p class="text-[12px] text-gray-500">' + esc(p.author) + ' · ' + esc(p.time) + '</p></div></div>';
-                }).join('') || '<p class="text-[13px] text-gray-500">Belum ada postingan bertema teknologi.</p>';
+                tc.innerHTML = techPosts.slice(0, 9).map(function (p) {
+                    return mediaTile(p);
+                }).join('') || '<p class="text-[13px] text-gray-500 px-4">Belum ada postingan bertema teknologi.</p>';
             }
             var byAuthor = {};
             posts.forEach(function (p) { byAuthor[p.uid] = byAuthor[p.uid] || { name: p.author, uid: p.uid, n: 0 }; byAuthor[p.uid].n++; });
@@ -746,9 +779,9 @@
             }
             var bl = document.getElementById('berita-tab-list');
             if (bl) {
-                bl.innerHTML = posts.slice(0, 5).map(function (p) {
-                    return '<div onclick="switchTab(event, \'home-view\', document.querySelector(\'[data-icon=\'house\'\']\'))" class="flex flex-col border-b border-gray-100 pb-3 cursor-pointer hover:opacity-80 transition"><span class="text-[12px] font-medium text-blue-600 mb-1">' + esc(p.author) + ' · ' + esc(p.time) + '</span><span class="font-bold text-gray-900 text-[15px] leading-snug line-clamp-2">' + esc(p.content) + '</span></div>';
-                }).join('') || '<p class="text-[13px] text-gray-500">Belum ada kabar terbaru.</p>';
+                bl.innerHTML = posts.slice(0, 9).map(function (p) {
+                    return mediaTile(p);
+                }).join('') || '<p class="text-[13px] text-gray-500 px-4">Belum ada kabar terbaru.</p>';
             }
         }
 
@@ -767,12 +800,19 @@
                     return '<div class="border border-gray-100 rounded-2xl p-3"><p class="text-[12px] text-gray-500 mb-1">Membalas ' + esc(x.post.author) + ':</p><p class="text-sm text-gray-800 leading-relaxed">' + esc(x.c.text) + '</p><p class="text-[11px] text-gray-400 mt-1">' + esc(relTime(x.c.created_at)) + '</p></div>';
                 }).join('') : '<div class="flex flex-col items-center justify-center py-12 px-4 text-center"><div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg></div><h3 class="text-lg font-bold text-gray-900 mb-1">Belum ada balasan</h3><p class="text-[14px] text-gray-500 max-w-[250px]">Balas postingan orang lain, muncul di sini.</p></div>';
             }
-            var md = document.getElementById('my-media');
-            if (md) {
-                var imgs = posts.filter(function (p) { return p.mine && p.image; });
-                md.innerHTML = imgs.length ? imgs.map(function (p) {
-                    return '<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer"><img src="' + p.image + '" class="w-full h-full object-cover" alt="Media"></div>';
-                }).join('') : '<div class="col-span-3 flex flex-col items-center justify-center py-12 px-4 text-center"><div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div><h3 class="text-lg font-bold text-gray-900 mb-1">Tidak ada media</h3><p class="text-[14px] text-gray-500 max-w-[250px]">Foto yang Anda posting akan muncul di sini.</p></div>';
+            var mf = document.getElementById('media-foto');
+            if (mf) {
+                var imgs = posts.filter(function (p) { return p.mine && p.image && !isVideo(p.image); });
+                mf.innerHTML = imgs.length ? imgs.map(function (p) {
+                    return '<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer"><img src="' + p.image + '" class="w-full h-full object-cover" alt="Foto"></div>';
+                }).join('') : '<div class="col-span-3 flex flex-col items-center justify-center py-12 px-4 text-center"><div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div><h3 class="text-lg font-bold text-gray-900 mb-1">Belum ada foto</h3><p class="text-[14px] text-gray-500 max-w-[250px]">Foto yang Anda posting akan muncul di sini.</p></div>';
+            }
+            var mv = document.getElementById('media-video');
+            if (mv) {
+                var vids = posts.filter(function (p) { return p.mine && p.image && isVideo(p.image); });
+                mv.innerHTML = vids.length ? vids.map(function (p) {
+                    return '<div class="aspect-square bg-gray-900 overflow-hidden cursor-pointer relative"><video src="' + p.image + '" class="w-full h-full object-cover" muted playsinline preload="metadata"></video><svg class="ic text-3xl text-white drop-shadow pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg></div>';
+                }).join('') : '<div class="col-span-3 flex flex-col items-center justify-center py-12 px-4 text-center"><div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect width="14" height="12" x="2" y="6" rx="2" ry="2"/></svg></div><h3 class="text-lg font-bold text-gray-900 mb-1">Belum ada video</h3><p class="text-[14px] text-gray-500 max-w-[250px]">Video yang Anda posting akan muncul di sini.</p></div>';
             }
         }
 
@@ -851,6 +891,22 @@
         function handleAttachFile(input) {
             var file = input.files && input.files[0];
             if (!file) return;
+            if (file.type && file.type.indexOf('video/') === 0) {
+                // Video: tanpa kompresi — batas penyimpanan ±100KB
+                if (file.size > 100000) { showAttachError('Video terlalu besar (maks ±100KB). Pilih video pendek.'); return; }
+                var vr = new FileReader();
+                vr.onload = function (e) {
+                    attachDataUrl = e.target.result; isAttachmentAdded = true;
+                    var v = document.getElementById('attach-preview-video');
+                    v.src = attachDataUrl; v.classList.remove('hidden');
+                    document.getElementById('attach-preview-img').classList.add('hidden');
+                    document.getElementById('attachment-preview').classList.remove('hidden');
+                    document.getElementById('thread-line').classList.remove('hidden');
+                    validatePostInput();
+                };
+                vr.readAsDataURL(file);
+                return;
+            }
             var reader = new FileReader();
             reader.onload = function (e) {
                 var dataUrl = e.target.result;
@@ -865,7 +921,9 @@
                     c.getContext('2d').drawImage(img, 0, 0, w, h);
                     while (q >= 0.4) { out = c.toDataURL('image/jpeg', q); if (out.length <= 100000) break; q -= 0.15; }
                     attachDataUrl = out; isAttachmentAdded = true;
-                    document.getElementById('attach-preview-img').src = out;
+                    document.getElementById('attach-preview-video').classList.add('hidden');
+                    var pv = document.getElementById('attach-preview-img');
+                    pv.classList.remove('hidden'); pv.src = out;
                     document.getElementById('attachment-preview').classList.remove('hidden');
                     document.getElementById('thread-line').classList.remove('hidden');
                     validatePostInput();
@@ -873,6 +931,15 @@
                 img.src = dataUrl;
             };
             reader.readAsDataURL(file);
+        }
+        function showAttachError(msg) {
+            var el = document.getElementById('attach-error');
+            if (!el) return;
+            el.textContent = msg; el.classList.remove('hidden');
+            setTimeout(function () { el.classList.add('hidden'); }, 4000);
+        }
+        function isVideo(u) {
+            return typeof u === 'string' && u !== '' && (u.indexOf('data:video/') === 0 || /\.(mp4|webm|mov|m4v)(\?|$)/i.test(u));
         }
         function removeAttachment() {
             isAttachmentAdded = false; attachDataUrl = '';
@@ -1051,9 +1118,19 @@
                 return;
             }
             grid.innerHTML = mine.map(p => p.image
-                ? `<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer group" onclick="switchTab(event, 'home-view', document.querySelector('[data-icon=\'house\']'))"><img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Post"></div>`
+                ? `<div class="aspect-square bg-gray-100 overflow-hidden cursor-pointer group relative" onclick="switchTab(event, 'home-view', document.querySelector('[data-icon=\'house\']'))">${isVideo(p.image) ? `<video src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" muted playsinline preload="metadata"></video><svg class="ic text-3xl text-white drop-shadow pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>` : `<img src="${p.image}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="Post">`}</div>`
                 : `<div class="aspect-square bg-gray-50 border border-gray-100 p-3 flex flex-col justify-between cursor-pointer hover:bg-gray-100 transition-colors" onclick="switchTab(event, 'home-view', document.querySelector('[data-icon=\'house\']'))"><p class="text-[12px] text-gray-700 leading-snug line-clamp-4">${esc(p.content)}</p><div class="flex space-x-3 text-[11px] text-gray-400"><span>❤ ${p.likes}</span><span>💬 ${p.comments}</span></div></div>`
             ).join('');
+        }
+        function switchMediaSub(btn, id) {
+            var foto = document.getElementById('media-foto'), vid = document.getElementById('media-video');
+            if (foto) foto.classList.add('hidden');
+            if (vid) vid.classList.add('hidden');
+            var el = document.getElementById(id); if (el) el.classList.remove('hidden');
+            var btns = btn.parentElement.querySelectorAll('button');
+            btns.forEach(function (b) { b.classList.remove('text-gray-900', 'font-bold', 'border-gray-900'); b.classList.add('text-gray-500', 'font-medium', 'border-transparent'); });
+            btn.classList.remove('text-gray-500', 'font-medium', 'border-transparent');
+            btn.classList.add('text-gray-900', 'font-bold', 'border-gray-900');
         }
         function openEditProfile() { location.href = 'edit-profil.html'; }
 
@@ -1136,9 +1213,10 @@
             }).catch(function () {});
             var draft = ''; try { draft = localStorage.getItem('clincoo_draft') || ''; } catch (e) {}
             if (draft) { document.getElementById('post-input').value = draft; validatePostInput(); }
+            if (!renderFeedCache()) document.getElementById('feed-skeleton').classList.remove('hidden');
             loadFeed();
         }
-        window.onload = initApp;
+        initApp();
     </script>
 </body>
 </html>

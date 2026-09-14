@@ -170,5 +170,5 @@ export async function hydratePosts(db, rows, meId) {
 }
 
 export function validPostImage(img) {
-  return typeof img === 'string' && img.indexOf('data:image/') === 0 && img.length <= 100000;
+  return typeof img === 'string' && (img.indexOf('data:image/') === 0 || img.indexOf('data:video/') === 0) && img.length <= 100000;
 }

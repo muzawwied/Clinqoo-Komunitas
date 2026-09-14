@@ -21,7 +21,7 @@ export async function onRequestPost({ request, env }) {
       await db.prepare('DELETE FROM community_likes WHERE post_id = ? AND user_id = ?').bind(postId, user.id).run();
       liked = false;
     } else {
-      await db.prepare('INSERT INTO community_likes (post_id, user_id) VALUES (?, ?)').bind(postId, user.id).run();
+      await db.prepare('INSERT INTO community_likes (post_id, user_id, created_at) VALUES (?, ?, datetime(\'now\'))').bind(postId, user.id).run();
       liked = true;
     }
     const n = await db.prepare('SELECT COUNT(*) AS c FROM community_likes WHERE post_id = ?').bind(postId).first();

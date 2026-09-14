@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pengaturan & Privasi — Komunitas Clincoo</title>
     <meta name="description" content="Pengaturan notifikasi, data, dan privasi Komunitas Clincoo.">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
 </head>
@@ -125,7 +125,7 @@
             try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
             location.replace('login.html');
         }
-        window.onload = function () { if (guard()) init(); };
+        if (guard()) init();
     </script>
 </body>
 </html>

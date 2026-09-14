@@ -39,7 +39,7 @@ export async function onRequestPost({ request, env }) {
     const text = String(body.text || '').trim().slice(0, 500);
     const image = body.image ? String(body.image) : '';
     if (!text && !image) return json({ error: 'Postingan tidak boleh kosong' }, 400);
-    if (image && !validPostImage(image)) return json({ error: 'Gambar tidak valid atau terlalu besar (maks ~100KB)' }, 400);
+    if (image && !validPostImage(image)) return json({ error: 'Media tidak valid atau terlalu besar (maks ~100KB)' }, 400);
     // Batas lahir: 1 postingan per 15 detik
     const last = await db.prepare('SELECT created_at FROM community_posts WHERE user_id = ? ORDER BY created_at DESC LIMIT 1').bind(user.id).first();
     if (last && new Date(last.created_at) > new Date(Date.now() - 15000)) {

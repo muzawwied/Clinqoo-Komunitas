@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Profil — Komunitas Clincoo</title>
     <meta name="description" content="Profil anggota Komunitas Clincoo.">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
 </head>
@@ -137,7 +137,7 @@
                     txt = txt.replace(/#[\w]+/g, function (t) { return '<span class="text-blue-600">' + t + '</span>'; });
                     return '<div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">'
                         + '<p class="text-[12px] text-gray-400 mb-1.5">' + esc(relTime(p.created_at)) + '</p>'
-                        + (p.image ? '<img src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 max-h-72 w-full object-cover" alt="">' : '')
+                        + (p.image ? (String(p.image).indexOf('data:video/') === 0 ? '<video src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 w-full max-h-72" controls playsinline preload="metadata"></video>' : '<img src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 max-h-72 w-full object-cover" alt="">') : '')
                         + '<p class="text-[14px] text-gray-800 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
                         + '<div class="flex items-center space-x-4 mt-2.5 text-[12px] text-gray-500">'
                         + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (p.likes || 0) + '</span>'
@@ -162,7 +162,7 @@
                 } else { location.replace('login.html'); }
             }).catch(function () { location.replace('index.html'); });
         }
-        window.onload = init;
+        init();
     </script>
 </body>
 </html>

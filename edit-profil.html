@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Edit Profil — Komunitas Clincoo</title>
     <meta name="description" content="Edit profil Komunitas Clincoo: foto, nama, bio, dan tautan.">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -188,7 +188,7 @@
             }).catch(function () { btn.disabled = false; btn.textContent = 'Simpan'; toast('Koneksi bermasalah'); });
         }
 
-        window.onload = init;
+        init();
     </script>
 </body>
 </html>
