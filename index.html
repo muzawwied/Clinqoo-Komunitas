@@ -20,6 +20,7 @@
     <header id="main-header" class="bg-white/95 backdrop-blur-sm border-b border-gray-100 p-4 fixed top-0 w-full z-20 transition-transform duration-300 ease-in-out">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
             <h1 class="text-xl font-bold text-gray-900 tracking-tight">Komunitas Clincoo</h1>
+                <span id="demo-badge" class="hidden text-[10px] font-bold tracking-widest bg-amber-100 text-amber-700 rounded-full px-2 py-0.5 align-middle ml-1">DEMO</span>
             <div class="flex space-x-4 text-gray-600">
                 <svg class="ic text-2xl hover:text-gray-900 cursor-pointer transition" onclick="switchTab(event, 'create-view', document.querySelector('[data-icon=\'plus\']'))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
                 <svg class="ic text-2xl hover:text-gray-900 cursor-pointer transition" onclick="switchTab(event, 'notif-view', document.querySelector('[data-icon=\'heart\']'))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
@@ -461,7 +462,8 @@
         </ul>
     </nav>
 
-    <script>
+        <script src="assets/demo.js"></script>
+<script>
         // ===== Komunitas Clincoo — VibeSpace edisi fullstack =====
         // Desain VibeSpace dipertahankan 100%; data demo diganti API komunitas Clincoo.
 
@@ -472,6 +474,7 @@
         function meData() { try { return JSON.parse(localStorage.getItem('clincoo_community_me') || '{}'); } catch (e) { return {}; } }
 
         function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
             opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
             var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
@@ -1263,7 +1266,9 @@
         }
 
         function initApp() {
-            if (!token()) { location.replace('login.html'); return; }
+            // Mode demo: tanpa token, api() otomatis pakai data dummy
+
+            if (window.demoMode && demoMode()) { var db_ = document.getElementById('demo-badge'); if (db_) db_.classList.remove('hidden'); }
             me = { name: meData().name || 'Saya', bio: meData().bio || '' };
             api('/auth/me').then(function (d) {
                 if (d && d.user) { me.id = d.user.id; if (d.user.name) me.name = d.user.name; }

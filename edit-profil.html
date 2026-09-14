@@ -78,11 +78,13 @@
 
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
 
-    <script>
+        <script src="assets/demo.js"></script>
+<script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
         function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
             opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
             var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
@@ -111,7 +113,8 @@
         function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 
         function init() {
-            if (!token()) { location.replace('login.html'); return; }
+            // Mode demo: tanpa token, api() otomatis pakai data dummy
+
             api('/auth/me').then(function (d) {
                 if (d && d._status === 401) { location.replace('login.html'); return; }
                 if (d && d.user) {

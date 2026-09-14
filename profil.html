@@ -73,11 +73,13 @@
         </div>
     </main>
 
-    <script>
+        <script src="assets/demo.js"></script>
+<script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
         function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
             opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
             var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
@@ -143,7 +145,8 @@
                 .then(function () { btn.disabled = false; btn.style.opacity = '1'; });
         }
         function init() {
-            if (!token()) { location.replace('login.html'); return; }
+            // Mode demo: tanpa token, api() otomatis pakai data dummy
+
             var uidRaw = new URLSearchParams(location.search).get('uid');
             if (uidRaw === 'me' || !uidRaw) { renderMe(); return; }
             var uid = parseInt(uidRaw, 10);

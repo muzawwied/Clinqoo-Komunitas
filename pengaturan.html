@@ -99,11 +99,13 @@
         function clrSearch() { try { localStorage.removeItem('clincoo_last_search'); } catch (e) {} toast('Riwayat pencarian dihapus'); }
     </script>
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
-    <script>
+        <script src="assets/demo.js"></script>
+<script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
         function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
             opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
             var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
@@ -118,7 +120,7 @@
         }
         function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
         function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
-        function guard() { if (!token()) { location.replace('login.html'); return false; } return true; }
+        function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
         function logoutNow() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
             try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
