@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Edit Profil — Komunitas Clincoo</title>
-    <meta name="description" content="Edit profil Komunitas Clincoo: foto, nama, bio, dan tautan.">
+    <title>Edit Profil — Komunitas Clinqoo</title>
+    <meta name="description" content="Edit profil Komunitas Clinqoo: foto, nama, bio, dan tautan.">
     <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>
@@ -82,7 +82,7 @@
 <script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
@@ -180,7 +180,7 @@
                 if (d._status === 401) { location.replace('login.html'); return; }
                 if (!d.success) { toast(d.error || 'Gagal menyimpan'); return; }
                 try {
-                    localStorage.setItem('clincoo_community_me', JSON.stringify({
+                    localStorage.setItem('clinqoo_community_me', JSON.stringify({
                         name: name, bio: bio, link: link,
                         avatar: d.me ? d.me.avatar_url : (me.avatar || ''),
                         ts: Date.now()

@@ -2,7 +2,7 @@ name = "clincoo-komunitas"
 compatibility_date = "2024-09-01"
 pages_build_output_dir = "."
 
-# D1 yang sama dengan platform Clincoo — akun Clincoo dipakai langsung di komunitas,
+# D1 yang sama dengan platform Clinqoo — akun Clinqoo dipakai langsung di komunitas,
 # data komunitas (community_*) tetap di tabelnya sendiri.
 [[d1_databases]]
 binding = "DB"

@@ -1,5 +1,5 @@
 /* =========================================================
-   Clincoo Komunitas — MODE DEMO (tanpa auth, data dummy)
+   Clinqoo Komunitas — MODE DEMO (tanpa auth, data dummy)
    Saat tidak ada token, api() di tiap halaman mendelegasikan
    ke sini. Semua perubahan (like, komentar, ikuti, pesan,
    postingan) tersimpan di localStorage — terasa seperti asli.
@@ -8,30 +8,30 @@
     'use strict';
 
     function hasToken() {
-        try { return !!(localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token')); } catch (e) { return false; }
+        try { return !!(localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token')); } catch (e) { return false; }
     }
     window.demoMode = function () { return !hasToken(); };
 
-    var DB_KEY = 'clincoo_demo_db_v1';
+    var DB_KEY = 'clinqoo_demo_db_v1';
     var _now = Date.now();
     function isoMin(m) { return new Date(_now - m * 60000).toISOString(); }
 
     function seed() {
         var users = {
-            1: { id: 1, name: 'Anda (Demo)', bio: 'Semua data di halaman ini simulasi — belum terhubung ke akun sungguhan.', link: 'clincoo.co', avatar_url: '' },
+            1: { id: 1, name: 'Anda (Demo)', bio: 'Semua data di halaman ini simulasi — belum terhubung ke akun sungguhan.', link: 'clinqoo.co', avatar_url: '' },
             2: { id: 2, name: 'Dinda Prameswari', bio: 'Pemilik Toko Luna — hijab & jilbab premium', link: 'tokoluna.id', avatar_url: '' },
             3: { id: 3, name: 'Bagus Setiawan', bio: 'Lagi serius belajar bikin situs sendiri', link: 'bagusdev.site', avatar_url: '' },
             4: { id: 4, name: 'Salsa Nabila', bio: 'Desainer UI/UX', link: 'salsadesign.co', avatar_url: '' },
             5: { id: 5, name: 'Rizky Maulana', bio: 'Pemula di dunia web, semangat 45', link: 'rizkym.id', avatar_url: '' },
-            6: { id: 6, name: 'Tim Clincoo', bio: 'Akun resmi Clincoo', link: 'clincoo.co', avatar_url: '' },
+            6: { id: 6, name: 'Tim Clinqoo', bio: 'Akun resmi Clinqoo', link: 'clinqoo.co', avatar_url: '' },
             7: { id: 7, name: 'Nadia Kirana', bio: 'Batik Laras — butik online', link: 'batiklaras.id', avatar_url: '' },
             8: { id: 8, name: 'Yoga Pratama', bio: 'Freelancer web developer', link: 'yogaweb.dev', avatar_url: '' }
         };
         var posts = [
-            { id: 'dm1', user_id: 6, text: 'Selamat datang di Komunitas Clincoo! 🎉 Ruang buat berbagi progres proyek, tanya jawab, dan kenalan sesama pembangun situs. Semua data di mode ini simulasi, tapi semua tombol berfungsi — coba like, komentar, ikuti, dan kirim pesan!', image: null, created_at: isoMin(35), likes: 12, liked_by_me: false, comments: [{ id: 'dc1', user_id: 2, text: 'Akhirnya ada ruang komunitasnya! Keren 🔥', created_at: isoMin(28) }, { id: 'dc2', user_id: 5, text: 'Izin nongkrong di sini, masih belajar nih', created_at: isoMin(20) }] },
+            { id: 'dm1', user_id: 6, text: 'Selamat datang di Komunitas Clinqoo! 🎉 Ruang buat berbagi progres proyek, tanya jawab, dan kenalan sesama pembangun situs. Semua data di mode ini simulasi, tapi semua tombol berfungsi — coba like, komentar, ikuti, dan kirim pesan!', image: null, created_at: isoMin(35), likes: 12, liked_by_me: false, comments: [{ id: 'dc1', user_id: 2, text: 'Akhirnya ada ruang komunitasnya! Keren 🔥', created_at: isoMin(28) }, { id: 'dc2', user_id: 5, text: 'Izin nongkrong di sini, masih belajar nih', created_at: isoMin(20) }] },
             { id: 'dm2', user_id: 2, text: 'Toko Luna baru ganti tampilan situsnya jadi lebih bersih. Konversi naik 18% dalam seminggu! Buat yang jualan online: tampilan rapi itu beneran ngarauuh.', image: 'https://picsum.photos/seed/tokoluna/800/500', created_at: isoMin(120), likes: 24, liked_by_me: true, comments: [{ id: 'dc3', user_id: 4, text: 'Wah selamat! Aku suka palet warnanya 🤍', created_at: isoMin(95) }] },
             { id: 'dm3', user_id: 4, text: 'Tips desain hari ini: satu halaman, satu aksi utama. Kalau ada 3 tombol yang sama-sama "penting", berarti belum ada yang penting. #tipsdesain', image: null, created_at: isoMin(300), likes: 31, liked_by_me: false, comments: [{ id: 'dc4', user_id: 8, text: 'Ini yang selalu aku kasih ke klien 😂 setuju banget', created_at: isoMin(240) }, { id: 'dc5', user_id: 7, text: 'Lagi merapikan halaman produkku sesuai tips ini', created_at: isoMin(180) }] },
-            { id: 'dm4', user_id: 8, text: 'Baru selesaikan situs klien kedua pakai Clincoo. Dari brief ke launching cuma 3 hari. Kalau ada yang butuh jasa web, sapa aja ya!', image: 'https://picsum.photos/seed/yogaport/800/500', created_at: isoMin(480), likes: 15, liked_by_me: false, comments: [] },
+            { id: 'dm4', user_id: 8, text: 'Baru selesaikan situs klien kedua pakai Clinqoo. Dari brief ke launching cuma 3 hari. Kalau ada yang butuh jasa web, sapa aja ya!', image: 'https://picsum.photos/seed/yogaport/800/500', created_at: isoMin(480), likes: 15, liked_by_me: false, comments: [] },
             { id: 'dm5', user_id: 7, text: 'Cerita kecil: awalnya takut banget bikin situs sendiri, ternyata perlahan-lahan bisa juga. Sekarang pesanan batik masuk lewat website tiap hari. Buat yang masih ragu — mulai aja dulu, kecil-kecil dulu. #proyekbaru', image: 'https://picsum.photos/seed/batiklaras/800/500', created_at: isoMin(1500), likes: 42, liked_by_me: true, comments: [{ id: 'dc6', user_id: 6, text: 'Nadia ini contoh nyata pemilik toko yang mandiri digital 💪', created_at: isoMin(1400) }, { id: 'dc7', user_id: 3, text: 'Semangat! Halaman batiknya bagus banget', created_at: isoMin(1300) }] },
             { id: 'dm6', user_id: 3, text: 'Pertanyaan pemula: domain .id vs .co.id bedanya apa ya? Buat toko kecil lebih cocok yang mana? #tanya', image: null, created_at: isoMin(2000), likes: 7, liked_by_me: false, comments: [{ id: 'dc8', user_id: 8, text: 'Untuk toko kecil, .id lebih murah dan prosesnya gampang. .co.id butuh akta usaha.', created_at: isoMin(1900) }, { id: 'dc9', user_id: 2, text: 'Setuju sama Yoga, aku pakai .id aja', created_at: isoMin(1850) }] },
             { id: 'dm7', user_id: 5, text: 'Hari ke-7 belajar bikin situs: akhirnya paham bedanya domain, hosting, dan DNS 🙌 Kek thread lama soal konfigurasi, makasih semuanya!', image: null, created_at: isoMin(2800), likes: 19, liked_by_me: false, comments: [{ id: 'dc10', user_id: 6, text: 'Mantap Rizky, lanjut ke pekan kedua! 🚀', created_at: isoMin(2700) }] },
@@ -43,7 +43,7 @@
             following: [2, 6, 4],
             messages: [
                 { id: 'dmsg1', from_id: 2, text: 'Halo! Aku lihat situsmu di profil, bersih banget. Ajarin dong bikin halaman produk yang kayak punyamu 😊', created_at: isoMin(75) },
-                { id: 'dmsg2', from_id: 6, text: 'Halo! Selamat datang di Komunitas Clincoo 👋 Ada yang bisa kami bantu? Semua fitur di mode ini bebas dicoba.', created_at: isoMin(45) }
+                { id: 'dmsg2', from_id: 6, text: 'Halo! Selamat datang di Komunitas Clinqoo 👋 Ada yang bisa kami bantu? Semua fitur di mode ini bebas dicoba.', created_at: isoMin(45) }
             ]
         };
     }
@@ -87,7 +87,7 @@
         var b = body(opts);
 
         // ---- auth ----
-        if (base === '/auth/me') return ok({ user: { id: 1, name: db.users[1].name, email: 'demo@clincoo.dev', avatar_url: '' } });
+        if (base === '/auth/me') return ok({ user: { id: 1, name: db.users[1].name, email: 'muzawwied@gmail.com', avatar_url: '' } });
         if (base === '/auth/logout') return ok({ success: true });
 
         // ---- cari ----
@@ -196,8 +196,8 @@
     load();
     if (window.demoMode()) {
         try {
-            if (!localStorage.getItem('clincoo_community_me')) {
-                localStorage.setItem('clincoo_community_me', JSON.stringify({ id: 1, name: db.users[1].name, bio: db.users[1].bio, link: db.users[1].link, avatar: '' }));
+            if (!localStorage.getItem('clinqoo_community_me')) {
+                localStorage.setItem('clinqoo_community_me', JSON.stringify({ id: 1, name: db.users[1].name, bio: db.users[1].bio, link: db.users[1].link, avatar: '' }));
             }
         } catch (e) {}
     }

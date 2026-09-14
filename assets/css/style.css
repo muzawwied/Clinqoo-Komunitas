@@ -1,4 +1,4 @@
-/* Komunitas Clincoo — style */
+/* Komunitas Clinqoo — style */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root { --accent: #000000; --bg: #ffffff; --bg-soft: #f9fafb; --line: #e5e7eb; --txt: #111827; --txt-soft: #6b7280; }
 html.dark-mode { --accent: #ffffff; --bg: #000000; --bg-soft: #121212; --line: #262626; --txt: #f5f5f5; --txt-soft: #a8a8a8; }

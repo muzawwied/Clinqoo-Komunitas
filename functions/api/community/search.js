@@ -16,7 +16,7 @@ export async function onRequestGet({ request, env }) {
     const like = '%' + q.replace(/[%_]/g, function (m) { return m === '%' ? '\\%' : '\\_'; }) + '%';
     const rows = (await db.prepare("SELECT * FROM community_posts WHERE text LIKE ? ESCAPE '\\' ORDER BY created_at DESC LIMIT 20").bind(like).all()).results || [];
     const posts = await hydratePosts(db, rows, user.id);
-    // Orang: yang pernah posting dengan nama cocok, plus akun Clincoo yang namanya cocok
+    // Orang: yang pernah posting dengan nama cocok, plus akun Clinqoo yang namanya cocok
     const posters = (await db.prepare("SELECT user_id AS id, author AS name, COUNT(*) AS n FROM community_posts GROUP BY user_id HAVING author LIKE ? ESCAPE '\\' ORDER BY n DESC LIMIT 10").bind(like).all()).results || [];
     const accounts = (await db.prepare("SELECT id, name FROM auth_users WHERE name LIKE ? ESCAPE '\\' LIMIT 10").bind(like).all()).results || [];
     const seen = {}, people = [];

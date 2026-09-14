@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pusat Bantuan — Komunitas Clincoo</title>
-    <meta name="description" content="FAQ dan panduan Komunitas Clincoo.">
+    <title>Pusat Bantuan — Komunitas Clinqoo</title>
+    <meta name="description" content="FAQ dan panduan Komunitas Clinqoo.">
     <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
@@ -31,7 +31,7 @@
         <div id="faq-list" class="px-4 mt-4 space-y-2"></div>
         <div class="bg-white mt-4 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
             <h3 class="text-[13px] font-semibold text-gray-600 mb-2 flex items-center space-x-1.5"><svg class="ic text-base text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.91 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg><span>Masih butuh bantuan?</span></h3>
-            <p class="text-[13px] text-gray-500 leading-relaxed">Tulis masalahmu di komunitas dengan tag #bantuan — sesama anggota dan tim Clincoo akan membantu.</p>
+            <p class="text-[13px] text-gray-500 leading-relaxed">Tulis masalahmu di komunitas dengan tag #bantuan — sesama anggota dan tim Clinqoo akan membantu.</p>
         </div>
     </main>
     <script>
@@ -43,8 +43,8 @@
         };
         var FAQ = [
             ['Mulai', 'ph-rocket-launch', [
-                ['Bagaimana cara bergabung di Komunitas Clincoo?', 'Buka halaman Masuk lalu pilih "Daftar". Isi nama, email, dan kata sandi — langsung masuk ke beranda komunitas.'],
-                ['Apakah gratis?', 'Ya. Komunitas Clincoo gratis untuk semua pemilik akun Clincoo.'],
+                ['Bagaimana cara bergabung di Komunitas Clinqoo?', 'Buka halaman Masuk lalu pilih "Daftar". Isi nama, email, dan kata sandi — langsung masuk ke beranda komunitas.'],
+                ['Apakah gratis?', 'Ya. Komunitas Clinqoo gratis untuk semua pemilik akun Clinqoo.'],
                 ['Kenapa saya diminta masuk lagi?', 'Sesi login hanya berlaku di perangkat itu. Kalau kamu menekan "Keluar" atau bersih riwayat browser, kamu perlu masuk lagi.']
             ]],
             ['Postingan', 'ph-note', [
@@ -104,7 +104,7 @@
 <script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
@@ -124,7 +124,7 @@
         function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
         function logoutNow() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); localStorage.removeItem('clinqoo_community_me'); } catch (e) {}
             location.replace('login.html');
         }
         if (guard()) init();

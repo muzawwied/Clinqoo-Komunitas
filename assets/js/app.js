@@ -1,10 +1,10 @@
-// Komunitas Clincoo — logic aplikasi multi-halaman
+// Komunitas Clinqoo — logic aplikasi multi-halaman
 (function () {
   'use strict';
   // Backend komunitas mandiri — same-origin di clincoo-komunitas.pages.dev; cermin github.io pakai URL absolut
   var API = '/api';
   if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-  var TOKEN_KEY = 'clincoo_auth_token', TOKEN_KEY2 = 'clincoo_token', ME_KEY = 'clincoo_community_me';
+  var TOKEN_KEY = 'clinqoo_auth_token', TOKEN_KEY2 = 'clinqoo_token', ME_KEY = 'clinqoo_community_me';
   var page = document.body.getAttribute('data-page') || '';
 
   function $(id) { return document.getElementById(id); }
@@ -48,11 +48,11 @@
   function applyTheme(dark) {
     document.documentElement.classList.toggle('dark-mode', dark);
     document.body.classList.toggle('dark-mode', dark); // kompatibilitas mundur
-    try { localStorage.setItem('clincoo_community_theme', dark ? 'dark' : 'light'); } catch (e) {}
+    try { localStorage.setItem('clinqoo_community_theme', dark ? 'dark' : 'light'); } catch (e) {}
     var lbl = $('theme-label');
     if (lbl) lbl.textContent = dark ? 'Mode terang' : 'Mode gelap';
   }
-  var savedTheme = null; try { savedTheme = localStorage.getItem('clincoo_community_theme'); } catch (e) {}
+  var savedTheme = null; try { savedTheme = localStorage.getItem('clinqoo_community_theme'); } catch (e) {}
   applyTheme(savedTheme ? savedTheme === 'dark' : true);
 
   /* ===== Auth ===== */
@@ -153,7 +153,7 @@
       $('f-name').classList.toggle('hidden', !reg);
       $('auth-btn').textContent = reg ? 'Daftar' : 'Masuk';
       $('auth-toggle').textContent = reg ? 'Masuk' : 'Daftar';
-      $('auth-sub').textContent = reg ? 'Bikin akun Clincoo baru — sekali daftar, dipakai di semua produk Clincoo.' : 'Masuk dengan akun Clincoo kamu untuk ikut ngobrol.';
+      $('auth-sub').textContent = reg ? 'Bikin akun Clinqoo baru — sekali daftar, dipakai di semua produk Clinqoo.' : 'Masuk dengan akun Clinqoo kamu untuk ikut ngobrol.';
       authErr('');
     });
     $('auth-form').addEventListener('submit', function (ev) {
@@ -502,7 +502,7 @@
             if (d.people.length) {
               html += '<div class="feed-head"><h2>Orang</h2></div><div class="card people-card">' +
                 d.people.map(function (u) {
-                  return '<div class="person"><div class="avatar">' + esc(initials(u.name)) + '</div><div><b>' + esc(u.name) + '</b><span>' + (u.n ? u.n + ' postingan' : 'Anggota Clincoo') + '</span></div></div>';
+                  return '<div class="person"><div class="avatar">' + esc(initials(u.name)) + '</div><div><b>' + esc(u.name) + '</b><span>' + (u.n ? u.n + ' postingan' : 'Anggota Clinqoo') + '</span></div></div>';
                 }).join('') + '</div>';
             }
             if (d.posts.length) {

@@ -1,7 +1,7 @@
-# Deploy mandiri Komunitas Clincoo (Cloudflare Pages, project: clincoo-komunitas)
+# Deploy mandiri Komunitas Clinqoo (Cloudflare Pages, project: clinqoo-komunitas)
 # Aktif otomatis begitu secret CLOUDFLARE_API_TOKEN ditambahkan ke repo ini
 # (Settings → Secrets and variables → Actions → New repository secret).
-# Sebelum secret itu ada, deploy bootstrap dilakukan dari repo Clincoo.
+# Sebelum secret itu ada, deploy bootstrap dilakukan dari repo Clinqoo.
 name: Deploy Komunitas (Cloudflare Pages)
 
 on:
@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: pages-deploy-clincoo-komunitas
+  group: pages-deploy-clinqoo-komunitas
   cancel-in-progress: true
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         run: npm install -g wrangler
 
       - name: Buat project Pages bila belum ada
-        run: npx wrangler pages project create clincoo-komunitas --production-branch=main || true
+        run: npx wrangler pages project create clinqoo-komunitas --production-branch=main || true
 
       - name: Deploy ke Cloudflare Pages
         run: npx wrangler pages deploy . --project-name=clincoo-komunitas --branch=main

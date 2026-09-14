@@ -1,4 +1,4 @@
-// Helper bersama untuk /api/community/* — skema D1 komunitas Clincoo
+// Helper bersama untuk /api/community/* — skema D1 komunitas Clinqoo
 // JANGAN pakai prefix "_" pada nama file (wrangler mengecualikannya dari bundle)
 import { initTables as initAuthTables, randomHex } from '../auth/shared.js';
 

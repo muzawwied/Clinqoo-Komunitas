@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Akun Anda — Komunitas Clincoo</title>
-    <meta name="description" content="Kelola akun Komunitas Clincoo kamu.">
+    <title>Akun Anda — Komunitas Clinqoo</title>
+    <meta name="description" content="Kelola akun Komunitas Clinqoo kamu.">
     <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
@@ -125,7 +125,7 @@
 <script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
@@ -145,7 +145,7 @@
         function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
         function logoutNow() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); localStorage.removeItem('clinqoo_community_me'); } catch (e) {}
             location.replace('login.html');
         }
         if (guard()) init();

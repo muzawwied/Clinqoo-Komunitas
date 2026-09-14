@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pengaturan & Privasi — Komunitas Clincoo</title>
-    <meta name="description" content="Pengaturan notifikasi, data, dan privasi Komunitas Clincoo.">
+    <title>Pengaturan & Privasi — Komunitas Clinqoo</title>
+    <meta name="description" content="Pengaturan notifikasi, data, dan privasi Komunitas Clinqoo.">
     <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
@@ -50,7 +50,7 @@
             <button onclick="logoutNow()" class="w-full bg-red-50 text-red-600 font-bold text-[14px] rounded-xl py-3 hover:bg-red-100 transition-colors">Keluar dari akun ini</button>
             <p class="text-[11px] text-gray-400 mt-2 leading-relaxed">Keluar akan menghapus sesi login di perangkat ini. Foto, postingan, dan profilmu tetap tersimpan di akunmu.</p>
         </div>
-        <p class="text-center text-[11px] text-gray-400 mt-6">Komunitas Clincoo v1.0 · <a href="bantuan.html" class="text-blue-500 font-semibold">Pusat Bantuan</a></p>
+        <p class="text-center text-[11px] text-gray-400 mt-6">Komunitas Clinqoo v1.0 · <a href="bantuan.html" class="text-blue-500 font-semibold">Pusat Bantuan</a></p>
     </main>
     <script>
         var PH2SVG = {
@@ -63,8 +63,8 @@
             comment: { icon: 'ph-chat-circle', label: 'Komentar baru', desc: 'Saat orang lain membalas postinganmu' },
             mention: { icon: 'ph-at', label: 'Penyebutan & tag', desc: 'Saat kamu atau tagmu disebut di postingan' }
         };
-        function loadPrefs() { try { return JSON.parse(localStorage.getItem('clincoo_prefs') || '{}'); } catch (e) { return {}; } }
-        function savePrefs(p) { try { localStorage.setItem('clincoo_prefs', JSON.stringify(p)); } catch (e) {} }
+        function loadPrefs() { try { return JSON.parse(localStorage.getItem('clinqoo_prefs') || '{}'); } catch (e) { return {}; } }
+        function savePrefs(p) { try { localStorage.setItem('clinqoo_prefs', JSON.stringify(p)); } catch (e) {} }
         function init() {
             var p = loadPrefs();
             ['like', 'comment', 'mention'].forEach(function (k) {
@@ -90,20 +90,20 @@
             init();
             toast(PREF_LABELS[k].label + (p[k] ? ' diaktifkan' : ' dimatikan'));
         }
-        function clrDraft() { try { localStorage.removeItem('clincoo_draft'); } catch (e) {} toast('Draf postingan dihapus'); }
+        function clrDraft() { try { localStorage.removeItem('clinqoo_draft'); } catch (e) {} toast('Draf postingan dihapus'); }
         function clrSaved() {
             if (!confirm('Hapus semua postingan tersimpan? Tindakan ini tidak bisa dibatalkan.')) return;
-            try { localStorage.setItem('clincoo_saved', '[]'); } catch (e) {}
+            try { localStorage.setItem('clinqoo_saved', '[]'); } catch (e) {}
             toast('Semua Tersimpan dihapus');
         }
-        function clrSearch() { try { localStorage.removeItem('clincoo_last_search'); } catch (e) {} toast('Riwayat pencarian dihapus'); }
+        function clrSearch() { try { localStorage.removeItem('clinqoo_last_search'); } catch (e) {} toast('Riwayat pencarian dihapus'); }
     </script>
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
         <script src="assets/demo.js"></script>
 <script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
@@ -123,7 +123,7 @@
         function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
         function logoutNow() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); localStorage.removeItem('clinqoo_community_me'); } catch (e) {}
             location.replace('login.html');
         }
         if (guard()) init();

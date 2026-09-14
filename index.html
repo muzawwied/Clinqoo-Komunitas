@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Komunitas Clincoo — Bagikan progres proyekmu</title>
-    <meta name="description" content="Komunitas Clincoo: ruang para pembangun Clincoo — bagikan progres proyek, tanya jawab, dan saling dukung.">
+    <title>Komunitas Clinqoo — Bagikan progres proyekmu</title>
+    <meta name="description" content="Komunitas Clinqoo: ruang para pembangun Clinqoo — bagikan progres proyek, tanya jawab, dan saling dukung.">
     <link rel="stylesheet" href="tailwind.css">
     <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
     <style>
@@ -19,7 +19,7 @@
 
     <header id="main-header" class="bg-white/95 backdrop-blur-sm border-b border-gray-100 p-4 fixed top-0 w-full z-20 transition-transform duration-300 ease-in-out">
         <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <h1 class="text-xl font-bold text-gray-900 tracking-tight">Komunitas Clincoo</h1>
+            <h1 class="text-xl font-bold text-gray-900 tracking-tight">Komunitas Clinqoo</h1>
                 <span id="demo-badge" class="hidden text-[10px] font-bold tracking-widest bg-amber-100 text-amber-700 rounded-full px-2 py-0.5 align-middle ml-1">DEMO</span>
             <div class="flex space-x-4 text-gray-600">
                 <svg class="ic text-2xl hover:text-gray-900 cursor-pointer transition" onclick="switchTab(event, 'create-view', document.querySelector('[data-icon=\'plus\']'))" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
@@ -81,7 +81,7 @@
                 <div class="space-y-5" id="trend-tab-list">
                     <div class="flex flex-col cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-xl transition">
                         <span class="text-[12px] font-medium text-gray-500 mb-0.5">1 · Hiburan · Sedang Tren</span>
-                        <span class="font-bold text-[15px] text-gray-900">#KomunitasClincoo</span>
+                        <span class="font-bold text-[15px] text-gray-900">#KomunitasClinqoo</span>
                         <span class="text-[13px] text-gray-500 mt-1">10.5K Postingan</span>
                     </div>
                     <div class="flex flex-col cursor-pointer hover:bg-gray-50 p-2 -mx-2 rounded-xl transition">
@@ -464,14 +464,14 @@
 
         <script src="assets/demo.js"></script>
 <script>
-        // ===== Komunitas Clincoo — VibeSpace edisi fullstack =====
-        // Desain VibeSpace dipertahankan 100%; data demo diganti API komunitas Clincoo.
+        // ===== Komunitas Clinqoo — VibeSpace edisi fullstack =====
+        // Desain VibeSpace dipertahankan 100%; data demo diganti API komunitas Clinqoo.
 
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
 
-        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
-        function meData() { try { return JSON.parse(localStorage.getItem('clincoo_community_me') || '{}'); } catch (e) { return {}; } }
+        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
+        function meData() { try { return JSON.parse(localStorage.getItem('clinqoo_community_me') || '{}'); } catch (e) { return {}; } }
 
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
@@ -488,8 +488,8 @@
         var following = [];
         var msgs = [];
         var isAttachmentAdded = false, attachDataUrl = '', activeCommentPost = null, searchTimer = null, filterAuthor = null, savedPosts = loadSaved();
-        function loadSaved() { try { return JSON.parse(localStorage.getItem('clincoo_saved') || '[]'); } catch (e) { return []; } }
-        function persistSaved() { try { localStorage.setItem('clincoo_saved', JSON.stringify(savedPosts)); } catch (e) {} }
+        function loadSaved() { try { return JSON.parse(localStorage.getItem('clinqoo_saved') || '[]'); } catch (e) { return []; } }
+        function persistSaved() { try { localStorage.setItem('clinqoo_saved', JSON.stringify(savedPosts)); } catch (e) {} }
 
         function avaInner(name, photo, size) {
             if (photo) return '<img src="' + photo + '" class="w-full h-full object-cover" alt="' + esc((name||'U').charAt(0)) + '">';
@@ -514,7 +514,7 @@
             clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
         }
         function requireLogin(d) {
-            if (d && d._status === 401) { try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); } catch (e) {} location.replace('login.html'); return true; }
+            if (d && d._status === 401) { try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); } catch (e) {} location.replace('login.html'); return true; }
             return false;
         }
 
@@ -572,13 +572,13 @@
         function saveFeedCache() {
             try {
                 var j = JSON.stringify({ ts: Date.now(), posts: posts, following: following });
-                if (j.length < 2000000) localStorage.setItem('clincoo_feed_cache_v1', j);
+                if (j.length < 2000000) localStorage.setItem('clinqoo_feed_cache_v1', j);
             } catch (e) {}
         }
         // Tampilkan cache terakhir saat refresh supaya feed tidak kosong dulu
         function renderFeedCache() {
             try {
-                var j = JSON.parse(localStorage.getItem('clincoo_feed_cache_v1') || 'null');
+                var j = JSON.parse(localStorage.getItem('clinqoo_feed_cache_v1') || 'null');
                 if (!j || !j.posts || !j.posts.length) return false;
                 posts = j.posts;
                 if (j.following) following = j.following;
@@ -763,7 +763,7 @@
             renderPosts();
         }
         function clearAuthorFilter() { filterAuthor = null; renderPosts(); }
-        function saveDraft() { try { localStorage.setItem('clincoo_draft', document.getElementById('post-input').value); } catch (e) {} }
+        function saveDraft() { try { localStorage.setItem('clinqoo_draft', document.getElementById('post-input').value); } catch (e) {} }
 
         // ===== Tab Jelajah (Tren/Teknologi/Kreator/Berita) dari data nyata =====
         function renderTabs() {
@@ -981,7 +981,7 @@
                 postBtn.innerText = 'Posting'; postBtn.disabled = false;
                 if (requireLogin(d)) return;
                 if (!d.success) { toast(d.error || 'Gagal memposting'); return; }
-                input.value = ''; try { localStorage.removeItem('clincoo_draft'); } catch (e) {} removeAttachment(); validatePostInput();
+                input.value = ''; try { localStorage.removeItem('clinqoo_draft'); } catch (e) {} removeAttachment(); validatePostInput();
                 toast('Postingan terkirim 🎉');
                 loadFeed().then(function () {
                     var homeBtn = document.querySelector('[data-icon=\'house\']');
@@ -1032,7 +1032,7 @@
 
         // ===== Notifikasi dari data nyata (komentar & like di postinganku + sebutan nama) =====
         function buildNotifs() {
-            try { seenNotifs = JSON.parse(localStorage.getItem('clincoo_notif_seen') || '{}'); } catch (e) { seenNotifs = {}; }
+            try { seenNotifs = JSON.parse(localStorage.getItem('clinqoo_notif_seen') || '{}'); } catch (e) { seenNotifs = {}; }
             var list = [], nid = 1;
             var myName = (me.name || '').toLowerCase();
             msgs.forEach(function (m) {
@@ -1091,14 +1091,14 @@
         function openProfile(uid) { if (uid) location.href = 'profil.html?uid=' + uid; }
         function markAsRead(id) {
             var n = notifs.find(x => x.id === id);
-            if (n) { seenNotifs[n.raw || n.id] = 1; try { localStorage.setItem('clincoo_notif_seen', JSON.stringify(seenNotifs)); } catch (e) {} n.isRead = true; }
+            if (n) { seenNotifs[n.raw || n.id] = 1; try { localStorage.setItem('clinqoo_notif_seen', JSON.stringify(seenNotifs)); } catch (e) {} n.isRead = true; }
             renderNotifications(currentNotifFilter);
             var unread = notifs.filter(x => !x.isRead).length;
             document.getElementById('notif-badge').classList.toggle('hidden', unread === 0);
         }
         function markAllNotifsRead() {
             notifs.forEach(function (n) { n.isRead = true; seenNotifs[n.raw || n.id] = 1; });
-            try { localStorage.setItem('clincoo_notif_seen', JSON.stringify(seenNotifs)); } catch (e) {}
+            try { localStorage.setItem('clinqoo_notif_seen', JSON.stringify(seenNotifs)); } catch (e) {}
             renderNotifications(currentNotifFilter);
             document.getElementById('notif-badge').classList.add('hidden');
         }
@@ -1196,7 +1196,7 @@
 
         function logout() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); } catch (e) {}
+            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); } catch (e) {}
             location.replace('login.html');
         }
 
@@ -1273,7 +1273,7 @@
             api('/auth/me').then(function (d) {
                 if (d && d.user) { me.id = d.user.id; if (d.user.name) me.name = d.user.name; }
             }).catch(function () {});
-            var draft = ''; try { draft = localStorage.getItem('clincoo_draft') || ''; } catch (e) {}
+            var draft = ''; try { draft = localStorage.getItem('clinqoo_draft') || ''; } catch (e) {}
             if (draft) { document.getElementById('post-input').value = draft; validatePostInput(); }
             if (!renderFeedCache()) document.getElementById('feed-skeleton').classList.remove('hidden');
             loadFeed();
