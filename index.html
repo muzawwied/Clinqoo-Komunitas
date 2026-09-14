@@ -483,6 +483,7 @@
         var AVA = ['from-pink-400 to-rose-400', 'from-indigo-400 to-blue-500', 'from-green-400 to-emerald-500', 'from-yellow-400 to-orange-500', 'from-cyan-400 to-blue-500', 'from-purple-400 to-fuchsia-500', 'from-red-400 to-pink-500'];
         var posts = [], me = { name: meData().name || 'Saya', bio: meData().bio || '', link: meData().link || '', avatar: meData().avatar || '' }, notifs = [], seenNotifs = {};
         var following = [];
+        var msgs = [];
         var isAttachmentAdded = false, attachDataUrl = '', activeCommentPost = null, searchTimer = null, filterAuthor = null, savedPosts = loadSaved();
         function loadSaved() { try { return JSON.parse(localStorage.getItem('clincoo_saved') || '[]'); } catch (e) { return []; } }
         function persistSaved() { try { localStorage.setItem('clincoo_saved', JSON.stringify(savedPosts)); } catch (e) {} }
@@ -591,6 +592,7 @@
                 if (d.me) { me.id = d.me.id; me.avatar = d.me.avatar_url || ''; me.bio = d.me.bio || ''; me.link = d.me.link || ''; me.cover = d.me.cover || ''; }
                 posts = shufflePosts(mapFeed(d));
                 following = d.following || [];
+                msgs = d.messages || [];
                 renderAll();
                 saveFeedCache();
                 document.getElementById('feed-skeleton').classList.add('hidden');
@@ -1030,6 +1032,9 @@
             try { seenNotifs = JSON.parse(localStorage.getItem('clincoo_notif_seen') || '{}'); } catch (e) { seenNotifs = {}; }
             var list = [], nid = 1;
             var myName = (me.name || '').toLowerCase();
+            msgs.forEach(function (m) {
+                list.push({ id: 'msg' + m.id, type: 'message', uid: m.from_id, name: m.from_name || 'Pengguna', text: 'mengirimi Anda pesan: "' + m.text + '"', time: relTime(m.created_at), avatar: AVA[m.from_id % AVA.length], isRead: !!seenNotifs['msg' + m.id], raw: 'msg' + m.id });
+            });
             posts.forEach(function (p) {
                 if (p.mine) {
                     p.cmts.forEach(function (c) {
@@ -1063,8 +1068,10 @@
             container.innerHTML = filtered.map(n => {
                 if (n.type === 'like') { iconSvg = '<path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>'; iconFill = 'currentColor'; iconColor = 'text-red-500'; }
                 else if (n.type === 'comment') { iconSvg = '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/>'; iconFill = 'none'; iconColor = 'text-blue-500'; }
+                else if (n.type === 'message') { iconSvg = '<path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/>'; iconFill = 'none'; iconColor = 'text-green-600'; }
                 else { iconSvg = '<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>'; iconFill = 'none'; iconColor = 'text-purple-500'; }
-                return `<div class="flex space-x-3 p-4 border-b border-gray-100 ${n.isRead ? 'bg-white' : 'bg-blue-50/50'} cursor-pointer hover:bg-gray-50 transition-colors" onclick="markAsRead('${n.id}')">
+                const msgTap = n.type === 'message' ? `openProfile(${n.uid})` : '';
+                return `<div class="flex space-x-3 p-4 border-b border-gray-100 ${n.isRead ? 'bg-white' : 'bg-blue-50/50'} cursor-pointer hover:bg-gray-50 transition-colors" onclick="markAsRead('${n.id}'); ${msgTap}">
                     <div class="w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br ${n.avatar} p-0.5">
                         <div class="w-full h-full bg-white rounded-full border border-white flex items-center justify-center font-bold text-gray-500 text-xs">${n.name === '1 orang' ? '1' : esc(n.name.charAt(0))}</div>
                     </div>
@@ -1078,6 +1085,7 @@
                 </div>`;
             }).join('');
         }
+        function openProfile(uid) { if (uid) location.href = 'profil.html?uid=' + uid; }
         function markAsRead(id) {
             var n = notifs.find(x => x.id === id);
             if (n) { seenNotifs[n.raw || n.id] = 1; try { localStorage.setItem('clincoo_notif_seen', JSON.stringify(seenNotifs)); } catch (e) {} n.isRead = true; }

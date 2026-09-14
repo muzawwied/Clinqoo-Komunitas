@@ -32,6 +32,13 @@ export async function initCommunityTables(db) {
     link TEXT NOT NULL DEFAULT '',
     updated_at TEXT DEFAULT (datetime('now'))
   )`).run();
+  await db.prepare(`CREATE TABLE IF NOT EXISTS community_messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    from_id INTEGER NOT NULL,
+    to_id INTEGER NOT NULL,
+    text TEXT NOT NULL,
+    created_at TEXT NOT NULL
+  )`).run();
   await db.prepare(`CREATE TABLE IF NOT EXISTS community_follows (
     follower_id INTEGER NOT NULL,
     followed_id INTEGER NOT NULL,

@@ -31,7 +31,16 @@ export async function onRequestGet({ request, env }) {
       ).bind(user.id).all()).results || [];
       following = fr.map(r => ({ id: r.id, name: r.name || 'Pengguna', avatar_url: r.avatar_url || '' }));
     } catch (e) {}
-    return json({ feed: feed, following: following, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink, cover: meCover } });
+    let messages = [];
+    try {
+      const mr = (await db.prepare(
+        `SELECT m.id, m.from_id, m.text, m.created_at, u.name AS from_name, u.avatar_url AS from_avatar
+         FROM community_messages m JOIN auth_users u ON u.id = m.from_id
+         WHERE m.to_id = ? ORDER BY m.created_at DESC LIMIT 30`
+      ).bind(user.id).all()).results || [];
+      messages = mr.map(r => ({ id: r.id, from_id: r.from_id, from_name: r.from_name || 'Pengguna', from_avatar: r.from_avatar || '', text: r.text, created_at: r.created_at }));
+    } catch (e) {}
+    return json({ feed: feed, following: following, messages: messages, me: { id: user.id, name: user.name || '', avatar_url: user.avatar_url || '', bio: meBio, link: meLink, cover: meCover } });
   } catch (e) {
     return json({ error: e.message }, 500);
   }

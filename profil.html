@@ -42,7 +42,10 @@
                 </div>
                 <p id="pf-bio" class="text-[14px] text-gray-700 mt-3 leading-relaxed whitespace-pre-wrap"></p>
                 <a id="pf-link" href="#" class="hidden text-[14px] font-semibold text-blue-600 hover:underline mt-1 inline-flex items-center space-x-1 truncate max-w-full"><svg class="ic " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="pf-link-txt"></span></a>
-                <button id="pf-follow" data-on="0" class="hidden mt-3 w-full bg-blue-600 text-white text-sm font-semibold rounded-xl py-2.5 hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center space-x-1.5"><svg class="ic " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span id="pf-follow-txt">Ikuti</span></button>
+                <div id="pf-actions" class="hidden mt-4 grid grid-cols-2 gap-2">
+                    <button id="pf-follow" data-on="0" class="w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] bg-blue-600 text-white shadow-md shadow-blue-600/25 hover:bg-blue-700"><svg class="ic text-base" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg><span id="pf-follow-txt">Ikuti</span></button>
+                    <button id="pf-msg" class="w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] border-[1.5px] border-blue-600 text-blue-600 hover:bg-blue-50"><svg class="ic text-base" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Kirim Pesan</span></button>
+                </div>
             </div>
             <!-- Statistik -->
             <div class="grid grid-cols-3 gap-2 px-4 py-4">
@@ -100,8 +103,33 @@
             btn.dataset.on = on ? '1' : '0';
             document.getElementById('pf-follow-txt').textContent = on ? 'Mengikuti' : 'Ikuti';
             btn.className = on
-                ? 'mt-3 w-full bg-gray-100 text-gray-700 text-sm font-semibold rounded-xl py-2.5 hover:bg-red-50 hover:text-red-600 active:scale-[0.98] transition-all flex items-center justify-center space-x-1.5'
-                : 'mt-3 w-full bg-blue-600 text-white text-sm font-semibold rounded-xl py-2.5 hover:bg-blue-700 active:scale-[0.98] transition-all flex items-center justify-center space-x-1.5';
+                ? 'w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600'
+                : 'w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] bg-blue-600 text-white shadow-md shadow-blue-600/25 hover:bg-blue-700';
+        }
+        var msgTargetUid = 0;
+        function openMsgModal(name, uid) {
+            msgTargetUid = uid;
+            document.getElementById('msg-to-name').textContent = 'Untuk ' + name;
+            document.getElementById('msg-text').value = '';
+            document.getElementById('msg-err').classList.add('hidden');
+            document.getElementById('msg-modal').classList.remove('hidden');
+            setTimeout(function () { document.getElementById('msg-text').focus(); }, 60);
+        }
+        function closeMsgModal() { document.getElementById('msg-modal').classList.add('hidden'); }
+        function sendMsg() {
+            var txt = document.getElementById('msg-text').value.trim();
+            var err = document.getElementById('msg-err');
+            if (!txt) { err.textContent = 'Pesan tidak boleh kosong.'; err.classList.remove('hidden'); return; }
+            var btn = document.getElementById('msg-send');
+            btn.disabled = true; btn.style.opacity = '0.6';
+            api('/community/message', { method: 'POST', body: JSON.stringify({ to_id: msgTargetUid, text: txt }) })
+                .then(function (d) {
+                    if (d && d._status === 401) { location.replace('login.html'); return; }
+                    if (d && d.success) { closeMsgModal(); }
+                    else { err.textContent = (d && d.error) || 'Gagal mengirim pesan.'; err.classList.remove('hidden'); }
+                })
+                .catch(function () { err.textContent = 'Koneksi bermasalah. Coba lagi.'; err.classList.remove('hidden'); })
+                .then(function () { btn.disabled = false; btn.style.opacity = '1'; });
         }
         function toggleFollow(uid, btn) {
             var on = btn.dataset.on === '1';
@@ -153,9 +181,10 @@
                 var myId = d.me ? parseInt(d.me.id, 10) : NaN;
                 if (myId !== uid) {
                     var isFollowing = (d.following || []).some(function (u) { return parseInt(u.id || u, 10) === uid; });
-                    fbtn.classList.remove('hidden');
+                    document.getElementById('pf-actions').classList.remove('hidden');
                     setFollowBtn(fbtn, isFollowing);
                     fbtn.onclick = function () { toggleFollow(uid, fbtn); };
+                    document.getElementById('pf-msg').onclick = function () { openMsgModal(first.author || 'Pengguna', uid); };
                 }
                 document.getElementById('pf-list').innerHTML = theirs.map(function (p) {
                     var txt = esc(p.text);
@@ -189,5 +218,20 @@
         }
         init();
     </script>
+    <div id="msg-modal" class="hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px] flex items-end sm:items-center justify-center p-4" onclick="if (event.target === this) closeMsgModal()">
+        <div class="bg-white rounded-2xl w-full max-w-md p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-1">
+                <h3 class="text-[15px] font-bold text-gray-900">Kirim Pesan</h3>
+                <button onclick="closeMsgModal()" class="w-8 h-8 -mr-1 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 transition-colors"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+            </div>
+            <p id="msg-to-name" class="text-[13px] text-gray-500 mb-3"></p>
+            <textarea id="msg-text" rows="4" maxlength="500" placeholder="Tulis pesanmu…" class="w-full border border-gray-200 rounded-xl p-3 text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
+            <p id="msg-err" class="hidden text-[12px] text-red-600 mt-1.5"></p>
+            <div class="flex gap-2 mt-4">
+                <button onclick="closeMsgModal()" class="flex-1 rounded-full py-2.5 text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-gray-50 transition-colors">Batal</button>
+                <button id="msg-send" onclick="sendMsg()" class="flex-1 rounded-full py-2.5 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center justify-center space-x-1.5"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Kirim</span></button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
