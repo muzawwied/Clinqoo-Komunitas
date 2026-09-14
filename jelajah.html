@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <script>try{var t=localStorage.getItem('clincoo_community_theme');document.documentElement.classList.toggle('dark-mode', t?t==='dark':true);}catch(e){document.documentElement.classList.add('dark-mode');}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Jelajah — Komunitas Clincoo</title>
   <meta name="description" content="Jelajah tag trending dan kontributor paling aktif di Komunitas Clincoo.">
@@ -25,6 +26,11 @@
   <div class="wrap">
     <main>
       <div class="feed-head"><h2>Jelajah</h2></div>
+
+      <div class="card search-card">
+        <input type="search" id="search-input" placeholder="Cari postingan atau orang…" aria-label="Cari di komunitas">
+      </div>
+      <div id="search-results" class="hidden"></div>
 
       <div id="trend-cards" class="trend-cards">
         <div class="skeleton"><div class="sk-line w30"></div><div class="sk-line w90"></div></div>
@@ -52,6 +58,6 @@
   <div id="bottom-nav"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="assets/js/app.js?v=8"></script>
+  <script src="assets/js/app.js?v=9"></script>
 </body>
 </html>

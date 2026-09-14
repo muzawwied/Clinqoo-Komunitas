@@ -1,7 +1,9 @@
 // Komunitas Clincoo — logic aplikasi multi-halaman
 (function () {
   'use strict';
-  var API = (location.hostname.indexOf('github.io') !== -1) ? 'https://clincoo-be2.pages.dev/api' : '/api';
+  // Backend komunitas mandiri — same-origin di clincoo-komunitas.pages.dev; cermin github.io pakai URL absolut
+  var API = '/api';
+  if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
   var TOKEN_KEY = 'clincoo_auth_token', TOKEN_KEY2 = 'clincoo_token', ME_KEY = 'clincoo_community_me';
   var page = document.body.getAttribute('data-page') || '';
 
@@ -22,13 +24,11 @@
   function linkify(text) {
     return esc(text).replace(/(^|\s)#([\p{L}0-9_]+)/gu, function (m, sp, t) { return sp + '<span class="tag">#' + t + '</span>'; });
   }
-  function myName() {
-    var me = null; try { me = JSON.parse(localStorage.getItem(ME_KEY) || 'null'); } catch (e) {}
-    return (me && me.name) || 'Saya';
-  }
-  function setMyName(name) {
-    try { localStorage.setItem(ME_KEY, JSON.stringify({ name: name, ts: Date.now() })); } catch (e) {}
-  }
+  function myData() { var me = null; try { me = JSON.parse(localStorage.getItem(ME_KEY) || 'null'); } catch (e) {} return me || {}; }
+  function myName() { return myData().name || 'Saya'; }
+  function myBio() { return myData().bio || ''; }
+  function setMyName(name) { var me = myData(); me.name = name; me.ts = Date.now(); try { localStorage.setItem(ME_KEY, JSON.stringify(me)); } catch (e) {} }
+  function setMyBio(bio) { var me = myData(); me.bio = bio; me.ts = Date.now(); try { localStorage.setItem(ME_KEY, JSON.stringify(me)); } catch (e) {} }
   var toastTmr = null;
   function toast(msg) {
     var t = $('toast'); if (!t) return;
@@ -46,7 +46,8 @@
 
   /* ===== Tema ===== */
   function applyTheme(dark) {
-    document.body.classList.toggle('dark-mode', dark);
+    document.documentElement.classList.toggle('dark-mode', dark);
+    document.body.classList.toggle('dark-mode', dark); // kompatibilitas mundur
     try { localStorage.setItem('clincoo_community_theme', dark ? 'dark' : 'light'); } catch (e) {}
     var lbl = $('theme-label');
     if (lbl) lbl.textContent = dark ? 'Mode terang' : 'Mode gelap';
@@ -91,6 +92,8 @@
   }
 
   /* ===== Renderer postingan (dipakai Beranda & Profil) ===== */
+  var DEL_BTN = '<button class="act js-del" title="Hapus postingan" aria-label="Hapus postingan">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6M10 11v6M14 11v6"/></svg></button>';
   function postHtml(p, opts) {
     opts = opts || {};
     return '<article class="post" data-id="' + esc(p.id) + '">' +
@@ -99,14 +102,14 @@
         '<div class="post-head"><b>' + esc(p.author) + '</b><time>' + esc(relTime(p.created_at)) + '</time></div>' +
         '<div class="post-text">' + linkify(p.text) + '</div>' +
         (p.image ? '<div class="post-img-wrap"><img class="post-img js-img" src="' + esc(p.image) + '" alt="gambar postingan" loading="lazy"></div>' : '') +
-        (opts.readonly ? '<div class="post-actions"><span class="act">❤ ' + (p.likes || 0) + '</span><span class="act">💬 ' + (p.comment_count || 0) + '</span></div>' :
+        (opts.readonly ? '<div class="post-actions"><span class="act">❤ ' + (p.likes || 0) + '</span><span class="act">💬 ' + (p.comment_count || 0) + '</span>' + (p.mine ? DEL_BTN : '') + '</div>' :
         '<div class="post-actions">' +
           '<button class="act js-like' + (p.liked_by_me ? ' liked' : '') + '" aria-label="Suka">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/></svg>' +
             '<span class="n-like">' + (p.likes || 0) + '</span></button>' +
           '<button class="act js-cmt" aria-label="Komentar">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 7.7z"/></svg>' +
-            '<span>' + (p.comment_count || 0) + '</span></button>' +
+            '<span>' + (p.comment_count || 0) + '</span></button>' + (p.mine ? DEL_BTN : '') +
         '</div>') +
         '<div class="comments hidden js-cmt-box">' + (p.comments || []).map(cmtHtml).join('') +
           '<div class="cmt-form"><input type="text" placeholder="Tulis komentar…" maxlength="300" class="js-cmt-input">' +
@@ -117,6 +120,26 @@
   function cmtHtml(c) {
     return '<div class="cmt"><div class="avatar sm">' + esc(initials(c.author_name || c.author)) + '</div>' +
       '<div class="cmt-body"><b>' + esc(c.author_name || c.author) + '</b><time>' + esc(relTime(c.created_at)) + '</time><p>' + esc(c.text) + '</p></div></div>';
+  }
+
+  /* ===== Hapus postingan sendiri (dipakai Beranda & Profil) ===== */
+  function bindDelete(container, after) {
+    if (!container) return;
+    container.addEventListener('click', function (ev) {
+      var delBtn = ev.target.closest('.js-del');
+      if (!delBtn) return;
+      var art = delBtn.closest('.post');
+      if (!art || !window.confirm('Hapus postingan ini?')) return;
+      var pid = art.getAttribute('data-id');
+      api('/community/delete', { method: 'POST', body: JSON.stringify({ post_id: pid }) }).then(function (d) {
+        if (d && d.success) {
+          art.remove();
+          feedState = feedState.filter(function (x) { return x.id !== pid; });
+          toast('Postingan dihapus');
+          if (after) after();
+        } else { toast((d && d.error) || 'Gagal menghapus'); }
+      }).catch(function () { toast('Koneksi bermasalah'); });
+    });
   }
 
   /* ===== HALAMAN LOGIN ===== */
@@ -330,6 +353,7 @@
       else { window.scrollTo({ top: 0, behavior: 'smooth' }); }
     });
 
+    bindDelete($('feed'), null);
     var hdrHeart = $('btn-activity');
     if (hdrHeart) hdrHeart.addEventListener('click', ensureActivity);
 
@@ -463,6 +487,33 @@
 
   /* ===== HALAMAN JELAJAH ===== */
   if (page === 'jelajah') {
+    var sIn = $('search-input'), sRes = $('search-results'), sTmr = null, sLast = '';
+    if (sIn && sRes) {
+      sIn.addEventListener('input', function () {
+        var q = sIn.value.trim();
+        clearTimeout(sTmr);
+        if (q.length < 2) { sRes.classList.add('hidden'); sRes.innerHTML = ''; sLast = ''; return; }
+        sTmr = setTimeout(function () {
+          if (q === sLast) return;
+          sLast = q;
+          api('/community/search?q=' + encodeURIComponent(q)).then(function (d) {
+            if (!d || !d.success) return;
+            var html = '';
+            if (d.people.length) {
+              html += '<div class="feed-head"><h2>Orang</h2></div><div class="card people-card">' +
+                d.people.map(function (u) {
+                  return '<div class="person"><div class="avatar">' + esc(initials(u.name)) + '</div><div><b>' + esc(u.name) + '</b><span>' + (u.n ? u.n + ' postingan' : 'Anggota Clincoo') + '</span></div></div>';
+                }).join('') + '</div>';
+            }
+            if (d.posts.length) {
+              html += '<div class="feed-head"><h2>Postingan</h2></div>' + d.posts.map(function (p) { return postHtml(p, { readonly: true }); }).join('');
+            }
+            sRes.innerHTML = html || '<div class="empty" style="padding:30px 16px;"><p>Tidak ada hasil untuk "' + esc(q) + '"</p></div>';
+            sRes.classList.remove('hidden');
+          }).catch(function () {});
+        }, 350);
+      });
+    }
     loadFeed(50).then(function (f) {
       if (f === null) return;
       var counts = {};
@@ -497,8 +548,52 @@
     var nm = myName();
     $('prof-name').textContent = nm;
     $('prof-avatar').textContent = initials(nm);
-    $('btn-theme').addEventListener('click', function () { applyTheme(!document.body.classList.contains('dark-mode')); });
+    $('btn-theme').addEventListener('click', function () { applyTheme(!document.documentElement.classList.contains('dark-mode')); });
     $('btn-logout').addEventListener('click', doLogout);
+    var bio = myBio();
+    if (bio) { var pb0 = $('prof-bio'); pb0.textContent = bio; pb0.classList.remove('hidden'); }
+
+    if (!$('edit-sheet-backdrop')) {
+      var eb = document.createElement('div');
+      eb.className = 'sheet-backdrop hidden';
+      eb.id = 'edit-sheet-backdrop';
+      eb.innerHTML = '<div class="sheet"><div class="sheet-handle"></div>' +
+        '<h3 class="sheet-title">Edit profil</h3>' +
+        '<div class="field"><label for="in-prof-name">Nama</label><input id="in-prof-name" type="text" maxlength="40" autocomplete="name"></div>' +
+        '<div class="field"><label for="in-prof-bio">Bio</label><textarea id="in-prof-bio" maxlength="200" placeholder="Kenalkan dirimu singkat…"></textarea></div>' +
+        '<button class="btn-primary" id="btn-prof-save">Simpan</button></div>';
+      document.body.appendChild(eb);
+    }
+    $('btn-edit').addEventListener('click', function () {
+      $('in-prof-name').value = myName();
+      $('in-prof-bio').value = myBio();
+      $('edit-sheet-backdrop').classList.remove('hidden');
+      setTimeout(function () { $('in-prof-name').focus(); }, 60);
+    });
+    $('edit-sheet-backdrop').addEventListener('click', function (ev) {
+      if (ev.target === this) this.classList.add('hidden');
+    });
+    $('btn-prof-save').addEventListener('click', function () {
+      var name = $('in-prof-name').value.trim();
+      var bioNew = $('in-prof-bio').value.trim().slice(0, 200);
+      if (!name) { toast('Nama tidak boleh kosong'); return; }
+      var btn = this; btn.disabled = true; btn.textContent = 'Menyimpan…';
+      api('/community/profile', { method: 'POST', body: JSON.stringify({ name: name, bio: bioNew }) }).then(function (d) {
+        btn.disabled = false; btn.textContent = 'Simpan';
+        if (d && d.success) {
+          setMyName(name); setMyBio(bioNew);
+          $('prof-name').textContent = name;
+          $('prof-avatar').textContent = initials(name);
+          refreshNavAvatar(name);
+          var pb = $('prof-bio'); pb.textContent = bioNew; pb.classList.toggle('hidden', !bioNew);
+          $('edit-sheet-backdrop').classList.add('hidden');
+          toast('Profil diperbarui ✨');
+        } else { toast((d && d.error) || 'Gagal menyimpan'); }
+      }).catch(function () { btn.disabled = false; btn.textContent = 'Simpan'; toast('Koneksi bermasalah'); });
+    });
+    bindDelete($('my-feed'), function () {
+      $('stat-posts').textContent = feedState.filter(function (p) { return p.mine; }).length;
+    });
     loadFeed(50).then(function (f) {
       if (f === null) return;
       var mine = feedState.filter(function (p) { return p.mine; });

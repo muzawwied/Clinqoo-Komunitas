@@ -1,0 +1,10 @@
+name = "clincoo-komunitas"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "."
+
+# D1 yang sama dengan platform Clincoo — akun Clincoo dipakai langsung di komunitas,
+# data komunitas (community_*) tetap di tabelnya sendiri.
+[[d1_databases]]
+binding = "DB"
+database_name = "clincoo-db"
+database_id = "49b6fed3-a237-46e3-ab2b-b0de31cc862b"

@@ -1,7 +1,7 @@
 /* Komunitas Clincoo — style */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 :root { --accent: #000000; --bg: #ffffff; --bg-soft: #f9fafb; --line: #e5e7eb; --txt: #111827; --txt-soft: #6b7280; }
-body.dark-mode { --accent: #ffffff; --bg: #000000; --bg-soft: #121212; --line: #262626; --txt: #f5f5f5; --txt-soft: #a8a8a8; }
+html.dark-mode { --accent: #ffffff; --bg: #000000; --bg-soft: #121212; --line: #262626; --txt: #f5f5f5; --txt-soft: #a8a8a8; }
 html { scroll-behavior: smooth; }
 body {
   font-family: 'Inter', -apple-system, sans-serif;
@@ -136,7 +136,7 @@ header {
 .post-head time { font-size: 12px; color: var(--txt-soft); }
 .post-text { font-size: 14.5px; margin-top: 4px; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: anywhere; }
 .post-text .tag { color: #2563eb; font-weight: 600; cursor: pointer; }
-body.dark-mode .post-text .tag { color: #60a5fa; }
+html.dark-mode .post-text .tag { color: #60a5fa; }
 
 .post-actions { display: flex; gap: 4px; margin-top: 10px; margin-left: -8px; }
 .act {
@@ -187,7 +187,7 @@ body.dark-mode .post-text .tag { color: #60a5fa; }
   background-image: linear-gradient(180deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.85) 60%, #ffffff 100%), url('../bg-light-morning.webp');
   background-size: cover; background-position: center bottom; background-repeat: no-repeat;
 }
-body.dark-mode .auth-bg {
+html.dark-mode .auth-bg {
   background-image: linear-gradient(180deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,.85) 60%, #000000 100%), url('../bg-dark-night2.webp');
 }
 .auth-card { width: 100%; max-width: 380px; background: var(--bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 24px; box-shadow: 0 20px 50px -20px rgba(0,0,0,.25); }
@@ -206,7 +206,7 @@ body.dark-mode .auth-bg {
 .auth-alt { text-align: center; margin-top: 16px; font-size: 13px; color: var(--txt-soft); }
 .auth-alt button { color: var(--txt); font-weight: 700; text-decoration: underline; }
 .auth-err { background: #fef2f2; border: 1px solid #fecaca; color: #b91c1c; font-size: 13px; padding: 10px 12px; border-radius: 10px; margin-bottom: 12px; }
-body.dark-mode .auth-err { background: #2a1214; border-color: #5b2024; color: #fca5a5; }
+html.dark-mode .auth-err { background: #2a1214; border-color: #5b2024; color: #fca5a5; }
 .auth-foot { margin-top: 18px; text-align: center; font-size: 11.5px; color: var(--txt-soft); }
 .auth-foot a { color: var(--txt-soft); text-decoration: underline; }
 
@@ -311,3 +311,20 @@ footer.site b { font-weight: 800; letter-spacing: -0.01em; }
 .prof-menu .sheet-btn:last-child { border-bottom: none; }
 
 /* ===== Bottom nav (di-inject JS, tampil di semua ukuran layar) ===== */
+
+/* ==== Pencarian (Jelajah) & Edit profil — fitur baru, gaya mengikuti yang ada ==== */
+.search-card { padding: 6px; }
+.search-card input {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px;
+  font-size: 14px; outline: none; background: var(--bg); transition: border-color .15s; font-family: inherit;
+}
+.search-card input:focus { border-color: var(--txt); }
+#search-results { margin-bottom: 4px; }
+.field textarea {
+  width: 100%; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px;
+  font-size: 14px; outline: none; background: var(--bg); transition: border-color .15s;
+  font-family: inherit; resize: vertical; min-height: 72px;
+}
+.field textarea:focus { border-color: var(--txt); }
+.prof-bio { font-size: 13px; color: var(--txt-soft); margin: 4px 0 0; white-space: pre-line; }
+.sheet .btn-primary { width: 100%; margin-top: 4px; }

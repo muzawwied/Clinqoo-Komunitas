@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <script>try{var t=localStorage.getItem('clincoo_community_theme');document.documentElement.classList.toggle('dark-mode', t?t==='dark':true);}catch(e){document.documentElement.classList.add('dark-mode');}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profil — Komunitas Clincoo</title>
   <meta name="description" content="Profil dan postinganmu di Komunitas Clincoo.">
@@ -29,6 +30,7 @@
         <div class="prof-info">
           <b id="prof-name">…</b>
           <span>Akun Clincoo</span>
+          <p id="prof-bio" class="prof-bio hidden"></p>
           <div class="prof-stats">
             <div><b id="stat-posts">0</b><span>postingan</span></div>
             <div><b id="stat-likes">0</b><span>like diterima</span></div>
@@ -37,6 +39,10 @@
       </div>
 
       <div class="prof-menu card">
+        <button class="sheet-btn" id="btn-edit">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          Edit profil
+        </button>
         <button class="sheet-btn" id="btn-theme">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <span id="theme-label">Mode terang</span>
@@ -58,6 +64,6 @@
   <div id="bottom-nav"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="assets/js/app.js?v=8"></script>
+  <script src="assets/js/app.js?v=9"></script>
 </body>
 </html>
