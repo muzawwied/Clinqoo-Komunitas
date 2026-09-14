@@ -18,7 +18,7 @@ export async function onRequestPost({ request, env }) {
     const bio = String(body.bio || '').trim().slice(0, 200);
     const link = String(body.link || '').trim().slice(0, 120);
     const avatar = body.avatar === '' || body.avatar == null ? undefined : String(body.avatar);
-    const cover = body.cover === '' || body.cover == null ? undefined : String(body.cover);
+    const cover = body.cover == null ? undefined : String(body.cover); // undefined=jangan diubah, ''=hapus
 
     if (!name) return json({ error: 'Nama tidak boleh kosong' }, 400);
     if (avatar !== undefined && avatar !== '' && !validPostImage(avatar)) {
