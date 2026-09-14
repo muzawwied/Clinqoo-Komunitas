@@ -28,18 +28,6 @@
     </header>
 
     <main id="home-view" class="app-view h-full overflow-y-auto pt-16 pb-24 block no-scrollbar max-w-2xl mx-auto">
-        <div class="bg-white py-4 px-2 border-b border-gray-100">
-            <div class="flex space-x-4 overflow-x-auto no-scrollbar px-2" id="stories-container">
-                <div class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer hover:opacity-80 transition">
-                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-gray-300 p-0.5 relative">
-                        <div class="w-full h-full bg-gray-50 hover:bg-gray-100 rounded-full flex items-center justify-center transition">
-                            <svg class="ic text-xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
-                        </div>
-                    </div>
-                    <span class="text-[11px] text-gray-500 font-medium">Cerita Anda</span>
-                </div>
-            </div>
-        </div>
 
         <div id="author-chip" class="hidden mx-4 mt-3 bg-blue-50 text-blue-700 text-[13px] font-semibold rounded-full px-4 py-2 w-fit cursor-pointer hover:bg-blue-100 transition-colors" onclick="clearAuthorFilter()"></div>
         <div id="feed-container" class="divide-y divide-gray-100 bg-gray-50 pb-4">
@@ -536,7 +524,7 @@
             return a;
         }
         function renderAll() {
-            renderStories(); renderPosts(); buildNotifs(); updateProfileStats(); renderProfileGrid(); renderExplore(); renderTabs(); renderProfileExtra();
+            renderPosts(); buildNotifs(); updateProfileStats(); renderProfileGrid(); renderExplore(); renderTabs(); renderProfileExtra();
         }
         function saveFeedCache() {
             try {
@@ -566,23 +554,6 @@
                 saveFeedCache();
                 document.getElementById('feed-skeleton').classList.add('hidden');
             }).catch(function () { toast('Koneksi bermasalah'); });
-        }
-
-        // ===== Stories: pengguna yang pernah posting =====
-        function renderStories() {
-            var container = document.getElementById('stories-container');
-            var html = '';
-            var seen = {}, idx = 0;
-            posts.forEach(function (p) {
-                if (seen[p.uid]) return; seen[p.uid] = 1; idx++;
-                var safeName = esc(p.author).replace(/'/g, '');
-                html += '<div onclick="filterByAuthor(' + p.uid + ', \'' + safeName + '\')" class="flex flex-col items-center space-y-1 flex-shrink-0 cursor-pointer hover:opacity-80 transition">'
-                    + '<div class="w-16 h-16 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[2px]">'
-                    + '<div class="w-full h-full bg-white rounded-full border-2 border-white flex items-center justify-center overflow-hidden bg-gradient-to-br ' + p.avatar + ' text-white font-bold text-lg">'
-                    + avaInner(p.author, p.photo) + '</div></div>'
-                    + '<span class="text-[11px] text-gray-700 font-medium">' + esc(p.author.split(' ')[0]) + '</span></div>';
-            });
-            container.innerHTML = html;
         }
 
         // ===== Kartu postingan (markup VibeSpace asli) =====
