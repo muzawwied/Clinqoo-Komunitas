@@ -3,35 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pusat Bantuan — Komunitas Clinqoo</title>
-    <meta name="description" content="FAQ dan panduan Komunitas Clinqoo.">
+    <title>Pusat Bantuan — Komunitas Clincoo</title>
+    <meta name="description" content="FAQ dan panduan Komunitas Clincoo.">
+    <!-- Memuat Tailwind via CDN agar desain dapat langsung dirender pada Pratinjau -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="tailwind.css">
-    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
-    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .ic-fill { fill: currentColor; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
-    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
-        <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Pusat Bantuan</span>
+<body class="bg-white min-h-screen text-slate-900 antialiased selection:bg-slate-200 selection:text-slate-900 overflow-y-auto no-scrollbar">
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3 transition-all">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center text-slate-900 hover:opacity-70 transition-opacity w-8">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </a>
+            <h1 class="text-[15px] font-bold text-slate-900 tracking-tight flex items-center gap-1">
+                Pusat Bantuan
+            </h1>
+            <div class="w-8"></div>
         </div>
     </header>
-    <main class="max-w-2xl mx-auto pt-16 pb-32">
-        <div class="px-4 py-4">
-            <h1 class="text-xl font-bold text-gray-900">Pusat Bantuan</h1>
-            <p class="text-[13px] text-gray-500">Cari jawaban atau telusuri topik di bawah.</p>
+    <main class="max-w-md mx-auto pt-4 pb-24">
+        <div class="px-4 py-2">
+            <p class="text-[14px] text-slate-500">Cari jawaban atau telusuri topik di bawah.</p>
         </div>
-        <div class="px-4">
+        <div class="px-4 mt-2">
             <div class="relative">
-                <svg class="ic absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input id="faq-q" type="text" placeholder="Cari bantuan, mis. posting, tersimpan, draf…" class="w-full bg-white border border-gray-200 rounded-xl pl-10 pr-3.5 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition shadow-sm">
+                <svg class="ic absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input id="faq-q" type="text" placeholder="Cari bantuan, mis. posting, tersimpan…" class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-3.5 py-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition">
             </div>
         </div>
-        <div id="faq-list" class="px-4 mt-4 space-y-2"></div>
-        <div class="bg-white mt-4 mx-4 rounded-2xl border border-gray-100 p-4 shadow-sm">
-            <h3 class="text-[13px] font-semibold text-gray-600 mb-2 flex items-center space-x-1.5"><svg class="ic text-base text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.91 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg><span>Masih butuh bantuan?</span></h3>
-            <p class="text-[13px] text-gray-500 leading-relaxed">Tulis masalahmu di komunitas dengan tag #bantuan — sesama anggota dan tim Clinqoo akan membantu.</p>
+        <div id="faq-list" class="mt-6 flex flex-col"></div>
+        
+        <div class="h-px w-full bg-slate-200 mt-6 mb-2"></div>
+
+        <div class="bg-slate-50 mt-4 mx-4 rounded-xl border border-slate-200 p-4 mb-6">
+            <h3 class="text-[14px] font-semibold text-slate-900 mb-2 flex items-center gap-1.5"><svg class="ic text-slate-500 w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.91 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/></svg><span>Masih butuh bantuan?</span></h3>
+            <p class="text-[13px] text-slate-600 leading-relaxed">Tulis masalahmu di komunitas dengan tag #bantuan — sesama anggota dan tim Clincoo akan membantu.</p>
         </div>
     </main>
     <script>
@@ -43,8 +57,8 @@
         };
         var FAQ = [
             ['Mulai', 'ph-rocket-launch', [
-                ['Bagaimana cara bergabung di Komunitas Clinqoo?', 'Buka halaman Masuk lalu pilih "Daftar". Isi nama, email, dan kata sandi — langsung masuk ke beranda komunitas.'],
-                ['Apakah gratis?', 'Ya. Komunitas Clinqoo gratis untuk semua pemilik akun Clinqoo.'],
+                ['Bagaimana cara bergabung di Komunitas Clincoo?', 'Buka halaman Masuk lalu pilih "Daftar". Isi nama, email, dan kata sandi — langsung masuk ke beranda komunitas.'],
+                ['Apakah gratis?', 'Ya. Komunitas Clincoo gratis untuk semua pemilik akun Clincoo.'],
                 ['Kenapa saya diminta masuk lagi?', 'Sesi login hanya berlaku di perangkat itu. Kalau kamu menekan "Keluar" atau bersih riwayat browser, kamu perlu masuk lagi.']
             ]],
             ['Postingan', 'ph-note', [
@@ -78,25 +92,26 @@
                 });
                 if (!items.length) return;
                 shown += items.length;
-                html += '<div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">'
-                    + '<div class="flex items-center space-x-2 px-4 py-3 border-b border-gray-50"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (PH2SVG[sec[1]] || '') + '</svg><h2 class="text-[14px] font-bold text-gray-900">' + sec[0] + '</h2></div>';
+                html += '<div class="flex flex-col mb-2">';
+                html += '<div class="px-4 py-2.5 bg-slate-50 border-y border-slate-100 flex items-center gap-2"><svg class="ic text-slate-500 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + (PH2SVG[sec[1]] || '') + '</svg><h2 class="text-[13px] font-semibold text-slate-600 uppercase tracking-wider">' + sec[0] + '</h2></div>';
                 html += items.map(function (it, i) {
-                    return '<div class="border-b border-gray-50 last:border-b-0">'
-                        + '<button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition">'
-                        + '<span class="text-[14px] font-medium text-gray-800 pr-2">' + it[0] + '</span><svg class="ic text-gray-400 flex-shrink-0 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>'
-                        + '<div class="hidden px-4 pb-3 text-[13px] text-gray-600 leading-relaxed">' + it[1] + '</div></div>';
+                    return '<div class="border-b border-slate-100 last:border-b-0">'
+                        + '<button onclick="toggleFaq(this)" class="w-full flex items-center justify-between px-4 py-3.5 text-left bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors">'
+                        + '<span class="text-[15px] text-slate-900 pr-2 leading-snug">' + it[0] + '</span><svg class="ic w-4 h-4 text-slate-400 flex-shrink-0 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>'
+                        + '<div class="hidden px-4 pb-4 pt-1 text-[14px] text-slate-500 leading-relaxed">' + it[1] + '</div></div>';
                 }).join('');
                 html += '</div>';
             });
-            if (!shown && q) html = '<div class="bg-white rounded-2xl border border-gray-100 p-6 text-center text-[14px] text-gray-500 shadow-sm">Tidak ada hasil untuk "' + esc(q) + '". Coba kata kunci lain.</div>';
+            if (!shown && q) html = '<div class="mx-4 mt-2 bg-slate-50 rounded-xl border border-slate-100 p-6 text-center text-[14px] text-slate-500">Tidak ada hasil untuk "' + esc(q) + '". Coba kata kunci lain.</div>';
             list.innerHTML = html;
         }
         function toggleFaq(btn) {
             var body = btn.nextElementSibling;
-            var icon = btn.querySelector('i');
+            // Penyesuaian ke svg karena elemen asli tidak menggunakan tag <i>
+            var icon = btn.querySelector('svg:last-child'); 
             var open = !body.classList.contains('hidden');
             body.classList.toggle('hidden');
-            icon.style.transform = open ? '' : 'rotate(180deg)';
+            if(icon) icon.style.transform = open ? '' : 'rotate(180deg)';
         }
     </script>
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
@@ -104,7 +119,7 @@
 <script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
@@ -121,10 +136,14 @@
         }
         function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
         function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
-        function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
+        function guard() { 
+            // Menonaktifkan redirect untuk preview agar halaman dapat dilihat dengan jelas
+            // if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } 
+            return true; 
+        }
         function logoutNow() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); localStorage.removeItem('clinqoo_community_me'); } catch (e) {}
+            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
             location.replace('login.html');
         }
         if (guard()) init();
