@@ -1,0 +1,27 @@
+/* Clincoo slate theme — maps legacy gray utilities to slate palette */
+.bg-gray-50 { background-color: #fff !important; }
+.bg-gray-100, .bg-gray-100\/80 { background-color: #f1f5f9 !important; }
+.bg-gray-200 { background-color: #e2e8f0 !important; }
+.bg-gray-300 { background-color: #cbd5e1 !important; }
+.bg-gray-800 { background-color: #1e293b !important; }
+.bg-gray-900 { background-color: #0f172a !important; }
+.text-gray-300 { color: #cbd5e1 !important; }
+.text-gray-400 { color: #94a3b8 !important; }
+.text-gray-500 { color: #64748b !important; }
+.text-gray-600 { color: #475569 !important; }
+.text-gray-700 { color: #334155 !important; }
+.text-gray-800 { color: #1e293b !important; }
+.text-gray-900 { color: #0f172a !important; }
+.border-gray-100, .border-gray-100\/50 { border-color: #e2e8f0 !important; }
+.border-gray-200 { border-color: #e2e8f0 !important; }
+.border-gray-300 { border-color: #cbd5e1 !important; }
+.border-gray-900 { border-color: #0f172a !important; }
+.divide-gray-100 > :not([hidden]) ~ :not([hidden]) { border-color: #f1f5f9 !important; }
+.hover\:bg-gray-50:hover { background-color: #f8fafc !important; }
+.hover\:bg-gray-100:hover { background-color: #f1f5f9 !important; }
+.hover\:bg-gray-800:hover { background-color: #1e293b !important; }
+.hover\:text-gray-900:hover { color: #0f172a !important; }
+.placeholder-gray-400::placeholder { color: #94a3b8 !important; }
+.placeholder-gray-500::placeholder { color: #64748b !important; }
+.max-w-2xl { max-width: 28rem !important; }
+body { font-family: 'Inter', system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
