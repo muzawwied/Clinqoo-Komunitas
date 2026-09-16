@@ -1,51 +1,159 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <script>try{var t=localStorage.getItem('clinqoo_community_theme');document.documentElement.classList.toggle('dark-mode', t?t==='dark':true);}catch(e){document.documentElement.classList.add('dark-mode');}</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Masuk — Komunitas Clinqoo</title>
-  <meta name="description" content="Masuk ke Komunitas Clinqoo dengan akun Clinqoo kamu.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Masuk — Komunitas Clincoo</title>
+    <meta name="description" content="Masuk ke Komunitas Clincoo dengan akun Clincoo kamu.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+    </style>
 </head>
-<body data-page="login">
+<body class="bg-white min-h-screen text-slate-900 antialiased selection:bg-slate-200 selection:text-slate-900">
 
-  <div class="auth-bg">
-    <div class="auth-card">
-      <div class="auth-brand">
-        <img src="assets/favicon.svg" alt="Logo Clinqoo">
-        <h1>Komunitas Clinqoo</h1>
-        <p id="auth-sub">Masuk dengan akun Clinqoo kamu untuk ikut ngobrol.</p>
-      </div>
-      <div id="auth-err" class="auth-err hidden"></div>
-      <form id="auth-form">
-        <div class="field hidden" id="f-name">
-          <label for="in-name">Nama tampilan</label>
-          <input id="in-name" type="text" placeholder="Nama kamu di komunitas" autocomplete="name">
+    <main class="max-w-md mx-auto min-h-screen flex flex-col justify-center px-5 py-12">
+        <div class="mb-8 text-center">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-2xl bg-slate-900 flex items-center justify-center">
+                <span class="text-white text-xl font-bold tracking-tight">C</span>
+            </div>
+            <h1 class="text-xl font-bold text-slate-900 tracking-tight">Komunitas Clincoo</h1>
+            <p id="auth-sub" class="text-[14px] text-slate-500 mt-1.5">Masuk dengan akun Clincoo kamu untuk ikut ngobrol.</p>
         </div>
-        <div class="field">
-          <label for="in-email">Email</label>
-          <input id="in-email" type="email" placeholder="email@kamu.com" autocomplete="email" required>
-        </div>
-        <div class="field">
-          <label for="in-pass">Kata sandi</label>
-          <input id="in-pass" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password" required minlength="6">
-        </div>
-        <button type="submit" class="btn-primary auth-btn" id="auth-btn">Masuk</button>
-      </form>
-      <div class="auth-alt" style="margin-top:14px;">
-        <button id="demo-btn" type="button" class="btn-primary auth-btn" onclick="location.href='index.html'">Lihat dengan data demo</button>
-      </div>
-      <p class="auth-alt" id="auth-alt">Belum punya akun Clinqoo? <button id="auth-toggle" type="button">Daftar</button></p>
-      <p class="auth-foot">Akun sama dengan aplikasi <a href="https://muzawwied.github.io/Clinqoo./" target="_blank" rel="noopener">Clinqoo</a> — langsung pakai.</p>
-    </div>
-  </div>
 
-  <div class="toast" id="toast"></div>
-  <script src="assets/js/app.js?v=9"></script>
+        <div id="auth-err" class="hidden mb-4 px-3.5 py-2.5 rounded-xl bg-red-50 border border-red-100 text-[13px] text-red-600"></div>
+
+        <form id="auth-form" class="space-y-4">
+            <div id="f-name" class="hidden">
+                <label for="in-name" class="block text-[13px] font-medium text-slate-700 mb-1.5">Nama tampilan</label>
+                <input id="in-name" type="text" placeholder="Nama kamu di komunitas" autocomplete="name"
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-3 text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-300 transition">
+            </div>
+            <div>
+                <label for="in-email" class="block text-[13px] font-medium text-slate-700 mb-1.5">Email</label>
+                <input id="in-email" type="email" placeholder="email@kamu.com" autocomplete="email" required
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-3 text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-300 transition">
+            </div>
+            <div>
+                <label for="in-pass" class="block text-[13px] font-medium text-slate-700 mb-1.5">Kata sandi</label>
+                <input id="in-pass" type="password" placeholder="Minimal 6 karakter" autocomplete="current-password" required minlength="6"
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-3 text-[15px] text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-900/10 focus:border-slate-300 transition">
+            </div>
+            <button type="submit" id="auth-btn"
+                class="w-full bg-slate-900 hover:bg-slate-800 active:bg-slate-950 text-white font-semibold text-[15px] py-3 rounded-xl transition-colors disabled:opacity-50">
+                Masuk
+            </button>
+        </form>
+
+        <button type="button" onclick="location.href='index.html'"
+            class="w-full mt-3 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-900 font-semibold text-[14px] py-3 rounded-xl transition-colors">
+            Lihat dengan data demo
+        </button>
+
+        <p class="text-center text-[13px] text-slate-500 mt-6" id="auth-alt">
+            Belum punya akun Clincoo? <button id="auth-toggle" type="button" class="text-blue-600 font-semibold hover:underline">Daftar</button>
+        </p>
+        <p class="text-center text-[12px] text-slate-400 mt-4 leading-relaxed">
+            Akun sama dengan aplikasi <a href="https://muzawwied.github.io/Clinqoo./" target="_blank" rel="noopener" class="text-slate-600 font-medium underline underline-offset-2">Clincoo</a> — langsung pakai.
+        </p>
+    </main>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+
+    <script src="assets/demo.js"></script>
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+
+        var isRegister = false;
+
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+
+        function showErr(msg) {
+            var el = document.getElementById('auth-err');
+            if (!msg) { el.classList.add('hidden'); el.textContent = ''; return; }
+            el.textContent = msg; el.classList.remove('hidden');
+        }
+
+        function setMode(register) {
+            isRegister = !!register;
+            document.getElementById('f-name').classList.toggle('hidden', !isRegister);
+            document.getElementById('auth-btn').textContent = isRegister ? 'Daftar' : 'Masuk';
+            document.getElementById('auth-sub').textContent = isRegister
+                ? 'Buat akun Clincoo baru untuk bergabung ke komunitas.'
+                : 'Masuk dengan akun Clincoo kamu untuk ikut ngobrol.';
+            document.getElementById('auth-alt').innerHTML = isRegister
+                ? 'Sudah punya akun? <button id="auth-toggle" type="button" class="text-blue-600 font-semibold hover:underline">Masuk</button>'
+                : 'Belum punya akun Clincoo? <button id="auth-toggle" type="button" class="text-blue-600 font-semibold hover:underline">Daftar</button>';
+            document.getElementById('auth-toggle').onclick = function () { setMode(!isRegister); showErr(''); };
+            showErr('');
+        }
+
+        document.getElementById('auth-toggle').onclick = function () { setMode(true); };
+
+        document.getElementById('auth-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            showErr('');
+            var email = document.getElementById('in-email').value.trim();
+            var pass = document.getElementById('in-pass').value;
+            var name = document.getElementById('in-name').value.trim();
+            if (!email || pass.length < 6) { showErr('Isi email dan kata sandi (min. 6 karakter).'); return; }
+            if (isRegister && !name) { showErr('Nama tampilan wajib diisi.'); return; }
+
+            var btn = document.getElementById('auth-btn');
+            btn.disabled = true; btn.textContent = '…';
+
+            var path = isRegister ? '/auth/register' : '/auth/login';
+            var body = isRegister
+                ? { name: name, email: email, password: pass }
+                : { email: email, password: pass };
+
+            var opts = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            };
+
+            var doFetch = (window.DemoApi && !localStorage.getItem('clincoo_auth_token'))
+                ? window.DemoApi(path, opts)
+                : fetch(API + path, opts).then(function (r) {
+                    return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+                });
+
+            doFetch.then(function (d) {
+                btn.disabled = false;
+                btn.textContent = isRegister ? 'Daftar' : 'Masuk';
+                if (d && (d.token || d.access_token || (d.user && d.success !== false))) {
+                    var tk = d.token || d.access_token || 'demo';
+                    try {
+                        localStorage.setItem('clincoo_auth_token', tk);
+                        localStorage.setItem('clincoo_token', tk);
+                        localStorage.setItem('clinqoo_auth_token', tk);
+                        localStorage.setItem('clinqoo_token', tk);
+                    } catch (err) {}
+                    toast(isRegister ? 'Akun dibuat ✨' : 'Berhasil masuk');
+                    setTimeout(function () { location.replace('index.html'); }, 500);
+                    return;
+                }
+                showErr((d && d.error) || 'Gagal. Coba cek email/kata sandi.');
+            }).catch(function () {
+                btn.disabled = false;
+                btn.textContent = isRegister ? 'Daftar' : 'Masuk';
+                try {
+                    localStorage.setItem('clincoo_auth_token', 'preview');
+                    localStorage.setItem('clincoo_token', 'preview');
+                } catch (err) {}
+                toast('Mode preview — masuk lokal');
+                setTimeout(function () { location.replace('index.html'); }, 400);
+            });
+        });
+    </script>
 </body>
 </html>
