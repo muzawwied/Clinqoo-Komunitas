@@ -1,61 +1,174 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <script>try{var t=localStorage.getItem('clinqoo_community_theme');document.documentElement.classList.toggle('dark-mode', t?t==='dark':true);}catch(e){document.documentElement.classList.add('dark-mode');}</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tulis Postingan — Komunitas Clinqoo</title>
-  <meta name="description" content="Tulis postingan baru di Komunitas Clinqoo — bisa dengan foto.">
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tulis Postingan — Komunitas Clincoo</title>
+    <meta name="description" content="Tulis postingan baru di Komunitas Clincoo — bisa dengan foto.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body data-page="post">
+<body class="bg-white min-h-screen text-slate-900 antialiased selection:bg-slate-200 selection:text-slate-900">
 
-  <header>
-    <div class="hd-inner">
-      <a class="brand" href="./" aria-label="Komunitas Clinqoo — Beranda">
-        <img src="assets/favicon.svg" alt="Logo Clinqoo">
-        <b>Clinqoo</b>
-      </a>
-    </div>
-  </header>
-
-  <div class="wrap">
-    <main>
-      <div class="feed-head"><h2>Tulis Postingan</h2></div>
-
-      <div class="composer composer--page">
-        <div class="avatar" id="composer-avatar">A</div>
-        <div style="flex:1; display:flex; flex-direction:column;">
-          <textarea id="composer-text" rows="4" maxlength="500" autofocus placeholder="Ceritain progres proyek kamu, atau tanya sesuatu… pakai #tag biar mudah ditemukan"></textarea>
-          <div id="cmp-preview" class="cmp-preview hidden">
-            <img id="cmp-preview-img" alt="Pratinjau foto">
-            <button id="cmp-img-del" class="cmp-img-del" aria-label="Hapus foto">&times;</button>
-          </div>
-          <div class="composer-foot">
-            <button class="icon-btn" id="btn-img" title="Lampirkan foto" aria-label="Lampirkan foto">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path stroke-linecap="round" stroke-linejoin="round" d="m21 15-4.5-4.5L6 21"/></svg>
-            </button>
-            <input type="file" id="in-img" accept="image/*" class="hidden">
-            <button class="btn-primary" id="btn-post" disabled>Bagikan</button>
-          </div>
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3 transition-all">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex-1 flex items-center text-slate-900 hover:opacity-70 transition-opacity">
+                <svg class="w-6 h-6 -ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </a>
+            <h1 class="text-[15px] font-bold text-slate-900 tracking-tight flex-1 text-center">Tulis Postingan</h1>
+            <div class="flex-1 flex justify-end">
+                <button id="btn-post" disabled onclick="submitPost()" class="text-[15px] font-bold text-blue-600 hover:text-blue-700 disabled:opacity-40 transition">Bagikan</button>
+            </div>
         </div>
-      </div>
+    </header>
 
-      <div class="card tips-card">
-        <h3>Tips biar postinganmu makin kebaca</h3>
-        <p>1. Mulai dengan kalimat kuat<br>2. Pakai #tag topik — muncul di halaman Jelajah<br>3. Lampirkan foto progres biar makin hidup</p>
-      </div>
+    <main class="max-w-md mx-auto pt-5 pb-32 px-4">
+        <div class="flex items-start gap-3">
+            <div id="composer-avatar" class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-sm font-medium text-slate-600 flex-shrink-0">A</div>
+            <div class="flex-1 min-w-0">
+                <textarea id="composer-text" rows="5" maxlength="500" autofocus
+                    placeholder="Ceritain progres proyek kamu, atau tanya sesuatu… pakai #tag biar mudah ditemukan"
+                    class="w-full bg-transparent text-[15px] text-slate-900 placeholder-slate-400 resize-none focus:outline-none leading-relaxed"></textarea>
+                <div class="text-right mt-1"><span id="char-count" class="text-[12px] text-slate-400">0 / 500</span></div>
+
+                <div id="cmp-preview" class="hidden relative mt-3 rounded-xl overflow-hidden border border-slate-200">
+                    <img id="cmp-preview-img" alt="Pratinjau foto" class="w-full max-h-72 object-cover">
+                    <button id="cmp-img-del" type="button" aria-label="Hapus foto"
+                        class="absolute top-2 right-2 w-8 h-8 rounded-full bg-slate-900/70 text-white flex items-center justify-center hover:bg-slate-900 transition">×</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-px w-full bg-slate-200 my-5"></div>
+
+        <button type="button" id="btn-img" class="flex items-center gap-3 px-1 py-2 text-slate-700 hover:text-slate-900 transition">
+            <svg class="ic text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.5-4.5L6 21"/></svg>
+            <span class="text-[14px] font-medium">Lampirkan foto</span>
+        </button>
+        <input type="file" id="in-img" accept="image/*" class="hidden">
+
+        <div class="mt-8 bg-slate-50 border border-slate-200 rounded-xl p-4">
+            <h3 class="text-[14px] font-semibold text-slate-900 mb-2">Tips biar postinganmu makin kebaca</h3>
+            <p class="text-[13px] text-slate-500 leading-relaxed">1. Mulai dengan kalimat kuat<br>2. Pakai #tag topik — muncul di halaman Jelajah<br>3. Lampirkan foto progres biar makin hidup</p>
+        </div>
     </main>
-  </div>
 
-  <footer class="site">Komunitas resmi <b>Clinqoo</b> · Bangun, kelola, dan publikasikan situsmu dengan mudah.</footer>
-  <div id="bottom-nav"></div>
-  <div class="toast" id="toast"></div>
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
 
-  <script src="assets/js/app.js?v=9"></script>
+    <script src="assets/demo.js"></script>
+    <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        var imageData = null;
+        function safeRedirect(url) {
+            try {
+                if (location.protocol === 'blob:' || location.href.indexOf('usercontent.goog') !== -1 || !location.hostname) return;
+                location.replace(url);
+            } catch (e) {}
+        }
+        function token() {
+            try {
+                return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token')
+                    || localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || '';
+            } catch (e) { return ''; }
+        }
+        function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+        function updateBtn() {
+            var txt = document.getElementById('composer-text').value.trim();
+            document.getElementById('btn-post').disabled = !txt;
+            document.getElementById('char-count').textContent = document.getElementById('composer-text').value.length + ' / 500';
+        }
+        document.getElementById('composer-text').addEventListener('input', function () {
+            updateBtn();
+            try {
+                localStorage.setItem('clincoo_draft', this.value);
+                localStorage.setItem('clinqoo_draft', this.value);
+            } catch (e) {}
+        });
+        document.getElementById('btn-img').onclick = function () { document.getElementById('in-img').click(); };
+        document.getElementById('cmp-img-del').onclick = function () {
+            imageData = null;
+            document.getElementById('cmp-preview').classList.add('hidden');
+            document.getElementById('in-img').value = '';
+        };
+        document.getElementById('in-img').addEventListener('change', function () {
+            var file = this.files && this.files[0];
+            if (!file) return;
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var img = new Image();
+                img.onload = function () {
+                    var c = document.createElement('canvas');
+                    var max = 800, w = img.width, h = img.height;
+                    if (w > max || h > max) {
+                        if (w > h) { h = Math.round(h * max / w); w = max; }
+                        else { w = Math.round(w * max / h); h = max; }
+                    }
+                    c.width = w; c.height = h;
+                    c.getContext('2d').drawImage(img, 0, 0, w, h);
+                    var q = 0.85, out = c.toDataURL('image/jpeg', q);
+                    while (out.length > 100000 && q > 0.4) { q -= 0.1; out = c.toDataURL('image/jpeg', q); }
+                    imageData = out;
+                    document.getElementById('cmp-preview-img').src = out;
+                    document.getElementById('cmp-preview').classList.remove('hidden');
+                    toast('Foto siap dilampirkan');
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        function submitPost() {
+            var text = document.getElementById('composer-text').value.trim();
+            if (!text) return;
+            var btn = document.getElementById('btn-post');
+            btn.disabled = true; btn.textContent = '…';
+            var body = { content: text, text: text };
+            if (imageData) body.image = imageData;
+            api('/community', { method: 'POST', body: JSON.stringify(body) }).then(function (d) {
+                btn.disabled = false; btn.textContent = 'Bagikan';
+                if (d && d._status === 401) { safeRedirect('login.html'); return; }
+                if (d && (d.success || d.id || d.post)) {
+                    try { localStorage.removeItem('clincoo_draft'); localStorage.removeItem('clinqoo_draft'); } catch (e) {}
+                    toast('Postingan terkirim ✨');
+                    setTimeout(function () { safeRedirect('index.html'); }, 600);
+                    return;
+                }
+                toast((d && d.error) || 'Gagal mengirim');
+            }).catch(function () {
+                btn.disabled = false; btn.textContent = 'Bagikan';
+                toast('Tersimpan lokal (mode preview)');
+                setTimeout(function () { safeRedirect('index.html'); }, 600);
+            });
+        }
+        try {
+            var draft = localStorage.getItem('clincoo_draft') || localStorage.getItem('clinqoo_draft') || '';
+            if (draft) { document.getElementById('composer-text').value = draft; updateBtn(); }
+        } catch (e) {}
+        api('/auth/me').then(function (d) {
+            if (d && d.user && d.user.name) {
+                document.getElementById('composer-avatar').textContent = d.user.name.charAt(0).toUpperCase();
+            }
+        }).catch(function () {});
+    </script>
 </body>
 </html>
