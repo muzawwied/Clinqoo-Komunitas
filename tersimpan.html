@@ -3,38 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tersimpan — Komunitas Clinqoo</title>
-    <meta name="description" content="Postingan yang kamu simpan di Komunitas Clinqoo.">
-    <link rel="stylesheet" href="tailwind.css">
-    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
-    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+    <title>Tersimpan — Komunitas Clincoo</title>
+    <meta name="description" content="Postingan yang kamu simpan di Komunitas Clincoo.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
-    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
-        <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Tersimpan</span>
+<body class="bg-white min-h-screen text-slate-900 antialiased selection:bg-slate-200 selection:text-slate-900">
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3 transition-all">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <a href="akun.html" class="flex items-center text-slate-900 hover:opacity-70 transition-opacity w-8">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </a>
+            <h1 class="text-[15px] font-bold text-slate-900 tracking-tight">Tersimpan</h1>
+            <div class="w-8"></div>
         </div>
     </header>
-    <main class="max-w-2xl mx-auto pt-16 pb-32">
-        <div class="flex items-center justify-between px-4 py-4">
-            <div>
-                <h1 class="text-xl font-bold text-gray-900">Tersimpan</h1>
-                <p id="sv-count" class="text-[13px] text-gray-500">Memuat…</p>
-            </div>
-            <svg class="ic text-2xl text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
-        </div>
-        <div id="sv-list" class="px-4 space-y-3"></div>
+    <main class="max-w-md mx-auto pt-4 pb-24">
+        <section class="px-4 pb-3 flex items-center justify-between">
+            <p id="sv-count" class="text-[13px] text-slate-500">Memuat…</p>
+            <svg class="ic text-slate-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+        </section>
+        <div class="h-px w-full bg-slate-200 mb-1"></div>
+        <div id="sv-list" class="flex flex-col"></div>
     </main>
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+    <script src="assets/demo.js"></script>
     <script>
-        function loadSaved() { try { return JSON.parse(localStorage.getItem('clinqoo_saved') || '[]'); } catch (e) { return []; } }
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        function safeRedirect(url) {
+            try {
+                if (location.protocol === 'blob:' || location.href.indexOf('usercontent.goog') !== -1 || !location.hostname) return;
+                location.replace(url);
+            } catch (e) {}
+        }
+        function token() {
+            try {
+                return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token')
+                    || localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || '';
+            } catch (e) { return ''; }
+        }
+        function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            });
+        }
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+        function esc(t) {
+            return String(t || '').replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+        function loadSaved() {
+            try {
+                return JSON.parse(localStorage.getItem('clincoo_saved') || localStorage.getItem('clinqoo_saved') || '[]');
+            } catch (e) { return []; }
+        }
         function init() {
             var saved = loadSaved();
             var list = document.getElementById('sv-list');
             document.getElementById('sv-count').textContent = saved.length + ' postingan tersimpan';
             if (!saved.length) {
-                list.innerHTML = '<div class="flex flex-col items-center justify-center py-16 px-4 text-center bg-white rounded-2xl border border-gray-100 mt-2"><div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div><h3 class="text-lg font-bold text-gray-900 mb-1">Belum ada yang disimpan</h3><p class="text-[14px] text-gray-500 max-w-[260px]">Tap ikon bookmark 🔖 di postingan untuk menyimpannya di sini.</p></div>';
+                list.innerHTML = '<div class="px-4 py-16 text-center">'
+                    + '<div class="w-14 h-14 mx-auto mb-4 rounded-full bg-slate-100 flex items-center justify-center">'
+                    + '<svg class="ic text-slate-400 w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg></div>'
+                    + '<h3 class="text-[15px] font-semibold text-slate-900 mb-1">Belum ada yang disimpan</h3>'
+                    + '<p class="text-[13px] text-slate-500 max-w-[260px] mx-auto">Tap ikon bookmark di postingan untuk menyimpannya di sini.</p></div>';
                 return;
             }
             api('/community?limit=100').then(function (d) {
@@ -45,59 +94,43 @@
                     var photo = p.photo || p.author_avatar || '';
                     var ava = photo
                         ? '<img src="' + esc(photo) + '" class="w-full h-full object-cover" alt="">'
-                        : esc((p.author || 'U').charAt(0));
+                        : esc((p.author || 'U').charAt(0).toUpperCase());
                     var txt = esc(p.content || p.text || '');
                     txt = txt.replace(/#[\w]+/g, function (t) { return '<span class="text-blue-600">' + t + '</span>'; });
-                    return '<div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">'
-                        + '<div class="flex items-start space-x-3">'
-                        + '<div class="w-10 h-10 rounded-full flex-shrink-0 bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center font-bold text-white text-xs overflow-hidden">' + ava + '</div>'
+                    return '<div class="px-4 py-4 border-b border-slate-100">'
+                        + '<div class="flex items-start gap-3">'
+                        + '<div class="w-10 h-10 rounded-full flex-shrink-0 bg-slate-200 flex items-center justify-center font-medium text-slate-600 text-sm overflow-hidden">' + ava + '</div>'
                         + '<div class="flex-1 min-w-0">'
-                        + '<p class="font-bold text-[14px] text-gray-900">' + esc(p.author || sv.author) + ' <span class="text-gray-400 font-normal text-[12px]">· ' + esc(p.time || sv.time || '') + '</span></p>'
-                        + (p.image ? (String(p.image).indexOf('data:video/') === 0 ? '<video src="' + esc(p.image) + '" class="mt-2 rounded-xl border border-gray-100 w-full max-h-64" controls playsinline preload="metadata"></video>' : '<img src="' + esc(p.image) + '" class="mt-2 rounded-xl border border-gray-100 max-h-64 w-full object-cover" alt="">') : '')
-                        + '<p class="text-[14px] text-gray-700 mt-1 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
-                        + '<div class="flex items-center space-x-4 mt-2 text-[12px] text-gray-500">'
-                        + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (p.likes || 0) + '</span>'
-                        + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' + (p.comment_count || 0) + '</span>'
+                        + '<p class="text-[14px] font-semibold text-slate-900">' + esc(p.author || sv.author) + ' <span class="text-slate-400 font-normal text-[12px]">· ' + esc(p.time || sv.time || '') + '</span></p>'
+                        + (p.image ? (String(p.image).indexOf('data:video/') === 0
+                            ? '<video src="' + esc(p.image) + '" class="mt-2 rounded-lg border border-slate-100 w-full max-h-64" controls playsinline preload="metadata"></video>'
+                            : '<img src="' + esc(p.image) + '" class="mt-2 rounded-lg border border-slate-100 max-h-64 w-full object-cover" alt="">') : '')
+                        + '<p class="text-[14px] text-slate-700 mt-1.5 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
+                        + '<div class="flex items-center gap-4 mt-2.5 text-[12px] text-slate-500">'
+                        + '<span class="flex items-center gap-1"><svg class="ic w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (p.likes || 0) + '</span>'
+                        + '<span class="flex items-center gap-1"><svg class="ic w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' + (p.comment_count || 0) + '</span>'
                         + '</div></div>'
-                        + '<button onclick="unsave(\'' + esc(sv.id) + '\')" class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"><svg class="ic text-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg></button>'
+                        + '<button onclick="unsave(\'' + esc(sv.id) + '\')" class="w-8 h-8 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-50 text-slate-400 hover:text-red-500 transition-colors" aria-label="Hapus dari tersimpan">'
+                        + '<svg class="ic w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>'
                         + '</div></div>';
                 }).join('');
-            }).catch(function () { toast('Koneksi bermasalah — menampilkan salinan tersimpan'); });
+            }).catch(function () { toast('Menampilkan salinan lokal'); });
         }
         function unsave(id) {
-            var saved = loadSaved().filter(function (x) { return x.id !== id; });
-            try { localStorage.setItem('clinqoo_saved', JSON.stringify(saved)); } catch (e) {}
+            var saved = loadSaved().filter(function (x) { return String(x.id) !== String(id); });
+            try {
+                localStorage.setItem('clincoo_saved', JSON.stringify(saved));
+                localStorage.setItem('clinqoo_saved', JSON.stringify(saved));
+            } catch (e) {}
             toast('Dihapus dari Tersimpan');
             init();
         }
-    </script>
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
-        <script src="assets/demo.js"></script>
-<script>
-        var API = '/api';
-        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
-        function api(path, opts) {
-            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
-            opts = opts || {};
-            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
-            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
-            return fetch(API + path, opts).then(function (r) {
-                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
-            });
-        }
-        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
-            var t = document.getElementById('toast');
-            t.textContent = msg; t.classList.remove('opacity-0');
-            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
-        }
-        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
-        function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
-        function logoutNow() {
-            api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); localStorage.removeItem('clinqoo_community_me'); } catch (e) {}
-            location.replace('login.html');
+        function guard() {
+            if (!token() && !window.DemoApi) {
+                if (location.protocol === 'blob:' || location.href.indexOf('usercontent.goog') !== -1) return true;
+                safeRedirect('login.html'); return false;
+            }
+            return true;
         }
         if (guard()) init();
     </script>
