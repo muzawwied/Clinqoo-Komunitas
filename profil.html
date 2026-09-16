@@ -3,81 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Profil — Komunitas Clinqoo</title>
-    <meta name="description" content="Profil anggota Komunitas Clinqoo.">
-    <link rel="stylesheet" href="tailwind.css">
-    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
-    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+    <title>Profil — Komunitas Clincoo</title>
+    <meta name="description" content="Profil anggota Komunitas Clincoo.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
-    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
-        <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Beranda</span>
+<body class="bg-white min-h-screen text-slate-900 antialiased selection:bg-slate-200 selection:text-slate-900">
+
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center text-slate-900 hover:opacity-70 w-8">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </a>
+            <h1 class="text-[15px] font-bold tracking-tight">Profil</h1>
+            <div class="w-8"></div>
         </div>
     </header>
 
-    <main class="max-w-2xl mx-auto pt-14 pb-32">
-        <div id="pf-loading" class="flex flex-col items-center justify-center py-20 text-gray-400">
-            <svg class="ic text-3xl animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.36"/></svg>
+    <main class="max-w-md mx-auto pt-4 pb-24">
+        <div id="pf-loading" class="flex flex-col items-center justify-center py-20 text-slate-400">
+            <svg class="ic w-8 h-8 animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.36"/></svg>
             <p class="text-[13px] mt-2">Memuat profil…</p>
         </div>
+
         <div id="pf-body" class="hidden">
-            <!-- Kartu kepala -->
-            <div class="bg-white border-b border-gray-100 px-4 pb-5 pt-5">
-                <div class="flex items-center space-x-4">
-                    <div id="pf-ava-ring" class="w-[76px] h-[76px] rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[3px] flex-shrink-0">
-                        <div class="w-full h-full bg-white rounded-full border-2 border-white overflow-hidden">
-                            <div id="pf-ava-wrap" class="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                                <span id="pf-initial" class="text-2xl font-bold text-white">?</span>
-                                <img id="pf-img" src="" alt="Foto" class="w-full h-full object-cover hidden">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="min-w-0 flex-1">
-                        <h1 id="pf-name" class="text-lg font-bold text-gray-900 truncate">…</h1>
-                        <p id="pf-handle" class="text-[13px] text-gray-500">@…</p>
+            <section class="px-4 flex items-center justify-between">
+                <div class="w-[84px] h-[84px] rounded-full p-[2px] border border-slate-200 flex-shrink-0">
+                    <div class="w-full h-full bg-slate-100 rounded-full overflow-hidden flex items-center justify-center">
+                        <span id="pf-initial" class="text-3xl font-medium text-slate-500">?</span>
+                        <img id="pf-img" src="" alt="Foto" class="w-full h-full object-cover hidden">
                     </div>
                 </div>
-                <p id="pf-bio" class="text-[14px] text-gray-700 mt-3 leading-relaxed whitespace-pre-wrap"></p>
-                <a id="pf-link" href="#" class="hidden text-[14px] font-semibold text-blue-600 hover:underline mt-1 inline-flex items-center space-x-1 truncate max-w-full"><svg class="ic " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><span id="pf-link-txt"></span></a>
-                <div id="pf-actions" class="hidden mt-4 grid grid-cols-2 gap-2">
-                    <button id="pf-follow" data-on="0" class="w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] bg-blue-600 text-white shadow-md shadow-blue-600/25 hover:bg-blue-700"><svg class="ic text-base" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/></svg><span id="pf-follow-txt">Ikuti</span></button>
-                    <button id="pf-msg" class="w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] border-[1.5px] border-blue-600 text-blue-600 hover:bg-blue-50"><svg class="ic text-base" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Kirim Pesan</span></button>
+                <div class="flex-1 flex justify-evenly ml-6">
+                    <div class="text-center"><span id="pf-posts" class="text-lg font-bold block">0</span><span class="text-[13px] text-slate-500">Postingan</span></div>
+                    <div class="text-center"><span id="pf-likes" class="text-lg font-bold block">0</span><span class="text-[13px] text-slate-500">Suka</span></div>
+                    <div class="text-center"><span id="pf-cmts" class="text-lg font-bold block">0</span><span class="text-[13px] text-slate-500">Komen</span></div>
                 </div>
-            </div>
-            <!-- Statistik -->
-            <div class="grid grid-cols-3 gap-2 px-4 py-4">
-                <div class="bg-white rounded-2xl border border-gray-100 p-3 text-center shadow-sm">
-                    <p id="pf-posts" class="text-lg font-bold text-gray-900">0</p>
-                    <p class="text-[11px] text-gray-500">Postingan</p>
-                </div>
-                <div class="bg-white rounded-2xl border border-gray-100 p-3 text-center shadow-sm">
-                    <p id="pf-likes" class="text-lg font-bold text-gray-900">0</p>
-                    <p class="text-[11px] text-gray-500">Suka diterima</p>
-                </div>
-                <div class="bg-white rounded-2xl border border-gray-100 p-3 text-center shadow-sm">
-                    <p id="pf-cmts" class="text-lg font-bold text-gray-900">0</p>
-                    <p class="text-[11px] text-gray-500">Komentar diterima</p>
-                </div>
-            </div>
-            <!-- Postingan -->
-            <h3 class="px-4 pb-2 text-[13px] font-semibold text-gray-600">Postingan</h3>
-            <div id="pf-list" class="px-4 space-y-3"></div>
+            </section>
+
+            <section class="px-4 mt-3.5">
+                <h2 id="pf-name" class="text-[15px] font-bold tracking-tight">…</h2>
+                <p id="pf-handle" class="text-[14px] text-slate-500 mt-0.5">@…</p>
+                <p id="pf-bio" class="text-[14px] text-slate-800 mt-2.5 leading-relaxed whitespace-pre-wrap"></p>
+                <a id="pf-link" href="#" class="hidden text-[14px] font-medium text-blue-600 hover:underline mt-1.5 items-center gap-1.5 truncate max-w-full">
+                    <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                    <span id="pf-link-txt" class="truncate"></span>
+                </a>
+            </section>
+
+            <section id="pf-actions" class="hidden px-4 mt-5 flex gap-2">
+                <button id="pf-follow" data-on="0" class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[14px] py-1.5 rounded-lg transition-colors">Ikuti</button>
+                <button id="pf-msg" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-900 font-semibold text-[14px] py-1.5 rounded-lg transition-colors">Pesan</button>
+            </section>
+
+            <div class="h-px w-full bg-slate-200 mt-6 mb-2"></div>
+            <h3 class="px-4 py-2 text-[13px] font-semibold text-slate-600 uppercase tracking-wider">Postingan</h3>
+            <div id="pf-list" class="flex flex-col"></div>
         </div>
+
         <div id="pf-empty" class="hidden flex-col items-center justify-center py-16 px-4 text-center">
-            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4"><svg class="ic text-3xl text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/><path d="m17 8 5 5"/><path d="m22 8-5 5"/></svg></div>
-            <h3 class="text-lg font-bold text-gray-900 mb-1">Profil tidak ditemukan</h3>
-            <p class="text-[14px] text-gray-500 max-w-[260px]">Anggota ini belum pernah posting di komunitas.</p>
+            <div class="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                <svg class="ic w-6 h-6 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3 class="text-[15px] font-semibold mb-1">Profil tidak ditemukan</h3>
+            <p class="text-[13px] text-slate-500 max-w-[260px]">Anggota ini belum pernah posting di komunitas.</p>
         </div>
     </main>
 
-        <script src="assets/demo.js"></script>
-<script>
+    <div id="msg-modal" class="hidden fixed inset-0 z-40 bg-black/40 backdrop-blur-[2px] flex items-end sm:items-center justify-center p-4" onclick="if(event.target===this)closeMsgModal()">
+        <div class="bg-white rounded-2xl w-full max-w-md p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-1">
+                <h3 class="text-[15px] font-bold">Kirim Pesan</h3>
+                <button onclick="closeMsgModal()" class="w-8 h-8 flex items-center justify-center rounded-full text-slate-400 hover:bg-slate-100">
+                    <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <p id="msg-to-name" class="text-[13px] text-slate-500 mb-3"></p>
+            <textarea id="msg-text" rows="4" maxlength="500" placeholder="Tulis pesanmu…" class="w-full border border-slate-200 rounded-xl p-3 text-[14px] focus:outline-none focus:ring-2 focus:ring-slate-900/10 resize-none"></textarea>
+            <p id="msg-err" class="hidden text-[12px] text-red-600 mt-1.5"></p>
+            <div class="flex gap-2 mt-4">
+                <button onclick="closeMsgModal()" class="flex-1 rounded-lg py-2.5 text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200">Batal</button>
+                <button id="msg-send" onclick="sendMsg()" class="flex-1 rounded-lg py-2.5 text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+
+    <script src="assets/demo.js"></script>
+    <script>
         var API = '/api';
         if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
+        var msgTargetUid = 0;
+        function safeRedirect(url) {
+            try {
+                if (location.protocol === 'blob:' || location.href.indexOf('usercontent.goog') !== -1 || !location.hostname) return;
+                location.replace(url);
+            } catch (e) {}
+        }
+        function token() {
+            try {
+                return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token')
+                    || localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || '';
+            } catch (e) { return ''; }
+        }
         function api(path, opts) {
             if (window.DemoApi && !token()) return window.DemoApi(path, opts);
             opts = opts || {};
@@ -87,12 +122,20 @@
                 return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
             });
         }
-        function toast(msg) { return; /* toast dimatikan sesuai permintaan */ }
-        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+        function esc(t) {
+            return String(t || '').replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
         function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
         function relTime(iso) {
-            var d = new Date(iso), now = new Date();
-            var s = Math.floor((now - d) / 1000);
+            var d = new Date(iso), s = Math.floor((new Date() - d) / 1000);
             if (isNaN(s)) return '';
             if (s < 60) return 'baru saja';
             if (s < 3600) return Math.floor(s / 60) + 'm';
@@ -100,15 +143,13 @@
             if (s < 604800) return Math.floor(s / 86400) + 'h';
             return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
         }
-
         function setFollowBtn(btn, on) {
             btn.dataset.on = on ? '1' : '0';
-            document.getElementById('pf-follow-txt').textContent = on ? 'Mengikuti' : 'Ikuti';
+            btn.textContent = on ? 'Mengikuti' : 'Ikuti';
             btn.className = on
-                ? 'w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] bg-gray-100 text-gray-700 hover:bg-red-50 hover:text-red-600'
-                : 'w-full rounded-full py-2.5 text-sm font-semibold flex items-center justify-center space-x-1.5 transition-all active:scale-[0.97] bg-blue-600 text-white shadow-md shadow-blue-600/25 hover:bg-blue-700';
+                ? 'flex-1 bg-slate-100 hover:bg-slate-200 text-slate-900 font-semibold text-[14px] py-1.5 rounded-lg transition-colors'
+                : 'flex-1 bg-slate-900 hover:bg-slate-800 text-white font-semibold text-[14px] py-1.5 rounded-lg transition-colors';
         }
-        var msgTargetUid = 0;
         function openMsgModal(name, uid) {
             msgTargetUid = uid;
             document.getElementById('msg-to-name').textContent = 'Untuk ' + name;
@@ -126,11 +167,11 @@
             btn.disabled = true; btn.style.opacity = '0.6';
             api('/community/message', { method: 'POST', body: JSON.stringify({ to_id: msgTargetUid, text: txt }) })
                 .then(function (d) {
-                    if (d && d._status === 401) { location.replace('login.html'); return; }
-                    if (d && d.success) { closeMsgModal(); }
-                    else { err.textContent = (d && d.error) || 'Gagal mengirim pesan.'; err.classList.remove('hidden'); }
+                    if (d && d._status === 401) { safeRedirect('login.html'); return; }
+                    if (d && d.success) { closeMsgModal(); toast('Pesan terkirim'); }
+                    else { err.textContent = (d && d.error) || 'Gagal mengirim.'; err.classList.remove('hidden'); }
                 })
-                .catch(function () { err.textContent = 'Koneksi bermasalah. Coba lagi.'; err.classList.remove('hidden'); })
+                .catch(function () { err.textContent = 'Koneksi bermasalah.'; err.classList.remove('hidden'); })
                 .then(function () { btn.disabled = false; btn.style.opacity = '1'; });
         }
         function toggleFollow(uid, btn) {
@@ -138,21 +179,24 @@
             btn.disabled = true; btn.style.opacity = '0.6';
             api('/community/follow', { method: on ? 'DELETE' : 'POST', body: JSON.stringify({ user_id: uid }) })
                 .then(function (d) {
-                    if (d && d._status === 401) { location.replace('login.html'); return; }
+                    if (d && d._status === 401) { safeRedirect('login.html'); return; }
                     if (d && d.success) setFollowBtn(btn, !!d.following);
                 })
                 .catch(function () {})
                 .then(function () { btn.disabled = false; btn.style.opacity = '1'; });
         }
+        function showEmpty() {
+            document.getElementById('pf-loading').classList.add('hidden');
+            var e = document.getElementById('pf-empty');
+            e.classList.remove('hidden'); e.classList.add('flex');
+        }
         function init() {
-            // Mode demo: tanpa token, api() otomatis pakai data dummy
-
             var uidRaw = new URLSearchParams(location.search).get('uid');
-            if (uidRaw === 'me' || !uidRaw) { renderMe(); return; }
+            if (uidRaw === 'me' || !uidRaw) { safeRedirect('akun.html'); return; }
             var uid = parseInt(uidRaw, 10);
-            if (!uid) { location.replace('index.html'); return; }
+            if (!uid) { safeRedirect('index.html'); return; }
             api('/community?limit=100').then(function (d) {
-                if (d && d._status === 401) { location.replace('login.html'); return; }
+                if (d && d._status === 401) { safeRedirect('login.html'); return; }
                 if (!d || !d.feed) { showEmpty(); return; }
                 var theirs = d.feed.filter(function (p) { return parseInt(p.user_id, 10) === uid; });
                 if (!theirs.length) { showEmpty(); return; }
@@ -173,13 +217,11 @@
                     var lk = document.getElementById('pf-link');
                     document.getElementById('pf-link-txt').textContent = first.author_link.replace(/^https?:\/\//, '').replace(/^www\./, '');
                     lk.href = first.author_link.indexOf('http') === 0 ? first.author_link : 'https://' + first.author_link;
-                    lk.classList.remove('hidden');
+                    lk.classList.remove('hidden'); lk.classList.add('inline-flex');
                 }
-                var likes = theirs.reduce(function (a, p) { return a + (p.likes || 0); }, 0);
-                var cmts = theirs.reduce(function (a, p) { return a + (p.comment_count || 0); }, 0);
                 document.getElementById('pf-posts').textContent = theirs.length;
-                document.getElementById('pf-likes').textContent = likes;
-                document.getElementById('pf-cmts').textContent = cmts;
+                document.getElementById('pf-likes').textContent = theirs.reduce(function (a, p) { return a + (p.likes || 0); }, 0);
+                document.getElementById('pf-cmts').textContent = theirs.reduce(function (a, p) { return a + (p.comment_count || 0); }, 0);
                 var fbtn = document.getElementById('pf-follow');
                 var myId = d.me ? parseInt(d.me.id, 10) : NaN;
                 if (myId !== uid) {
@@ -190,51 +232,22 @@
                     document.getElementById('pf-msg').onclick = function () { openMsgModal(first.author || 'Pengguna', uid); };
                 }
                 document.getElementById('pf-list').innerHTML = theirs.map(function (p) {
-                    var txt = esc(p.text);
+                    var txt = esc(p.text || p.content || '');
                     txt = txt.replace(/#[\w]+/g, function (t) { return '<span class="text-blue-600">' + t + '</span>'; });
-                    return '<div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">'
-                        + '<p class="text-[12px] text-gray-400 mb-1.5">' + esc(relTime(p.created_at)) + '</p>'
-                        + (p.image ? (String(p.image).indexOf('data:video/') === 0 ? '<video src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 w-full max-h-72" controls playsinline preload="metadata"></video>' : '<img src="' + esc(p.image) + '" class="mb-2 rounded-xl border border-gray-100 max-h-72 w-full object-cover" alt="">') : '')
-                        + '<p class="text-[14px] text-gray-800 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
-                        + '<div class="flex items-center space-x-4 mt-2.5 text-[12px] text-gray-500">'
-                        + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (p.likes || 0) + '</span>'
-                        + '<span class="flex items-center space-x-1"><svg class="ic text-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' + (p.comment_count || 0) + '</span>'
+                    return '<div class="px-4 py-4 border-b border-slate-100">'
+                        + '<p class="text-[12px] text-slate-400 mb-1.5">' + esc(relTime(p.created_at)) + '</p>'
+                        + (p.image ? (String(p.image).indexOf('data:video/') === 0
+                            ? '<video src="' + esc(p.image) + '" class="mb-2 rounded-lg border border-slate-100 w-full max-h-72" controls playsinline preload="metadata"></video>'
+                            : '<img src="' + esc(p.image) + '" class="mb-2 rounded-lg border border-slate-100 max-h-72 w-full object-cover" alt="">') : '')
+                        + '<p class="text-[14px] text-slate-800 leading-relaxed whitespace-pre-wrap">' + txt + '</p>'
+                        + '<div class="flex items-center gap-4 mt-2.5 text-[12px] text-slate-500">'
+                        + '<span class="flex items-center gap-1"><svg class="ic w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>' + (p.likes || 0) + '</span>'
+                        + '<span class="flex items-center gap-1"><svg class="ic w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>' + (p.comment_count || 0) + '</span>'
                         + '</div></div>';
                 }).join('');
             }).catch(function () { showEmpty(); });
         }
-        function showEmpty() {
-            document.getElementById('pf-loading').classList.add('hidden');
-            var e = document.getElementById('pf-empty');
-            e.classList.remove('hidden'); e.classList.add('flex');
-        }
-        function renderMe() {
-            // uid=me → halaman profil sendiri di aplikasi utama
-            api('/auth/me').then(function (d) {
-                if (d && d.user) {
-                    document.getElementById('pf-loading').classList.add('hidden');
-                    document.getElementById('pf-empty').classList.add('hidden');
-                    var e = document.getElementById('pf-empty'); e.classList.add('hidden');
-                    location.replace('index.html');
-                } else { location.replace('login.html'); }
-            }).catch(function () { location.replace('index.html'); });
-        }
         init();
     </script>
-    <div id="msg-modal" class="hidden fixed inset-0 z-30 bg-black/50 backdrop-blur-[2px] flex items-end sm:items-center justify-center p-4" onclick="if (event.target === this) closeMsgModal()">
-        <div class="bg-white rounded-2xl w-full max-w-md p-5 shadow-xl">
-            <div class="flex items-center justify-between mb-1">
-                <h3 class="text-[15px] font-bold text-gray-900">Kirim Pesan</h3>
-                <button onclick="closeMsgModal()" class="w-8 h-8 -mr-1 flex items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 transition-colors"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
-            </div>
-            <p id="msg-to-name" class="text-[13px] text-gray-500 mb-3"></p>
-            <textarea id="msg-text" rows="4" maxlength="500" placeholder="Tulis pesanmu…" class="w-full border border-gray-200 rounded-xl p-3 text-[14px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"></textarea>
-            <p id="msg-err" class="hidden text-[12px] text-red-600 mt-1.5"></p>
-            <div class="flex gap-2 mt-4">
-                <button onclick="closeMsgModal()" class="flex-1 rounded-full py-2.5 text-sm font-semibold text-gray-600 border border-gray-200 hover:bg-gray-50 transition-colors">Batal</button>
-                <button id="msg-send" onclick="sendMsg()" class="flex-1 rounded-full py-2.5 text-sm font-semibold bg-blue-600 text-white hover:bg-blue-700 transition-colors flex items-center justify-center space-x-1.5"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg><span>Kirim</span></button>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
