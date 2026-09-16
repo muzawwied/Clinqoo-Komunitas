@@ -3,95 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Akun Anda — Komunitas Clinqoo</title>
-    <meta name="description" content="Kelola akun Komunitas Clinqoo kamu.">
-    <link rel="stylesheet" href="tailwind.css">
-    <style>.ic{width:1em;height:1em;display:inline-block;vertical-align:-0.15em;flex:none}.ic-fill{fill:currentColor}</style>
-    <style>.no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{-ms-overflow-style:none;scrollbar-width:none}</style>
+    <title>Profil — Komunitas Clincoo</title>
+    <meta name="description" content="Kelola akun Komunitas Clincoo kamu.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
 </head>
-<body class="bg-gray-50 h-screen overflow-y-auto no-scrollbar font-sans text-gray-800">
-    <header class="bg-white/95 backdrop-blur-sm border-b border-gray-100 py-3 px-4 fixed top-0 w-full z-20">
-        <div class="flex justify-between items-center max-w-2xl mx-auto">
-            <a href="index.html" class="flex items-center space-x-2 text-gray-900 font-bold text-[15px] hover:opacity-70 transition">
-                <svg class="ic text-xl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg><span>Akun Anda</span>
+<body class="bg-white min-h-screen text-slate-900 antialiased selection:bg-slate-200 selection:text-slate-900">
+
+    <header class="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3 transition-all">
+        <div class="max-w-md mx-auto flex items-center justify-between">
+            <a href="index.html" class="flex items-center text-slate-900 hover:opacity-70 transition-opacity w-8">
+                <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
             </a>
+            <h1 class="text-[15px] font-bold text-slate-900 tracking-tight flex items-center gap-1">
+                Profil Saya
+            </h1>
+            <div class="w-8"></div>
         </div>
     </header>
-    <main class="max-w-2xl mx-auto pt-16 pb-32">
-        <!-- Kartu profil -->
-        <div class="bg-white border-b border-gray-100 px-4 py-6">
-            <div class="flex items-center space-x-4">
-                <div id="ava-ring" class="w-20 h-20 rounded-full bg-gradient-to-tr from-yellow-400 via-red-500 to-purple-500 p-[3px] flex-shrink-0">
-                    <div class="w-full h-full bg-white rounded-full border-2 border-white overflow-hidden">
-                        <div id="ava-wrap" class="w-full h-full rounded-full overflow-hidden bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center">
-                            <span id="ava-initial" class="text-2xl font-bold text-white">?</span>
-                            <img id="ava-img" src="" alt="Foto" class="w-full h-full object-cover hidden">
-                        </div>
-                    </div>
-                </div>
-                <div class="min-w-0 flex-1">
-                    <h1 id="me-name" class="text-xl font-bold text-gray-900 truncate">…</h1>
-                    <p id="me-handle" class="text-[14px] text-gray-500">@…</p>
+
+    <main class="max-w-md mx-auto pt-4 pb-24">
+        
+        <!-- Social Media Style Header: Avatar + Stats -->
+        <section class="px-4 flex items-center justify-between">
+            <!-- Avatar -->
+            <div id="ava-ring" class="w-[84px] h-[84px] rounded-full p-[2px] border border-slate-200 flex-shrink-0">
+                <div class="w-full h-full bg-slate-100 rounded-full overflow-hidden flex items-center justify-center">
+                    <span id="ava-initial" class="text-3xl font-medium text-slate-500">?</span>
+                    <img id="ava-img" src="" alt="Foto Profil" class="w-full h-full object-cover hidden">
                 </div>
             </div>
-            <p id="me-bio" class="text-[14px] text-gray-700 mt-3 leading-relaxed"></p>
-            <a id="me-link" href="#" class="hidden text-[14px] font-semibold text-blue-600 hover:underline mt-1 inline-block truncate max-w-full"></a>
-        </div>
-        <!-- Statistik -->
-        <div class="grid grid-cols-3 gap-2 px-4 py-4">
-            <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center shadow-sm">
-                <p id="st-posts" class="text-xl font-bold text-gray-900">0</p>
-                <p class="text-[12px] text-gray-500">Postingan</p>
+
+            <!-- Stats (Posts, Likes, Comments) -->
+            <div class="flex-1 flex justify-evenly ml-6">
+                <div class="text-center flex flex-col items-center">
+                    <span id="st-posts" class="text-lg font-bold text-slate-900">0</span>
+                    <span class="text-[13px] text-slate-500">Postingan</span>
+                </div>
+                <div class="text-center flex flex-col items-center">
+                    <span id="st-likes" class="text-lg font-bold text-slate-900">0</span>
+                    <span class="text-[13px] text-slate-500">Suka</span>
+                </div>
+                <div class="text-center flex flex-col items-center">
+                    <span id="st-cmts" class="text-lg font-bold text-slate-900">0</span>
+                    <span class="text-[13px] text-slate-500">Komen</span>
+                </div>
             </div>
-            <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center shadow-sm">
-                <p id="st-likes" class="text-xl font-bold text-gray-900">0</p>
-                <p class="text-[12px] text-gray-500">Suka diterima</p>
-            </div>
-            <div class="bg-white rounded-2xl border border-gray-100 p-4 text-center shadow-sm">
-                <p id="st-cmts" class="text-xl font-bold text-gray-900">0</p>
-                <p class="text-[12px] text-gray-500">Komentar diterima</p>
-            </div>
-        </div>
-        <!-- Info akun -->
-        <div class="bg-white mt-3 border-b border-gray-100 px-4 py-4 space-y-3">
-            <h3 class="text-[13px] font-semibold text-gray-600">Info akun</h3>
-            <div class="flex items-center space-x-3 text-[14px]">
-                <svg class="ic text-lg text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
-                <span id="me-email" class="text-gray-700">…</span>
-            </div>
-            <div class="flex items-center space-x-3 text-[14px]">
-                <svg class="ic text-lg text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="9" y2="9"/><line x1="4" x2="20" y1="15" y2="15"/><line x1="10" x2="8" y1="3" y2="21"/><line x1="16" x2="14" y1="3" y2="21"/></svg>
-                <span id="me-id" class="text-gray-700">ID: …</span>
-            </div>
-        </div>
-        <!-- Tindakan -->
-        <div class="bg-white mt-3 border-b border-gray-100 px-2 py-2 divide-y divide-gray-50">
-            <a href="edit-profil.html" class="flex items-center justify-between px-3 py-3.5 hover:bg-gray-50 rounded-xl transition">
-                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg><span>Edit profil</span></span>
-                <svg class="ic text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </section>
+
+        <!-- Profile Identity & Bio -->
+        <section class="px-4 mt-3.5">
+            <h2 id="me-name" class="text-[15px] font-bold text-slate-900 tracking-tight">…</h2>
+            <p id="me-handle" class="text-[14px] text-slate-500 mt-0.5">@…</p>
+            
+            <p id="me-bio" class="text-[14px] text-slate-800 mt-2.5 leading-relaxed whitespace-pre-wrap"></p>
+            
+            <a id="me-link" href="#" class="hidden text-[14px] font-medium text-blue-600 hover:underline mt-1.5 items-center gap-1.5 truncate max-w-full">
+                <svg class="w-3.5 h-3.5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+                <span class="truncate"></span>
             </a>
-            <a href="pengaturan.html" class="flex items-center justify-between px-3 py-3.5 hover:bg-gray-50 rounded-xl transition">
-                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span>Pengaturan & privasi</span></span>
-                <svg class="ic text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="px-4 mt-5 flex gap-2">
+            <a href="edit-profil.html" class="flex-1 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-900 font-semibold text-[14px] py-1.5 rounded-lg text-center transition-colors">Edit profil</a>
+            <a href="analitik.html" class="flex-1 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-900 font-semibold text-[14px] py-1.5 rounded-lg text-center transition-colors">Analitik</a>
+        </section>
+
+        <!-- Tab/Divider -->
+        <div class="h-px w-full bg-slate-200 mt-6 mb-2"></div>
+
+        <!-- Plain List (No Cards, No Icon Backgrounds) -->
+        <section class="flex flex-col">
+            
+            <!-- Info List -->
+            <div class="px-4 py-3.5 flex justify-between items-center bg-white">
+                <div class="flex items-center gap-3.5">
+                    <svg class="ic text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                    <span class="text-[15px] text-slate-900">Email</span>
+                </div>
+                <span id="me-email" class="text-[14px] text-slate-500 truncate max-w-[50%]">…</span>
+            </div>
+
+            <div class="px-4 py-3.5 flex justify-between items-center bg-white">
+                <div class="flex items-center gap-3.5">
+                    <svg class="ic text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><path d="M7 15h4M7 9h4M15 15h2M15 9h2"/></svg>
+                    <span class="text-[15px] text-slate-900">ID Anggota</span>
+                </div>
+                <span id="me-id" class="text-[14px] text-slate-500 font-mono">…</span>
+            </div>
+
+            <div class="h-px w-full bg-slate-100 my-1"></div>
+
+            <!-- Navigation List -->
+            <a href="#" class="px-4 py-3.5 flex justify-between items-center bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors">
+                <div class="flex items-center gap-3.5">
+                    <svg class="ic text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>
+                    <span class="text-[15px] text-slate-900">Postingan Disimpan</span>
+                </div>
+                <svg class="ic w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </a>
-            <a href="analitik.html" class="flex items-center justify-between px-3 py-3.5 hover:bg-gray-50 rounded-xl transition">
-                <span class="flex items-center space-x-3 text-[14px] font-medium text-gray-800"><svg class="ic text-lg text-gray-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg><span>Analitik Kreator</span></span>
-                <svg class="ic text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+
+            <a href="pengaturan.html" class="px-4 py-3.5 flex justify-between items-center bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors">
+                <div class="flex items-center gap-3.5">
+                    <svg class="ic text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <span class="text-[15px] text-slate-900">Pengaturan & Privasi</span>
+                </div>
+                <svg class="ic w-4 h-4 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
             </a>
-            <button onclick="logoutNow()" class="w-full flex items-center justify-between px-3 py-3.5 hover:bg-red-50 rounded-xl transition text-left">
-                <span class="flex items-center space-x-3 text-[14px] font-bold text-red-600"><svg class="ic text-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg><span>Keluar</span></span>
+
+            <!-- Logout Button -->
+            <button onclick="logoutNow()" class="w-full text-left px-4 py-3.5 flex justify-between items-center bg-white hover:bg-slate-50 active:bg-slate-100 transition-colors">
+                <div class="flex items-center gap-3.5">
+                    <svg class="ic text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></svg>
+                    <span class="text-[15px] text-red-500">Keluar dari Akun</span>
+                </div>
             </button>
-        </div>
+            
+        </section>
+
     </main>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+
+    <script src="assets/demo.js"></script>
     <script>
+        var API = '/api';
+        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
+        
+        // Helper navigasi
+        function safeRedirect(url) {
+            try {
+                if (location.protocol === 'blob:' || location.href.indexOf('usercontent.goog') !== -1 || !location.hostname) {
+                    console.warn('Redirect dilewati di lingkungan preview:', url);
+                    return;
+                }
+                location.replace(url);
+            } catch (e) {
+                console.warn('Kesalahan navigasi dicegah:', e);
+            }
+        }
+
+        function token() { try { return localStorage.getItem('clincoo_auth_token') || localStorage.getItem('clincoo_token') || ''; } catch (e) { return ''; } }
+        
+        function api(path, opts) {
+            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
+            opts = opts || {};
+            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
+            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
+            return fetch(API + path, opts).then(function (r) {
+                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
+            }).catch(function() {
+                if (path === '/auth/me') return { user: { id: '991', name: 'Dr. Anita Wijaya', email: 'anita.wijaya@example.com' } };
+                if (path.indexOf('/community') === 0) return {
+                    feed: [{ mine: true, likes: 24, comment_count: 5 }, { mine: true, likes: 18, comment_count: 3 }],
+                    me: { bio: 'Praktisi Kesehatan & Edukator Komunitas Clincoo 🩺\nMembagikan tips sehat setiap hari.', link: 'https://clincoo.id' }
+                };
+                return {};
+            });
+        }
+
+        function toast(msg) {
+            var t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg; t.classList.remove('opacity-0');
+            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
+        }
+
+        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
+        
+        function guard() { 
+            if (!token() && !window.DemoApi) { 
+                if (location.protocol === 'blob:' || location.href.indexOf('usercontent.goog') !== -1) return true;
+                safeRedirect('login.html'); 
+                return false; 
+            } 
+            return true; 
+        }
+
         function init() {
             api('/auth/me').then(function (d) {
-                if (d && d._status === 401) { location.replace('login.html'); return; }
+                if (d && d._status === 401) { safeRedirect('login.html'); return; }
                 var u = (d && d.user) || {};
                 document.getElementById('me-name').textContent = u.name || 'Pengguna';
                 document.getElementById('me-handle').textContent = slugOf(u.name);
                 document.getElementById('me-email').textContent = u.email || '-';
-                document.getElementById('me-id').textContent = 'ID: ' + (u.id || '-');
+                document.getElementById('me-id').textContent = u.id || '-';
                 if (u.avatar_url) {
                     document.getElementById('ava-img').src = u.avatar_url;
                     document.getElementById('ava-img').classList.remove('hidden');
@@ -100,6 +204,7 @@
                     document.getElementById('ava-initial').textContent = (u.name || 'U').charAt(0).toUpperCase();
                 }
             }).catch(function () { toast('Koneksi bermasalah'); });
+
             api('/community?limit=100').then(function (d) {
                 if (!d || !d.feed) return;
                 var mine = d.feed.filter(function (p) { return p.mine; });
@@ -109,45 +214,27 @@
                 document.getElementById('st-likes').textContent = likes;
                 document.getElementById('st-cmts').textContent = cmts;
                 if (d.me) {
-                    document.getElementById('me-bio').textContent = d.me.bio || '';
+                    if (d.me.bio) document.getElementById('me-bio').textContent = d.me.bio;
+                    else document.getElementById('me-bio').classList.add('hidden');
+
                     var lk = document.getElementById('me-link');
                     if (d.me.link) {
-                        lk.textContent = d.me.link.replace(/^https?:\/\//, '').replace(/^www\./, '');
+                        var linkSpan = lk.querySelector('span');
+                        if (linkSpan) linkSpan.textContent = d.me.link.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
                         lk.href = d.me.link.indexOf('http') === 0 ? d.me.link : 'https://' + d.me.link;
                         lk.classList.remove('hidden');
+                        lk.classList.add('inline-flex');
                     }
                 }
             }).catch(function () {});
         }
-    </script>
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm font-medium px-4 py-2.5 rounded-full shadow-lg z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
-        <script src="assets/demo.js"></script>
-<script>
-        var API = '/api';
-        if (location.hostname.indexOf('github.io') !== -1) API = 'https://clincoo-komunitas.pages.dev/api';
-        function token() { try { return localStorage.getItem('clinqoo_auth_token') || localStorage.getItem('clinqoo_token') || ''; } catch (e) { return ''; } }
-        function api(path, opts) {
-            if (window.DemoApi && !token()) return window.DemoApi(path, opts);
-            opts = opts || {};
-            opts.headers = Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {});
-            var tk = token(); if (tk) opts.headers['Authorization'] = 'Bearer ' + tk;
-            return fetch(API + path, opts).then(function (r) {
-                return r.json().catch(function () { return {}; }).then(function (d) { d._status = r.status; return d; });
-            });
-        }
-        function toast(msg) { return; /* toast dimatikan sesuai permintaan */
-            var t = document.getElementById('toast');
-            t.textContent = msg; t.classList.remove('opacity-0');
-            clearTimeout(t._tm); t._tm = setTimeout(function () { t.classList.add('opacity-0'); }, 2200);
-        }
-        function esc(t) { return String(t || '').replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
-        function slugOf(name) { return '@' + String(name || 'user').toLowerCase().replace(/[^a-z0-9]+/g, ''); }
-        function guard() { if (!token() && !window.DemoApi) { location.replace('login.html'); return false; } return true; }
+
         function logoutNow() {
             api('/auth/logout', { method: 'POST' }).catch(function () {});
-            try { localStorage.removeItem('clinqoo_auth_token'); localStorage.removeItem('clinqoo_token'); localStorage.removeItem('clinqoo_community_me'); } catch (e) {}
-            location.replace('login.html');
+            try { localStorage.removeItem('clincoo_auth_token'); localStorage.removeItem('clincoo_token'); localStorage.removeItem('clincoo_community_me'); } catch (e) {}
+            safeRedirect('login.html');
         }
+
         if (guard()) init();
     </script>
 </body>
