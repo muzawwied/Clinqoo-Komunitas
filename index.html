@@ -1,1 +1,139 @@
-PLACEHOLDER_INDEX
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Komunitas Clincoo — Bagikan progres proyekmu</title>
+    <meta name="description" content="Komunitas Clincoo: ruang para pembangun — bagikan progres, tanya jawab, dan saling dukung.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/theme-override.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .ic { width: 1.25em; height: 1.25em; display: inline-block; vertical-align: middle; flex-shrink: 0; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @supports (padding-bottom: env(safe-area-inset-bottom)) {
+            .safe-area-pb { padding-bottom: env(safe-area-inset-bottom); }
+        }
+        .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    </style>
+</head>
+<body class="bg-white h-screen overflow-hidden text-slate-900 antialiased">
+
+    <header id="main-header" class="bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 py-3 fixed top-0 w-full z-20">
+        <div class="flex justify-between items-center max-w-md mx-auto">
+            <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-lg bg-slate-900 text-white flex items-center justify-center text-[13px] font-bold flex-shrink-0">C</div>
+                <div class="min-w-0">
+                    <h1 class="text-[15px] font-bold tracking-tight leading-tight">Beranda</h1>
+                    <p class="text-[10px] text-slate-500 leading-none">Komunitas Clincoo</p>
+                </div>
+                <span id="demo-badge" class="hidden text-[9px] font-bold tracking-widest bg-amber-100 text-amber-700 rounded-full px-1.5 py-0.5 ml-1">DEMO</span>
+            </div>
+            <div class="flex items-center gap-3 text-slate-500">
+                <button type="button" onclick="switchTab(event,'create-view',document.querySelector('[data-icon=plus]'))" class="hover:text-slate-900" aria-label="Buat postingan">
+                    <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </button>
+                <button type="button" onclick="switchTab(event,'msg-view',document.querySelector('[data-icon=msg]'))" class="hover:text-slate-900 relative" aria-label="Pesan">
+                    <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </button>
+                <button type="button" onclick="switchTab(event,'notif-view',document.querySelector('[data-icon=heart]'))" class="hover:text-slate-900 relative" aria-label="Notifikasi">
+                    <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <span id="notif-badge" class="hidden absolute -top-1 -right-1 min-w-[16px] h-4 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center px-1">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="home-view" class="app-view h-full overflow-y-auto pt-14 pb-24 block no-scrollbar max-w-md mx-auto">
+        <div class="px-4 py-3 border-b border-slate-100">
+            <p class="text-[12px] font-semibold text-slate-500 mb-2">Yang Anda Ikuti</p>
+            <div class="flex space-x-3 overflow-x-auto no-scrollbar" id="friends-row"></div>
+        </div>
+        <div id="author-chip" class="hidden mx-4 mt-3 bg-slate-100 text-slate-700 text-[13px] font-semibold rounded-full px-4 py-2 w-fit cursor-pointer" onclick="clearAuthorFilter()"></div>
+        <div id="feed-container" class="divide-y divide-slate-100 pb-4"></div>
+        <div id="feed-skeleton" class="hidden divide-y divide-slate-100 pb-4">
+            <div class="p-4 flex space-x-3 animate-pulse"><div class="w-11 h-11 rounded-full bg-slate-200"></div><div class="flex-1 space-y-2 py-1"><div class="h-3 bg-slate-200 rounded w-24"></div><div class="h-3 bg-slate-100 rounded w-3/4"></div></div></div>
+        </div>
+    </main>
+
+    <main id="search-view" class="app-view h-full overflow-y-auto pb-24 bg-white hidden no-scrollbar max-w-md mx-auto">
+        <div class="sticky top-0 bg-white/95 backdrop-blur-sm pt-14 pb-0 z-10 border-b border-slate-200">
+            <div class="px-4 mb-3">
+                <div class="relative">
+                    <svg class="ic absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" id="search-input" oninput="doSearch()" placeholder="Cari di komunitas…" class="w-full bg-slate-50 text-[14px] rounded-xl py-2.5 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-slate-900/10 border border-slate-200">
+                </div>
+            </div>
+        </div>
+        <div id="search-live" class="hidden px-4 py-4"></div>
+        <div id="trending-container" class="px-4 py-4 space-y-2"></div>
+    </main>
+
+    <main id="notif-view" class="app-view h-full overflow-y-auto pb-24 bg-white hidden no-scrollbar max-w-md mx-auto">
+        <div class="sticky top-0 bg-white/95 backdrop-blur-sm pt-14 pb-3 border-b border-slate-200 z-10 px-4">
+            <h1 class="text-lg font-bold">Notifikasi</h1>
+        </div>
+        <div id="notif-container" class="flex flex-col"></div>
+    </main>
+
+    <main id="msg-view" class="app-view h-full overflow-y-auto pb-24 bg-white hidden no-scrollbar max-w-md mx-auto">
+        <div class="sticky top-0 bg-white/95 backdrop-blur-sm pt-14 pb-3 border-b border-slate-200 z-10 px-4">
+            <h1 class="text-lg font-bold">Pesan</h1>
+            <p class="text-[12px] text-slate-500 mt-0.5">Kotak masuk dari anggota komunitas</p>
+        </div>
+        <div id="msg-container" class="flex flex-col"></div>
+    </main>
+
+    <main id="create-view" class="app-view h-full overflow-y-auto pb-32 bg-white hidden no-scrollbar max-w-md mx-auto">
+        <div class="pt-14 px-4">
+            <h2 class="text-[15px] font-bold mb-4">Tulis Postingan</h2>
+            <textarea id="composer-text" rows="5" maxlength="500" placeholder="Ceritain sesuatu… pakai #tag" class="w-full bg-transparent text-[15px] resize-none focus:outline-none leading-relaxed placeholder-slate-400"></textarea>
+            <div id="img-preview" class="hidden relative mt-3"></div>
+            <div class="flex justify-between items-center mt-4">
+                <button type="button" id="btn-img" class="text-slate-600 text-[14px] font-medium">+ Foto</button>
+                <button type="button" id="btn-post" onclick="submitPost()" disabled class="bg-slate-900 text-white text-[14px] font-semibold px-4 py-2 rounded-lg disabled:opacity-40">Bagikan</button>
+            </div>
+            <input type="file" id="in-img" accept="image/*" class="hidden">
+        </div>
+    </main>
+
+    <main id="profile-view" class="app-view h-full overflow-y-auto pb-24 bg-white hidden no-scrollbar max-w-md mx-auto">
+        <div class="pt-20 px-4 text-center">
+            <p class="text-[14px] text-slate-500 mb-4">Kelola profil lengkap di halaman Akun.</p>
+            <a href="akun.html" class="inline-block bg-slate-900 text-white font-semibold text-[14px] px-5 py-2.5 rounded-lg">Buka Profil Saya</a>
+        </div>
+    </main>
+
+    <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-medium px-4 py-2.5 rounded-full shadow-xl z-50 opacity-0 transition-opacity duration-300 pointer-events-none max-w-[90vw] text-center"></div>
+
+    <nav class="bg-white border-t border-slate-200 fixed bottom-0 w-full z-30 safe-area-pb pb-2 pt-1">
+        <div class="max-w-md mx-auto flex items-center justify-around">
+            <a href="#" onclick="switchTab(event,'home-view',this)" class="nav-item flex flex-col items-center py-1 text-slate-900" data-icon="house">
+                <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+                <span class="text-[10px] font-medium">Beranda</span>
+            </a>
+            <a href="#" onclick="switchTab(event,'search-view',this)" class="nav-item flex flex-col items-center py-1 text-slate-400" data-icon="search">
+                <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <span class="text-[10px] font-medium">Cari</span>
+            </a>
+            <a href="#" onclick="switchTab(event,'create-view',this)" class="nav-item flex items-center justify-center w-12 h-10 bg-slate-900 text-white rounded-full" data-icon="plus">
+                <svg class="ic w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </a>
+            <a href="#" onclick="switchTab(event,'notif-view',this)" class="nav-item flex flex-col items-center py-1 text-slate-400 relative" data-icon="heart">
+                <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                <span class="text-[10px] font-medium">Notif</span>
+            </a>
+            <a href="#" onclick="switchTab(event,'profile-view',this)" class="nav-item flex flex-col items-center py-1 text-slate-400" data-icon="user">
+                <svg class="ic w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <span class="text-[10px] font-medium">Profil</span>
+            </a>
+            <span class="hidden" data-icon="msg"></span>
+        </div>
+    </nav>
+
+    <script src="assets/demo.js"></script>
+    <script src="assets/js/index-app.js"></script>
+</body>
+</html>
